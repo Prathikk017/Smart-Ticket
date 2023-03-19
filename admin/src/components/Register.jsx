@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ReCAPTCHA from 'react-google-recaptcha';
 import Header from './Header';
@@ -32,6 +32,7 @@ const Register = () => {
     });
 
   const [verfied, setVerifed] = useState(false);
+  const [operid, setOperid] = useState('');
   const OperName = values.OperName;
   const OperEmail = values.OperEmail;
   const OperPhone = values.OperPhone;
@@ -49,8 +50,25 @@ const Register = () => {
     setVerifed(true);
   }
 
+  const getOperator = async () =>{
+    const res = await axios.get("http://localhost:8004/operator/readid");
+    if(res.data.status === 201){
+      if(res.data.data === 0){
+        setOperid("OP0");
+      }
+      setOperid(res.data.data);
+      return;
+    }else{
+      console.log("error");
+    }
+
+  };
+  
+  
   const handleSub = async (e) => {
     e.preventDefault();
+
+    var OperId = operid.slice(operid.length-1);
 
     if (
       !OperName ||
@@ -78,6 +96,7 @@ const Register = () => {
         return;
       } else {
         const res1 = await axios.post('http://localhost:8004/operator/create', {
+          OperId,
           OperName,
           OperEmail,
           OperPhone,
@@ -101,6 +120,11 @@ const Register = () => {
       }
     }
   };
+
+
+  useEffect(()=>{
+    getOperator();
+  },[]);
 
   return (
     <div>

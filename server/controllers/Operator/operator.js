@@ -2,13 +2,33 @@ const db = require('../../db/db');
 const bcrypt = require('bcryptjs');
 const moment = require('moment');
 const saltRounds = 10;
-var opid = 0;
+
 var astid = 0;
 var stgid = 0;
 var rutid = 0;
+
+
+//read last row from tbloperator by id
+exports.getOperator = (req, res) =>{
+  var query = "SELECT * FROM tbloperator ORDER BY OperId DESC LIMIT 1";
+  db.query(query, (err, results) => {
+    
+    if (!err) {
+      if(results.length>0){
+        return res.status(200).json({ status: 201, data: results[0].OperId });
+      }else{
+        return res.status(200).json({ status: 201, data: "0"});
+      }
+      
+    } else {
+      return res.status(500).json({ status: 500, data: err });
+    }
+  });
+}
 //register operator
 exports.createOperator = (req, res) => {
   let tbloperator = req.body;
+  let opid = parseInt(tbloperator.OperId);
   opid = opid + 1;
   var OperId = `OP${opid}`;
   var OperStatus = 'I';

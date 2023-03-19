@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useFormik } from 'formik';
@@ -21,6 +21,7 @@ const initialValues = {
 const Empregister = () => {
   const [EmpDOB, setEmpDOB] = useState('');
   const [EmpType, setEmpType] = useState('');
+  const [empid, setEmpid] = useState('');
   const history = useNavigate();
   
   const ID = window.localStorage.getItem('OperID');
@@ -55,12 +56,26 @@ const Empregister = () => {
     setEmpType(e.target.value);
   };
   
+  const getEmployee = async () =>{
+    const res = await axios.get("http://localhost:8004/employee/readempid");
+    if(res.data.status === 201){
+      if(res.data.data === 0){
+        setEmpid("E0");
+      }
+      setEmpid(res.data.data);
+      return;
+    }else{
+      console.log("error");
+    }
+
+  };
 
   
 
   const handleSub = async (e) => {
     e.preventDefault();
-
+    var EmpId = empid.slice(empid.length-1);
+    
     if (
       !EmpName ||
       !EmpIntId ||
@@ -78,6 +93,7 @@ const Empregister = () => {
       return;
     } else {
     const res = await axios.post('http://localhost:8004/employee/create', {
+      EmpId,
       EmpName,
       EmpIntId,
       EmpDOB,
@@ -101,6 +117,10 @@ const Empregister = () => {
       }
     }
   };
+
+  useEffect(()=>{
+    getEmployee();
+  },[]);
 
   return (
     <div className='flex flex-row gap-4'>

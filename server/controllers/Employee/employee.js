@@ -3,11 +3,29 @@ const db = require('../../db/db');
 const moment = require('moment');
 const bcrypt = require('bcryptjs');
 const saltRounds = 10;
-var id = 0;
 
+
+//read last row from tblemployee by id
+exports.getEmployee = (req, res) =>{
+  var query = "SELECT * FROM tblemployee ORDER BY EmpId DESC LIMIT 1";
+  db.query(query, (err, results) => {
+    
+    if (!err) {
+      if(results.length>0){
+        return res.status(200).json({ status: 201, data: results[0].EmpId });
+      }else{
+        return res.status(200).json({ status: 201, data: "0"});
+      }
+      
+    } else {
+      return res.status(500).json({ status: 500, data: err });
+    }
+  });
+}
 // CREATE A NEW EMPLOYEE
 exports.create = (req, res) => {
   let tblEmployee = req.body;
+  let id = parseInt(tblEmployee.EmpId);
   id = id + 1;
   const OperID = tblEmployee.operId;
   var EmpId = `${OperID}EMP${id}`;

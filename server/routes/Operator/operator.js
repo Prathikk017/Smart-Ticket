@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-const { createOperator, getAllOperators, getOperators, validateOperator, createAsset, createStage, createRoute, validateStage } = require('../../controllers/Operator/operator');
+const { getOperator, createOperator, getAllOperators, getOperators, validateOperator, createAsset, createStage, createRoute, validateStage } = require('../../controllers/Operator/operator');
 
+router.route('/readId').get(getOperator);
 router.route('/create').post(createOperator);
 router.route('/read').get(getAllOperators);
 router.route('/:OperId').get(getOperators);

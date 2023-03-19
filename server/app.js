@@ -12,6 +12,7 @@ const operatorRoute = require('./routes/Operator/operator');
 const faqsRoute = require('./routes/FAQs/FAQs');
 
 
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
