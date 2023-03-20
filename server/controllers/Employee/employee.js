@@ -4,70 +4,106 @@ const moment = require('moment');
 const bcrypt = require('bcryptjs');
 const saltRounds = 10;
 
-
-//read last row from tblemployee by id
-exports.getEmployee = (req, res) =>{
-  var query = "SELECT * FROM tblemployee ORDER BY EmpId DESC LIMIT 1";
-  db.query(query, (err, results) => {
-    
-    if (!err) {
-      if(results.length>0){
-        return res.status(200).json({ status: 201, data: results[0].EmpId });
-      }else{
-        return res.status(200).json({ status: 201, data: "0"});
-      }
-      
-    } else {
-      return res.status(500).json({ status: 500, data: err });
-    }
-  });
-}
 // CREATE A NEW EMPLOYEE
 exports.create = (req, res) => {
   let tblEmployee = req.body;
-  let id = parseInt(tblEmployee.EmpId);
-  id = id + 1;
   const OperID = tblEmployee.operId;
-  var EmpId = `${OperID}EMP${id}`;
-  var EStatus = 'I';
-  var EmpCreatedDate = moment().format('YYYY-MM-DD hh:mm:ss');
-  bcrypt.hash(tblEmployee.EmpPassword, saltRounds, (err, hash) => {
+  var query1 = `SELECT * FROM tblemployee WHERE EmpId LIKE '%${OperID}%'`;
+  db.query(query1, (err, result) => {
     if (!err) {
-      query =
-        'INSERT INTO tblEmployee (EmpId, EmpName, EmpIntId, EmpDOB, EmpType, EmpMobile, EmpAadhar, EmpPassword, EmpAddr1, EmpAddr2, EmpCity, EmpPincode, EStatus,  EmpCreatedDate) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-      db.query(
-        query,
-        [
-          EmpId,
-          tblEmployee.EmpName,
-          tblEmployee.EmpIntId,
-          tblEmployee.EmpDOB,
-          tblEmployee.EmpType,
-          tblEmployee.EmpMobile,
-          tblEmployee.EmpAadhar,
-          hash,
-          tblEmployee.EmpAddr1,
-          tblEmployee.EmpAddr2,
-          tblEmployee.EmpCity,
-          tblEmployee.EmpPincode,
-          EStatus,
-          EmpCreatedDate,
-        ],
-        (err, results) => {
+      if (result.length > 0) {
+        var empid = result.length;
+        empid = empid + 1;
+        var EmpId = `${OperID}EMP${empid}`;
+        var EStatus = 'I';
+        var EmpCreatedDate = moment().format('YYYY-MM-DD hh:mm:ss');
+        bcrypt.hash(tblEmployee.EmpPassword, saltRounds, (err, hash) => {
           if (!err) {
-            return res
-              .status(200)
-              .json({ status: 201, data: 'Employee created successfully' });
+            var query =
+              'INSERT INTO tblemployee (EmpId, EmpName, EmpIntId, EmpDOB, EmpType, EmpMobile, EmpAadhar, EmpPassword, EmpAddr1, EmpAddr2, EmpCity, EmpPincode, EStatus,  EmpCreatedDate) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+            db.query(
+              query,
+              [
+                EmpId,
+                tblEmployee.EmpName,
+                tblEmployee.EmpIntId,
+                tblEmployee.EmpDOB,
+                tblEmployee.EmpType,
+                tblEmployee.EmpMobile,
+                tblEmployee.EmpAadhar,
+                hash,
+                tblEmployee.EmpAddr1,
+                tblEmployee.EmpAddr2,
+                tblEmployee.EmpCity,
+                tblEmployee.EmpPincode,
+                EStatus,
+                EmpCreatedDate,
+              ],
+              (err, results) => {
+                if (!err) {
+                  return res
+                    .status(200)
+                    .json({
+                      status: 201,
+                      data: 'Employee created successfully',
+                    });
+                } else {
+                  return res.status(500).json(err);
+                }
+              }
+            );
+            return;
           } else {
-            return res.status(500).json(err);
+            console.log(err);
           }
+        });
+      }else {
+      empid = result.length;
+      empid = empid + 1;
+      var EmpId = `${OperID}EMP${empid}`;
+      var EStatus = 'I';
+      var EmpCreatedDate = moment().format('YYYY-MM-DD hh:mm:ss');
+      bcrypt.hash(tblEmployee.EmpPassword, saltRounds, (err, hash) => {
+        if (!err) {
+          var query =
+            'INSERT INTO tblemployee (EmpId, EmpName, EmpIntId, EmpDOB, EmpType, EmpMobile, EmpAadhar, EmpPassword, EmpAddr1, EmpAddr2, EmpCity, EmpPincode, EStatus,  EmpCreatedDate) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+          db.query(
+            query,
+            [
+              EmpId,
+              tblEmployee.EmpName,
+              tblEmployee.EmpIntId,
+              tblEmployee.EmpDOB,
+              tblEmployee.EmpType,
+              tblEmployee.EmpMobile,
+              tblEmployee.EmpAadhar,
+              hash,
+              tblEmployee.EmpAddr1,
+              tblEmployee.EmpAddr2,
+              tblEmployee.EmpCity,
+              tblEmployee.EmpPincode,
+              EStatus,
+              EmpCreatedDate,
+            ],
+            (err, results) => {
+              if (!err) {
+                return res
+                  .status(200).json({ status: 201, data: 'Employee created successfully' });
+              } else {
+                return res.status(500).json(err);
+              }
+            }
+          );
+        } else {
+          console.log(err);
         }
-      );
-    } else {
-      console.log(err);
+      });
     }
-  });
-};
+  }else{
+    console.log(err);
+  };
+})
+}
 
 //FIND EMPLOYEE IN EMPLOYEETABLE
 exports.find = (req, res) => {
