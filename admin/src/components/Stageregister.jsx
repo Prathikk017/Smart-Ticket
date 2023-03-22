@@ -58,7 +58,7 @@ const Stageregister = () => {
       <div className='h-screen w-full justify-start items-start'>
         <div className='py-2 flex flex-col '>
           <form className='max-w-[400px] w-full mx-auto' name='contact-form'>
-            <h2 className='text-4xl text-pink-500 text-center py-4'>Stage</h2>
+            <h2 className='text-4xl text-pink-500 text-center py-4'>Stage Register</h2>
             <div className='flex flex-col py-1'>
               <label>Stage Name</label>
               <input

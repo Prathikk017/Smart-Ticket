@@ -4,6 +4,7 @@ import {GrBus} from 'react-icons/gr';
 import { Link } from 'react-router-dom'
 import logo from '../assets/logo.jpg';
 import{AiFillSetting} from 'react-icons/ai';
+import{FaMapMarkedAlt} from 'react-icons/fa';
 import {BsFillXDiamondFill} from 'react-icons/bs';
 import{TbRoute} from 'react-icons/tb';
 import{MdApproval} from 'react-icons/md';
@@ -47,6 +48,10 @@ const Opersidebar = () => {
           <Link to="/routeregister">
           <li className=' flex justify-start items-center p-2 m-2 rounded-lg text-center hover:bg-pink-300 hover:cursor-pointer'>
            <TbRoute/><span className='ml-2'>Route</span> 
+          </li></Link>
+          <Link to="/routemap">
+          <li className=' flex justify-start items-center p-2 m-2 rounded-lg text-center hover:bg-pink-300 hover:cursor-pointer'>
+           <FaMapMarkedAlt/><span className='ml-2'>Route Map</span> 
           </li></Link>
         </ul>
         </div>

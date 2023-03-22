@@ -9,6 +9,7 @@ import Operview from './components/Operview';
 import Register from './components/Register';
 import SignIn from './components/SignIn';
 import Routeregister from './components/Routeregister';
+import RouteStageMap from './components/RouteStageMap';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path='/astregister' element={<Astregister />} />
         <Route path='/stageregister' element={<Stageregister/>} />
         <Route path='/routeregister' element={<Routeregister/>} /> 
+        <Route path='/routemap' element={<RouteStageMap/>} />
       </Routes>
     </BrowserRouter>
   );

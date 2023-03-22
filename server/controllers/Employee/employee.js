@@ -8,11 +8,12 @@ const saltRounds = 10;
 exports.create = (req, res) => {
   let tblEmployee = req.body;
   const OperID = tblEmployee.operId;
-  var query1 = `SELECT * FROM tblemployee WHERE EmpId LIKE '%${OperID}%'`;
+  var query1 = `SELECT * FROM tblemployee WHERE EmpId LIKE '%${OperID}%' ORDER BY EmpId DESC LIMIT 1`;
   db.query(query1, (err, result) => {
     if (!err) {
       if (result.length > 0) {
-        var empid = result.length;
+        var emp = result[0].EmpId;
+        var empid = parseInt(rut.slice(rut.length - 1));
         empid = empid + 1;
         var EmpId = `${OperID}EMP${empid}`;
         var EStatus = 'I';
