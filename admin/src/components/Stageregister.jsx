@@ -22,6 +22,7 @@ const Stageregister = () => {
         'http://localhost:8004/operator/stagevalidate',
         {
           StageName,
+          operId
         }
       );
 

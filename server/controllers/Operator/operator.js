@@ -246,7 +246,7 @@ exports.createStage = (req, res) => {
 //validate Stage by StageName
 exports.validateStage = (req, res) => {
   const tblstagemaster = req.body;
-  var query = 'SELECT * FROM tblstagemaster WHERE StageName = ?';
+  var query = `SELECT * FROM tblstagemaster WHERE StageName = ? AND StageID LIKE '%${operID}%`;
   db.query(query, [tblstagemaster.StageName], (err, results) => {
     if (!err) {
       if (results.length > 0) {
