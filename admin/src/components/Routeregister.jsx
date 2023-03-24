@@ -61,7 +61,7 @@ const Routeregister = () => {
   return (
     <div className='flex flex-row gap-4 bg-gray-50'>
     <Opersidebar />
-    <div className='h-screen w-full py-4'>
+    <div className='h-screen w-full py-4 max-h-[100vh] overflow-y-auto'>
         <div className='py-4 flex flex-col justify-center items-center'>
           <form className='max-w-[400px] w-full mx-auto'  name='contact-form'>
             <h2 className='text-4xl text-pink-500 text-center py-1'>

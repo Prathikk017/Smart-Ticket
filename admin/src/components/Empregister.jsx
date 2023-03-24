@@ -107,10 +107,10 @@ const Empregister = () => {
   return (
     <div className='flex flex-row gap-4'>
       <Opersidebar/>
-      <div className='grid grid-cols-1 sm:grid-cols-2 h-screen w-full'>
+      <div className='grid grid-cols-1 sm:grid-cols-2 h-screen w-full max-h-[100vh] overflow-y-auto mx-auto'>
         <div className='py-2 flex flex-col justify-center items-center'>
           <form className='max-w-[400px] w-full mx-auto text-sm flex-row' onSubmit={handleSubmit}>
-            <h2 className='text-2xl text-pink-500 text-center py-1'>
+            <h2 className='text-3xl text-pink-500 text-center py-2'>
               Employee Register                                                                
             </h2>
             <div className='flex flex-col py-1'>

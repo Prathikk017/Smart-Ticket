@@ -263,6 +263,26 @@ exports.validateStage = (req, res) => {
   });
 };
 
+//read Stage
+exports.readStage = (req, res) => {
+  var tblstagemaster = req.body;
+  var operID = tblstagemaster.operId;
+  var query1 = `SELECT StageID,StageName FROM tblstagemaster WHERE StageID LIKE '%${operID}%'`;
+  db.query(query1, (err, result) => {
+    if(!err){
+      if(result.length>0){
+        res.status(200).json({status:201, data : result});
+        return;
+      }else{
+        res.status(200).json({status:201, data : "Stage Not Found"})
+      }
+    }else{
+      console.log(err)
+    }
+  })
+}
+
+
 //create Route
 exports.createRoute = (req, res) => {
   let tblroutemaster = req.body;
@@ -331,3 +351,58 @@ exports.createRoute = (req, res) => {
     }
   });
 };
+
+
+//read Route
+exports.readRoute = (req, res) => {
+  let tblroutemaster = req.body;
+  const OperId = tblroutemaster.operId;
+  var query1 = `SELECT RouteID,RouteName,RouteSStage,RouteEStage FROM tblroutemaster WHERE RouteID LIKE '%${OperId}%'`;
+  db.query(query1, (err, result) => {
+    if(!err){
+      if(result.length>0){
+        res.status(200).json({status:201, data : result});
+        return;
+      }else{
+        res.status(200).json({status:201, data : "Route Not Found"})
+      }
+    }else{
+      console.log(err)
+    }
+  })
+}
+
+//create routestage map
+exports.createRoutemap = (req,res) => {
+  let tblroutestagemap = req.body;
+  const RouteID = tblroutestagemap.route;
+  const stageArr = tblroutestagemap.stage;
+  const fareArr = tblroutestagemap.fare;
+  const effDate = tblroutestagemap.effDate;
+
+  const insertValues = async () => {
+    for (let i = 0; i < stageArr.length; i++){
+      const routeVal = stageArr[i]; 
+      const fareVal = fareArr[i];
+      const query = 'INSERT INTO tblroutestagemap (RouteID, StageID, Fare, EffectiveDate) VALUES (?, ?, ?, ?)';
+      await new Promise((resolve, reject) => {
+        db.query(query,[RouteID, routeVal, fareVal, effDate], (error, results) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(results);
+          }
+        });
+      });
+    }
+  };
+  
+  insertValues()
+    .then(() => {
+      res.status(200).json({status:201, data : 'All values inserted successfully'});
+    })
+    .catch(error => {
+      console.error(error);
+      res.status(500).send('Error inserting values');
+    });
+  }

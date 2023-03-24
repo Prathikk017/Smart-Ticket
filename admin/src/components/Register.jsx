@@ -129,7 +129,7 @@ const Register = () => {
   return (
     <div>
       <Header />
-      <div className='grid grid-cols-1 sm:grid-cols-2 h-full w-full'>
+      <div className='grid grid-cols-1 sm:grid-cols-2 h-full w-full max-h-[100vh] overflow-y-auto'>
         <div className='py-4 flex flex-col justify-center items-center'>
           <form
             className='max-w-[400px] w-full mx-auto p-4'
