@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Opersidebar from './Opersidebar';
 
-const Astregister = () => {
 
+const Astregister = () => {
   const [astRegNo, setAstRegNo] = useState('');
   const [astName, setAstName] = useState('');
   const [astModel, setAstModel] = useState('');
@@ -13,6 +13,7 @@ const Astregister = () => {
   const [astPermitNo, setAstPermitNo] = useState('');
   const [astInsurExp, setAstInsurExp] = useState('');
   const [astPermitExp, setAstPermitExp] = useState('');
+  const [qrcode, setQrcode] = useState('');
   const history = useNavigate();
 
   const ID = window.localStorage.getItem('OperID');
@@ -43,11 +44,13 @@ const Astregister = () => {
   const setData7 = (e) => {
     setAstPermitExp(e.target.value);
   };
- 
+
+  const data = astRegNo;
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (
       !astRegNo ||
       !astName ||
@@ -56,35 +59,41 @@ const Astregister = () => {
       !astEngNo ||
       !astPermitNo ||
       !astInsurExp ||
-      !astPermitExp 
+      !astPermitExp
     ) {
       alert('Fill the details');
     } else {
-    const res = await axios.post('http://localhost:8004/operator/astcreate', {
-      astRegNo,
-      astName,
-      astModel,
-      astChasNo,
-      astEngNo,
-      astPermitNo,
-      astInsurExp,
-      astPermitExp,
-      operId 
-    });
-    if (res.data.status === 201) {
-      alert('Asset created successfully');
-      setTimeout(() => history('/Operdashboard'), 500);
-      return;
-    } else {
-      alert('Asset unable to register');
-      return;
-    }
+      const res = await axios.post('http://localhost:8004/operator/astcreate', {
+        astRegNo,
+        astName,
+        astModel,
+        astChasNo,
+        astEngNo,
+        astPermitNo,
+        astInsurExp,
+        astPermitExp,
+        operId,
+      });
+      if (res.data.status === 201) {
+        alert('Asset created successfully');
+       const res1= await axios.post('http://localhost:8004/operator/generate-qr-code', {
+          data: data
+      })
+      if(res1.data.status === 201){
+        setQrcode(res1.data.data.imageUrl);
+        
+      }
+        return;
+      } else {
+        alert('Asset unable to register');
+        return;
+      }
     }
   };
 
   return (
     <div className='flex flex-row gap-4'>
-      <Opersidebar/>
+      <Opersidebar />
       <div className='grid grid-cols-1 sm:grid-cols-2 h-screen w-full'>
         <div className='py-4 flex flex-col justify-center items-center'>
           <form className='max-w-[400px] w-full mx-auto'>
@@ -163,6 +172,16 @@ const Astregister = () => {
             </button>
           </form>
         </div>
+        
+        {qrcode && (
+          <div className=' justify-center items-center m-auto'>
+            <a href={qrcode} download='qr.png'>
+              <img src={qrcode} className='w-[200px] border' alt='QR Code' />
+              <span className='text-md justify-center items-center ml-8'>Link: {astRegNo}</span>
+            </a>
+            
+          </div>
+        )}
       </div>
     </div>
   );

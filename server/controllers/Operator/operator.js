@@ -1,6 +1,8 @@
 const db = require('../../db/db');
 const bcrypt = require('bcryptjs');
 const moment = require('moment');
+const axios = require('axios');
+// const qr = require('qr-image');
 const saltRounds = 10;
 
 //read last row from tbloperator by id
@@ -188,6 +190,43 @@ exports.createAsset = (req, res) => {
   });
 };
 
+//create asset qrcode
+exports.createQrcodeAsset = async (req, res) => {
+  const data = req.body.data;
+  const apiKey =
+    'zvfmiFY-JUvF_E6g23kOpylC7CmlnmAseIDk7rJairlJQhvw0kGW6Y1P6_1TQTUl';
+  const apiUrl = 'https://api.qrcode-monkey.com/qr/custom';
+  axios
+    .post(
+      apiUrl,
+      {
+        data: data,
+        config:{
+           "body": "circle",
+           "eyeBall": "ball14",
+
+         },
+        "size":400,
+        "download": true,
+        "file": 'svg',
+      },
+      {
+        headers: {
+          'X-QRCode-Monkey-API-Key': apiKey,
+          'Content-Type': 'application/json',
+        },
+      }
+    )
+    .then((response) => {
+      const qrcode = response.data;
+      res.status(200).json({ status: 201, data: qrcode }); // The URL to the generated QR code image
+    })
+    .catch((error) => {
+      console.error(error);
+      res.sendStatus(500);
+    });
+};
+
 //Create Stage
 exports.createStage = (req, res) => {
   var tblstagemaster = req.body;
@@ -222,7 +261,8 @@ exports.createStage = (req, res) => {
         stgid = stgid + 1;
         let StageID = `${operID}S${stgid}`;
         let CreatedDate = moment(new Date()).format('YYYY-MM-DD hh:mm:ss');
-        var query = 'INSERT INTO tblstagemaster (StageID, StageName, CreatedDate) values(?, ?, ?)';
+        var query =
+          'INSERT INTO tblstagemaster (StageID, StageName, CreatedDate) values(?, ?, ?)';
         db.query(
           query,
           [StageID, tblstagemaster.StageName, CreatedDate],
@@ -269,19 +309,18 @@ exports.readStage = (req, res) => {
   var operID = tblstagemaster.operId;
   var query1 = `SELECT StageID,StageName FROM tblstagemaster WHERE StageID LIKE '%${operID}%'`;
   db.query(query1, (err, result) => {
-    if(!err){
-      if(result.length>0){
-        res.status(200).json({status:201, data : result});
+    if (!err) {
+      if (result.length > 0) {
+        res.status(200).json({ status: 201, data: result });
         return;
-      }else{
-        res.status(200).json({status:201, data : "Stage Not Found"})
+      } else {
+        res.status(200).json({ status: 201, data: 'Stage Not Found' });
       }
-    }else{
-      console.log(err)
+    } else {
+      console.log(err);
     }
-  })
-}
-
+  });
+};
 
 //create Route
 exports.createRoute = (req, res) => {
@@ -352,28 +391,27 @@ exports.createRoute = (req, res) => {
   });
 };
 
-
 //read Route
 exports.readRoute = (req, res) => {
   let tblroutemaster = req.body;
   const OperId = tblroutemaster.operId;
   var query1 = `SELECT RouteID,RouteName,RouteSStage,RouteEStage FROM tblroutemaster WHERE RouteID LIKE '%${OperId}%'`;
   db.query(query1, (err, result) => {
-    if(!err){
-      if(result.length>0){
-        res.status(200).json({status:201, data : result});
+    if (!err) {
+      if (result.length > 0) {
+        res.status(200).json({ status: 201, data: result });
         return;
-      }else{
-        res.status(200).json({status:201, data : "Route Not Found"})
+      } else {
+        res.status(200).json({ status: 201, data: 'Route Not Found' });
       }
-    }else{
-      console.log(err)
+    } else {
+      console.log(err);
     }
-  })
-}
+  });
+};
 
 //create routestage map
-exports.createRoutemap = (req,res) => {
+exports.createRoutemap = (req, res) => {
   let tblroutestagemap = req.body;
   const RouteID = tblroutestagemap.route;
   const stageArr = tblroutestagemap.stage;
@@ -381,28 +419,35 @@ exports.createRoutemap = (req,res) => {
   const effDate = tblroutestagemap.effDate;
 
   const insertValues = async () => {
-    for (let i = 0; i < stageArr.length; i++){
-      const routeVal = stageArr[i]; 
+    for (let i = 0; i < stageArr.length; i++) {
+      const routeVal = stageArr[i];
       const fareVal = fareArr[i];
-      const query = 'INSERT INTO tblroutestagemap (RouteID, StageID, Fare, EffectiveDate) VALUES (?, ?, ?, ?)';
+      const query =
+        'INSERT INTO tblroutestagemap (RouteID, StageID, Fare, EffectiveDate) VALUES (?, ?, ?, ?)';
       await new Promise((resolve, reject) => {
-        db.query(query,[RouteID, routeVal, fareVal, effDate], (error, results) => {
-          if (error) {
-            reject(error);
-          } else {
-            resolve(results);
+        db.query(
+          query,
+          [RouteID, routeVal, fareVal, effDate],
+          (error, results) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(results);
+            }
           }
-        });
+        );
       });
     }
   };
-  
+
   insertValues()
     .then(() => {
-      res.status(200).json({status:201, data : 'All values inserted successfully'});
+      res
+        .status(200)
+        .json({ status: 201, data: 'All values inserted successfully' });
     })
-    .catch(error => {
+    .catch((error) => {
       console.error(error);
       res.status(500).send('Error inserting values');
     });
-  }
+};

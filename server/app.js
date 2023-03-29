@@ -23,6 +23,7 @@ app.use('/employee', employeeRoute);
 app.use('/operator', operatorRoute);
 app.use('/faqs', faqsRoute);
 
+
 app.listen(port, () => {
     console.log(`server listening on ${port}`);
   });
