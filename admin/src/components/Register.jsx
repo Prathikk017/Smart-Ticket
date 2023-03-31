@@ -68,7 +68,7 @@ const Register = () => {
   const handleSub = async (e) => {
     e.preventDefault();
 
-    var OperId = operid.slice(operid.length-1);
+    var OperId = operid.substring(2);
 
     if (
       !OperName ||

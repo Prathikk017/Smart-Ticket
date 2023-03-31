@@ -1,18 +1,22 @@
-import React, { useState } from 'react';
+import React, {  useState } from 'react';
 import axios from 'axios';
 import Opersidebar from './Opersidebar';
 
 const Stageregister = () => {
   const [StageName, setStageName] = useState('');
-
+ 
   const setData = (e) => {
     setStageName(e.target.value);
   };
 
+
+  
   const ID = window.localStorage.getItem('OperID');
   var operId = JSON.parse(ID);
   const handleSubmit = async (e) => {
     e.preventDefault();
+   
+  
 
     if (!StageName) {
       alert('Fill the details');
@@ -36,7 +40,8 @@ const Stageregister = () => {
           'http://localhost:8004/operator/stagecreate',
           {
             StageName,
-            operId
+            operId,
+          
           }
         );
 
@@ -52,6 +57,8 @@ const Stageregister = () => {
       }
     }
   };
+
+  
 
   return (
     <div className='flex flex-row gap-4'>

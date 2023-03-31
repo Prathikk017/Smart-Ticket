@@ -8,23 +8,23 @@ const saltRounds = 10;
 exports.create = (req, res) => {
   let tblEmployee = req.body;
   const OperID = tblEmployee.operId;
-  var query1 = `SELECT * FROM tblemployee WHERE EmpId LIKE '%${OperID}%' ORDER BY EmpId DESC LIMIT 1`;
+  var query1 = `SELECT Num,EmpId FROM tblemployee WHERE EmpId LIKE '%${OperID}%' ORDER BY Num DESC LIMIT 1`;
   db.query(query1, (err, result) => {
     if (!err) {
       if (result.length > 0) {
-        var emp = result[0].EmpId;
-        var empid = parseInt(rut.slice(rut.length - 1));
-        empid = empid + 1;
+        let emp = parseInt(result[0].Num);
+        let empid = emp + 1;
         var EmpId = `${OperID}EMP${empid}`;
         var EStatus = 'I';
         var EmpCreatedDate = moment().format('YYYY-MM-DD hh:mm:ss');
         bcrypt.hash(tblEmployee.EmpPassword, saltRounds, (err, hash) => {
           if (!err) {
             var query =
-              'INSERT INTO tblemployee (EmpId, EmpName, EmpIntId, EmpDOB, EmpType, EmpMobile, EmpAadhar, EmpPassword, EmpAddr1, EmpAddr2, EmpCity, EmpPincode, EStatus,  EmpCreatedDate) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+              'INSERT INTO tblemployee (Num, EmpId, EmpName, EmpIntId, EmpDOB, EmpType, EmpMobile, EmpAadhar, EmpPassword, EmpAddr1, EmpAddr2, EmpCity, EmpPincode, EStatus,  EmpCreatedDate) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
             db.query(
               query,
               [
+                empid,
                 EmpId,
                 tblEmployee.EmpName,
                 tblEmployee.EmpIntId,
@@ -59,7 +59,7 @@ exports.create = (req, res) => {
           }
         });
       }else {
-      empid = result.length;
+      let empid = result.length;
       empid = empid + 1;
       var EmpId = `${OperID}EMP${empid}`;
       var EStatus = 'I';
@@ -67,10 +67,11 @@ exports.create = (req, res) => {
       bcrypt.hash(tblEmployee.EmpPassword, saltRounds, (err, hash) => {
         if (!err) {
           var query =
-            'INSERT INTO tblemployee (EmpId, EmpName, EmpIntId, EmpDOB, EmpType, EmpMobile, EmpAadhar, EmpPassword, EmpAddr1, EmpAddr2, EmpCity, EmpPincode, EStatus,  EmpCreatedDate) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+            'INSERT INTO tblemployee (Num, EmpId, EmpName, EmpIntId, EmpDOB, EmpType, EmpMobile, EmpAadhar, EmpPassword, EmpAddr1, EmpAddr2, EmpCity, EmpPincode, EStatus,  EmpCreatedDate) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
           db.query(
             query,
             [
+              empid,
               EmpId,
               tblEmployee.EmpName,
               tblEmployee.EmpIntId,
