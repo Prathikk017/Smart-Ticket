@@ -10,7 +10,8 @@ export const signInSchema = Yup.object({
 
 //operator registration validation
 export const operRegisterSchema = Yup.object({
-  OperName: Yup.string().min(2,'Name must be at least 2 characters').max(25,'Name must be at max 25 characters').matches(/[^\s*].*[^\s*]/g, '* This field cannot contain white space and special character').required('Please enter company name'),
+  OperName: Yup.string().min(2,'Name must be at least 2 characters').max(45,'Name must be at max 25 characters').matches(/[^\s*].*[^\s*]/g, '* This field cannot contain white space and special character').required('Please enter company name'),
+  OperShortName: Yup.string().min(2,'Name must be at least 2 characters').max(25,'Name must be at max 25 characters').matches(/[^\s*].*[^\s*]/g, '* This field cannot contain white space and special character').required('Please enter short name'),
   OperEmail: Yup.string().email('Enter valid email').required('Please enter company email'),
   OperPhone: Yup.string().matches(phoneRegExp, 'Phone number is not valid').max(10,'Phone number must be equal to 10').required('Please enter your phone number'),
   OperGSTIN: Yup.string().max(15,'GST no must be 15 characters').matches(/^[a-zA-Z0-9]+$/, '* This field cannot contain white space and special character').required('Please enter GST number'),

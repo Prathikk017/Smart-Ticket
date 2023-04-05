@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Opersidebar from './Opersidebar';
-
 
 const Astregister = () => {
   const [astRegNo, setAstRegNo] = useState('');
@@ -14,7 +13,7 @@ const Astregister = () => {
   const [astInsurExp, setAstInsurExp] = useState('');
   const [astPermitExp, setAstPermitExp] = useState('');
   const [qrcode, setQrcode] = useState('');
-  const history = useNavigate();
+  // const history = useNavigate();
 
   const ID = window.localStorage.getItem('OperID');
   var operId = JSON.parse(ID);
@@ -47,7 +46,6 @@ const Astregister = () => {
 
   const data = astRegNo;
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -76,13 +74,25 @@ const Astregister = () => {
       });
       if (res.data.status === 201) {
         alert('Asset created successfully');
-       const res1= await axios.post('http://localhost:8004/operator/generate-qr-code', {
-          data: data
-      })
-      if(res1.data.status === 201){
-        setQrcode(res1.data.data.imageUrl);
+        await axios
+          .post('http://localhost:8004/operator/createqrcode', {
+            data: data,
+          })
+          .then(response => {
+            const qrCodeImg = document.createElement('img');
+            qrCodeImg.src = 'data:image/png;base64,' + response.data;
+            setQrcode(qrCodeImg.src);
+        })
+        .catch(error => {
+            console.error(error);
+        });
+      //   const res1= await axios.post('http://localhost:8004/operator/generate-qr-code', {
+      //     data: data
+      // })
+      // if(res1.data.status === 201){
+      //   setQrcode(res1.data.data.imageUrl);
         
-      }
+      // }
         return;
       } else {
         alert('Asset unable to register');
@@ -172,14 +182,15 @@ const Astregister = () => {
             </button>
           </form>
         </div>
-        
+
         {qrcode && (
           <div className=' justify-center items-center m-auto'>
-            <a href={qrcode} download='qr.png'>
+            <a href={qrcode} download={`${astRegNo}.png`}>
               <img src={qrcode} className='w-[200px] border' alt='QR Code' />
-              <span className='text-md justify-center items-center ml-8'>Link: {astRegNo}</span>
+              <span className='text-md justify-center items-center ml-6'>
+              Reg No: {astRegNo}
+              </span>
             </a>
-            
           </div>
         )}
       </div>

@@ -2,16 +2,16 @@ const db = require('../../db/db');
 const bcrypt = require('bcryptjs');
 const moment = require('moment');
 const axios = require('axios');
-// const qr = require('qr-image');
+const qr = require('qr-image');
 const saltRounds = 10;
 
 //read last row from tbloperator by id
 exports.getOperator = (req, res) => {
-  var query = 'SELECT * FROM tbloperator ORDER BY OperId DESC LIMIT 1';
+  var query = 'SELECT Num FROM tbloperator ORDER BY Num DESC LIMIT 1';
   db.query(query, (err, results) => {
     if (!err) {
       if (results.length > 0) {
-        return res.status(200).json({ status: 201, data: results[0].OperId });
+        return res.status(200).json({ status: 201, data: results[0].Num});
       } else {
         return res.status(200).json({ status: 201, data: '0' });
       }
@@ -32,12 +32,14 @@ exports.createOperator = (req, res) => {
   bcrypt.hash(tbloperator.OperPassword, saltRounds, (err, hash) => {
     if (!err) {
       let query =
-        'INSERT INTO tbloperator (OperId, OperName, OperEmail, OperPhone, OperGSTIN, OperAddr1, OperAddr2, OperPassword, OperCity, OperPincode, OperStatus, OperContactName, OperContactMobile, OperContactEmail, OperCreatedDate) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        'INSERT INTO tbloperator (Num, OperId, OperName, OperShortName, OperEmail, OperPhone, OperGSTIN, OperAddr1, OperAddr2, OperPassword, OperCity, OperPincode, OperStatus, OperContactName, OperContactMobile, OperContactEmail, OperCreatedDate) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
       db.query(
         query,
         [
+          opid,
           OperId,
           tbloperator.OperName,
+          tbloperator.OperShortName,
           tbloperator.OperEmail,
           tbloperator.OperPhone,
           tbloperator.OperGSTIN,
@@ -194,39 +196,45 @@ exports.createAsset = (req, res) => {
 //create asset qrcode
 exports.createQrcodeAsset = async (req, res) => {
   const data = req.body.data;
-  const apiKey =
-    'zvfmiFY-JUvF_E6g23kOpylC7CmlnmAseIDk7rJairlJQhvw0kGW6Y1P6_1TQTUl';
-  const apiUrl = 'https://api.qrcode-monkey.com/qr/custom';
-  axios
-    .post(
-      apiUrl,
-      {
-        data: data,
+  //Qrcode using Qr-image
+  const qrCode = qr.image(data, { type: 'png' });
+  const qrCodeData = qr.imageSync(data, { type: 'png' }); // Get the QR code image data as a buffer
+  res.send(qrCodeData.toString('base64')); // Send the QR code image data as the response
+  
+  // Create Qr code using Qr-code monkey
+  // const apiKey =
+  //   'zvfmiFY-JUvF_E6g23kOpylC7CmlnmAseIDk7rJairlJQhvw0kGW6Y1P6_1TQTUl';
+  // const apiUrl = 'https://api.qrcode-monkey.com/qr/custom';
+  // axios
+  //   .post(
+  //     apiUrl,
+  //     {
+  //       data: data,
 
-        config:{
-           "body": "circle",
-           "eyeBall": "ball14",
-            "logo":"https://iili.io/HOJjSwb.md.png",
-         },
-        "size":400,
-        "download": true,
-        "file": 'jpg',
-      },
-      {
-        headers: {
-          'X-QRCode-Monkey-API-Key': apiKey,
-          'Content-Type': 'application/json',
-        },
-      }
-    )
-    .then((response) => {
-      const qrcode = response.data;
-      res.status(200).json({ status: 201, data: qrcode }); // The URL to the generated QR code image
-    })
-    .catch((error) => {
-      console.error(error);
-      res.sendStatus(500);
-    });
+  //       config:{
+  //          "body": "circle",
+  //          "eyeBall": "ball14",
+  //           "logo":"https://iili.io/HOJjSwb.md.png",
+  //        },
+  //       "size":400,
+  //       "download": true,
+  //       "file": 'jpg',
+  //     },
+  //     {
+  //       headers: {
+  //         'X-QRCode-Monkey-API-Key': apiKey,
+  //         'Content-Type': 'application/json',
+  //       },
+  //     }
+  //   )
+  //   .then((response) => {
+  //     const qrcode = response.data;
+  //     res.status(200).json({ status: 201, data: qrcode }); // The URL to the generated QR code image
+  //   })
+  //   .catch((error) => {
+  //     console.error(error);
+  //     res.sendStatus(500);
+  //   });
 };
 
 //Create Stage

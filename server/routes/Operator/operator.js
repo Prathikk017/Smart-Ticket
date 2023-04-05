@@ -15,7 +15,8 @@ router.route('/readstage').post(readStage);
 router.route('/routecreate').post(createRoute);
 router.route('/readroute').post(readRoute);
 router.route('/createroutemap').post(createRoutemap);
-router.route('/generate-qr-code').post(createQrcodeAsset);
+router.route('/createqrcode').post(createQrcodeAsset);
+// router.route('/generate-qr-code').post(createQrcodeAsset);
 
 
 module.exports = router;

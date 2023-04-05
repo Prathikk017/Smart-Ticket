@@ -9,6 +9,7 @@ import { operRegisterSchema } from '../schemas';
 
 const initialValues = {
   OperName: '',
+  OperShortName:'',
   OperEmail: '',
   OperPhone: '',
   OperGSTIN: '',
@@ -34,6 +35,7 @@ const Register = () => {
   const [verfied, setVerifed] = useState(false);
   const [operid, setOperid] = useState('');
   const OperName = values.OperName;
+  const OperShortName = values.OperShortName;
   const OperEmail = values.OperEmail;
   const OperPhone = values.OperPhone;
   const OperGSTIN = values.OperGSTIN;
@@ -54,7 +56,7 @@ const Register = () => {
     const res = await axios.get("http://localhost:8004/operator/readid");
     if(res.data.status === 201){
       if(res.data.data === 0){
-        setOperid("OP0");
+        setOperid("0");
       }
       setOperid(res.data.data);
       return;
@@ -68,10 +70,11 @@ const Register = () => {
   const handleSub = async (e) => {
     e.preventDefault();
 
-    var OperId = operid.substring(2);
+    var OperId = operid;
 
     if (
       !OperName ||
+      !OperShortName||
       !OperEmail ||
       !OperPhone ||
       !OperGSTIN ||
@@ -98,6 +101,7 @@ const Register = () => {
         const res1 = await axios.post('http://localhost:8004/operator/create', {
           OperId,
           OperName,
+          OperShortName,
           OperEmail,
           OperPhone,
           OperGSTIN,
@@ -150,6 +154,20 @@ const Register = () => {
               />
               {errors.OperName && touched.OperName ? (
                 <p className='text-red-500 text-xs '>{errors.OperName}</p>
+              ) : null}
+            </div>
+            <div className='flex flex-col py-1'>
+              <label>Short Name</label>
+              <input
+                type='text'
+                name='OperShortName'
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.OperShortName}
+                className='border rounded w-full hover:border-pink-500 duration-200 p-1'
+              />
+              {errors.OperShortName && touched.OperShortName ? (
+                <p className='text-red-500 text-xs '>{errors.OperShortName}</p>
               ) : null}
             </div>
             <div className='flex flex-col py-1'>
