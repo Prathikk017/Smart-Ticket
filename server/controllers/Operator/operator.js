@@ -237,6 +237,21 @@ exports.createQrcodeAsset = async (req, res) => {
   //   });
 };
 
+//read asset by operator id
+exports.getAsset = (req,res) =>{
+  let tblasset = req.body;
+  let operID = tblasset.operId;
+  let query = `SELECT AstId,AstRegNo,AstName,AstInsurExp,AstPermitExp,AStatus FROM tblasset WHERE AStatus = 'A' AND AstId LIKE '%${operID}%'`;
+  db.query(query, (err, result) =>{
+    if(!err){
+      res.status(200).json({status: 201, data: result});
+      return;
+    }else{
+      res.status(500).json({message:"asset not found to operator"});
+    }
+  })
+}
+
 //Create Stage
 exports.createStage = (req, res) => {
   var tblstagemaster = req.body;
