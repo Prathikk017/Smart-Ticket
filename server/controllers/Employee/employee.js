@@ -121,3 +121,34 @@ exports.readEmployee = (req,res)=>{
     }
   })
 }
+
+//get asset by id
+exports.getEmployeeById = (req, res) => {
+  const { EmpId } = req.params;
+  var query = `SELECT * FROM tblemployee WHERE EmpId = '${EmpId}'`;
+  db.query(query, (err, results) => {
+    if (!err) {
+      return res.status(200).json({ status: 201, data: results });
+    } else {
+      return res.status(500).json({ status: 500, data: err });
+    }
+  });
+};
+
+//soft delete from tblemployee by id
+exports.deleteEmployee = (req, res) => {
+  const { EmpId } = req.params;
+  var EStatus = 'I';
+  var query = 'UPDATE tblemployee SET EStatus = ? WHERE EmpId = ? ';
+  db.query(query, [EStatus, EmpId], (err, results) => {
+    if (!err) {
+      if (results.affectedRows === 0) {
+        return res.status(404).json({ message: 'Employee does not found' });
+      }
+     res.status(201).json({status: 201, data: "Employee deleted successfully"});
+     return ;
+    } else {
+      return res.status(500).json(err);
+    }
+  });
+};

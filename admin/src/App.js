@@ -10,6 +10,8 @@ import Register from './components/Register';
 import SignIn from './components/SignIn';
 import Routeregister from './components/Routeregister';
 import RouteStageMap from './components/RouteStageMap';
+import Astview from './components/Astview';
+import Empview from './components/Empview';
 
 function App() {
   return (
@@ -25,6 +27,9 @@ function App() {
         <Route path='/operator/:OperId' element={<Operview />} />
         <Route path='/empregister' element={<Empregister />} />
         <Route path='/astregister' element={<Astregister />} />
+        <Route path='/operator/asset/:AstId' element={<Astview/>}/>
+        <Route path='/employee' element={<Empview/>}/>
+        <Route path='/employee/:EmpId' element={<Empview/>}/>
         <Route path='/stageregister' element={<Stageregister/>} />
         <Route path='/routeregister' element={<Routeregister/>} /> 
         <Route path='/routemap' element={<RouteStageMap/>} />

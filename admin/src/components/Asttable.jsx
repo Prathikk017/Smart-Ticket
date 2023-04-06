@@ -21,7 +21,7 @@ const Asttable = () => {
 
     useEffect(() => {
         getAstData();
-      }, [operId]);
+      });
   return (
     <>
       <div className='bg-white p-4 mt-16 mr-4 h-64 items-center rounded-md border border-gray-200 flex-1  max-h-[90vh] overflow-y-auto '>
@@ -52,7 +52,7 @@ const Asttable = () => {
                           <td className='p-1 ml-1'>{moment(el.AstPermitExp).format("DD-MM-YYYY")}</td>
                           <td className='p-1 ml-1'>{el.AStatus}</td>
                           <td className='p-2 ml-1'>
-                            <Link to={`/operator/${el.AstId}`}>
+                            <Link to={`/operator/asset/${el.AstId}`}>
                               <button className='hover:bg-pink-300  px-4 py-2 rounded-lg w-max'>
                                 View
                               </button>

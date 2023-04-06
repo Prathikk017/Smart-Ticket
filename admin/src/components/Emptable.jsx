@@ -21,7 +21,7 @@ const Emptable = () => {
 
     useEffect(() => {
         getEmpData();
-      }, [operId]);
+      });
   return (
     <>
     <div className='bg-white p-4 mt-16 mr-6 h-64 items-center rounded-md border border-gray-200 flex-1  max-h-[90vh] overflow-y-auto'>
@@ -52,7 +52,7 @@ const Emptable = () => {
                         <td className='p-1 ml-1'>{el.EmpType}</td>
                         <td className='p-1 ml-1'>{el.EStatus}</td>
                         <td className='p-1 ml-1'>
-                          <Link to={`/operator/${el.EmpId}`}>
+                          <Link to={`/employee/${el.EmpId}`}>
                             <button className='hover:bg-pink-300  px-4 py-2 rounded-lg w-max'>
                               View
                             </button>

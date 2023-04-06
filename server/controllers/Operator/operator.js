@@ -238,7 +238,7 @@ exports.createQrcodeAsset = async (req, res) => {
 };
 
 //read asset by operator id
-exports.getAsset = (req,res) =>{
+exports.readAsset = (req,res) =>{
   let tblasset = req.body;
   let operID = tblasset.operId;
   let query = `SELECT AstId,AstRegNo,AstName,AstInsurExp,AstPermitExp,AStatus FROM tblasset WHERE AStatus = 'A' AND AstId LIKE '%${operID}%'`;
@@ -251,6 +251,36 @@ exports.getAsset = (req,res) =>{
     }
   })
 }
+//get asset by id
+exports.getAssetById = (req, res) => {
+  const { AstId } = req.params;
+  var query = `SELECT * FROM tblasset WHERE AstId = '${AstId}'`;
+  db.query(query, (err, results) => {
+    if (!err) {
+      return res.status(200).json({ status: 201, data: results });
+    } else {
+      return res.status(500).json({ status: 500, data: err });
+    }
+  });
+};
+
+//soft delete from tblemployee by id
+exports.deleteAsset = (req, res) => {
+  const { AstId } = req.params;
+  var AStatus = 'I';
+  var query = 'UPDATE tblasset SET AStatus = ? WHERE AstId = ? ';
+  db.query(query, [AStatus, AstId], (err, results) => {
+    if (!err) {
+      if (results.affectedRows === 0) {
+        return res.status(404).json({ message: 'Asset does not found' });
+      }
+     res.status(201).json({status: 201, data: "Asset deleted successfully"});
+     return ;
+    } else {
+      return res.status(500).json(err);
+    }
+  });
+};
 
 //Create Stage
 exports.createStage = (req, res) => {
