@@ -91,7 +91,7 @@ const Empview = () => {
                         <span className='ml-2'>{el.EStatus}</span>
                       </label>
                       <div className='flex flex-row justify-center m-4'>
-                        <Link to={'/operdashboard'}>
+                        <Link to={'/empview'}>
                           <button className='hover:bg-pink-300  px-4 py-2 rounded-lg w-max'>
                             Cancel
                           </button>

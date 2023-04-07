@@ -12,6 +12,9 @@ import Routeregister from './components/Routeregister';
 import RouteStageMap from './components/RouteStageMap';
 import Astview from './components/Astview';
 import Empview from './components/Empview';
+import Emptable from './components/Emptable';
+import Asttable from './components/Asttable';
+
 
 function App() {
   return (
@@ -26,7 +29,9 @@ function App() {
         <Route path='/approve/:OperId' element={<Opertable />} />
         <Route path='/operator/:OperId' element={<Operview />} />
         <Route path='/empregister' element={<Empregister />} />
+        <Route path='/empview' element={<Emptable/>}/>
         <Route path='/astregister' element={<Astregister />} />
+        <Route path='/astview' element={<Asttable/>}/>
         <Route path='/operator/asset/:AstId' element={<Astview/>}/>
         <Route path='/employee' element={<Empview/>}/>
         <Route path='/employee/:EmpId' element={<Empview/>}/>

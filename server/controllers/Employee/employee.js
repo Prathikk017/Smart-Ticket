@@ -111,7 +111,7 @@ exports.createEmployee = (req, res) => {
 exports.readEmployee = (req,res)=>{
   let tblemployee = req.body;
   let operID = tblemployee.operId;
-  let query = `SELECT EmpId,EmpName,EmpIntId,EmpDOB,EmpType,EStatus FROM tblemployee WHERE Estatus = 'A' AND EmpId LIKE '%${operID}%'`;
+  let query = `SELECT EmpId,EmpName,EmpIntId,EmpDOB,EmpType,EStatus FROM tblemployee WHERE  EmpId LIKE '%${operID}%'`;
   db.query(query, (err, result) =>{
     if(!err){
       res.status(200).json({status: 201, data: result});

@@ -241,7 +241,7 @@ exports.createQrcodeAsset = async (req, res) => {
 exports.readAsset = (req,res) =>{
   let tblasset = req.body;
   let operID = tblasset.operId;
-  let query = `SELECT AstId,AstRegNo,AstName,AstInsurExp,AstPermitExp,AStatus FROM tblasset WHERE AStatus = 'A' AND AstId LIKE '%${operID}%'`;
+  let query = `SELECT AstId,AstRegNo,AstName,AstInsurExp,AstPermitExp,AStatus FROM tblasset WHERE  AstId LIKE '%${operID}%'`;
   db.query(query, (err, result) =>{
     if(!err){
       res.status(200).json({status: 201, data: result});

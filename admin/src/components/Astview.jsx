@@ -70,7 +70,7 @@ const Astview = () => {
                         Insurance Expire Date:<span className='ml-2'>{moment(el.AstInsurExp).format("DD-MM-YYYY")}</span>
                       </label>
                       <div className='flex flex-row justify-center m-4'>
-                        <Link to={'/operdashboard'}>
+                        <Link to={'/astview'}>
                           <button className='hover:bg-pink-300  px-4 py-2 rounded-lg w-max'>
                             Cancel
                           </button>
