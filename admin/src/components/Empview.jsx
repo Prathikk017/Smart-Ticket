@@ -25,7 +25,7 @@ const Empview = () => {
     );
     if (res.data.status === 201) {
       alert(res.data.data);
-     history('/operdashboard');
+     history('/empview');
       return;
     } else {
       console.log('error');
@@ -90,13 +90,18 @@ const Empview = () => {
                         Status:
                         <span className='ml-2'>{el.EStatus}</span>
                       </label>
-                      <div className='flex flex-row justify-center m-4'>
+                      <div className='flex flex-row justify-evenly items-center m-4'>
                         <Link to={'/empview'}>
                           <button className='hover:bg-pink-300  px-4 py-2 rounded-lg w-max'>
                             Cancel
                           </button>
                         </Link>
-                        <Link to={`/Delete/${el.AstId}`}>
+                        <Link to={`/empupdate/${el.EmpId}`}>
+                          <button className='hover:bg-pink-300  px-4 py-2 rounded-lg w-max'>
+                            Edit
+                          </button>
+                        </Link>
+                        <Link to={`/Delete/${el.EmpId}`}>
                           <button
                             className='hover:bg-pink-300  px-4 py-2 rounded-lg w-max'
                             onClick={handleSub}

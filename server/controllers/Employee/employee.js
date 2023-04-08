@@ -122,7 +122,7 @@ exports.readEmployee = (req,res)=>{
   })
 }
 
-//get asset by id
+//get employee by id
 exports.getEmployeeById = (req, res) => {
   const { EmpId } = req.params;
   var query = `SELECT * FROM tblemployee WHERE EmpId = '${EmpId}'`;
@@ -152,3 +152,22 @@ exports.deleteEmployee = (req, res) => {
     }
   });
 };
+
+//update employee by ID
+exports.updateEmployee = (req,res)=>{
+  const { EmpId } = req.params;
+  let tblEmployee = req.body;
+  let EmpModifyDate = moment().format('YYYY-MM-DD hh:mm:ss');
+  let query = `UPDATE tblemployee SET EmpName=?, EmpIntId=?, EmpDOB=?, EmpType=?, EmpMobile=?, EmpAadhar=?, EmpAddr1=?, EmpAddr2=?, EmpCity=?, EmpPincode=?, EmpModifyDate=? WHERE EmpId  = '${EmpId}'`
+  db.query(query,[tblEmployee.EmpName, tblEmployee.EmpIntId, tblEmployee.EmpDOB, tblEmployee.EmpType, tblEmployee.EmpMobile, tblEmployee.EmpAadhar, tblEmployee.EmpAddr1, tblEmployee.EmpAddr2, tblEmployee.EmpCity, tblEmployee.EmpPincode, EmpModifyDate],(err, result)=>{
+    if (!err) {
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ message: 'Employee does not found' });
+      }
+     res.status(201).json({status: 201, data: "Employee update successfully"});
+     return ;
+    } else {
+      return res.status(500).json(err);
+    }
+  })
+}
