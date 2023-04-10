@@ -15,7 +15,10 @@ const Empedit = () => {
   const [EmpPincode, setEmpPincode] = useState('');
   const [EmpDOB, setEmpDOB] = useState('');
   const [EmpType, setEmpType] = useState('');
+<<<<<<< HEAD
   const [estatus, setEstatus] = useState('');
+=======
+>>>>>>> b978f119b62dbb8d924664031e1aa5201213dc60
   const history = useNavigate();
 
   const { EmpId } = useParams();
@@ -51,9 +54,12 @@ const Empedit = () => {
   const setData10 = (e) => {
     setEmpPincode(e.target.value);
   };
+<<<<<<< HEAD
   const setData11 = (e) =>{
     setEstatus(e.target.value);
   }
+=======
+>>>>>>> b978f119b62dbb8d924664031e1aa5201213dc60
 
   const getData = async () => {
     const res1 = await axios.get(
@@ -71,7 +77,10 @@ const Empedit = () => {
       setEmpAddr2(res1.data.data[0].EmpAddr2);
       setEmpCity(res1.data.data[0].EmpCity);
       setEmpPincode(res1.data.data[0].EmpPincode);
+<<<<<<< HEAD
       setEstatus(res1.data.data[0].EStatus);
+=======
+>>>>>>> b978f119b62dbb8d924664031e1aa5201213dc60
       return;
     } else {
       console.log('error');
@@ -91,8 +100,12 @@ const Empedit = () => {
       !EmpAddr1 ||
       !EmpAddr2 ||
       !EmpCity ||
+<<<<<<< HEAD
       !EmpPincode||
       !estatus
+=======
+      !EmpPincode
+>>>>>>> b978f119b62dbb8d924664031e1aa5201213dc60
     ) {
       alert('Fill the details');
       return;
@@ -110,7 +123,10 @@ const Empedit = () => {
           EmpAddr2,
           EmpCity,
           EmpPincode,
+<<<<<<< HEAD
           estatus
+=======
+>>>>>>> b978f119b62dbb8d924664031e1aa5201213dc60
         }
       );
       if (res.data.status === 201) {
@@ -240,6 +256,7 @@ const Empedit = () => {
                 onChange={setData10}
               />
             </div>
+<<<<<<< HEAD
             <div className='flex flex-col py-1'>
               <label>Status</label>
               <select
@@ -252,6 +269,8 @@ const Empedit = () => {
                 <option value='I'>I</option>
               </select>
             </div>
+=======
+>>>>>>> b978f119b62dbb8d924664031e1aa5201213dc60
             <button
               className='border  w-full my-2 py-2 text-white bg-pink-500 rounded text-lg hover:bg-pink-400 duration-200'
               onClick={handleSub}

@@ -183,6 +183,23 @@ const Empregister = () => {
               ) : null}
             </div>
             <div className='flex flex-col py-1'>
+<<<<<<< HEAD
+=======
+              <label>Password</label>
+              <input
+                type='password'
+                name='EmpPassword'
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.EmpPassword}
+                className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+              />
+               {errors.EmpPassword && touched.EmpPassword ? (
+                <p className='text-red-500 text-xs '>{errors.EmpPassword}</p>
+              ) : null}
+            </div>
+            <div className='flex flex-col py-1'>
+>>>>>>> b978f119b62dbb8d924664031e1aa5201213dc60
               <label>Address 1</label>
               <input
                 type='text'

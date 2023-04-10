@@ -152,8 +152,13 @@ exports.updateEmployee = (req,res)=>{
   const { EmpId } = req.params;
   let tblEmployee = req.body;
   let EmpModifyDate = moment().format('YYYY-MM-DD hh:mm:ss');
+<<<<<<< HEAD
   let query = `UPDATE tblemployee SET EmpName=?, EmpIntId=?, EmpDOB=?, EmpType=?, EmpMobile=?, EmpAadhar=?, EmpAddr1=?, EmpAddr2=?, EmpCity=?, EmpPincode=?, EmpModifyDate=?, EStatus=? WHERE EmpId  = '${EmpId}'`
   db.query(query,[tblEmployee.EmpName, tblEmployee.EmpIntId, tblEmployee.EmpDOB, tblEmployee.EmpType, tblEmployee.EmpMobile, tblEmployee.EmpAadhar, tblEmployee.EmpAddr1, tblEmployee.EmpAddr2, tblEmployee.EmpCity, tblEmployee.EmpPincode, EmpModifyDate, tblEmployee.estatus],(err, result)=>{
+=======
+  let query = `UPDATE tblemployee SET EmpName=?, EmpIntId=?, EmpDOB=?, EmpType=?, EmpMobile=?, EmpAadhar=?, EmpAddr1=?, EmpAddr2=?, EmpCity=?, EmpPincode=?, EmpModifyDate=? WHERE EmpId  = '${EmpId}'`
+  db.query(query,[tblEmployee.EmpName, tblEmployee.EmpIntId, tblEmployee.EmpDOB, tblEmployee.EmpType, tblEmployee.EmpMobile, tblEmployee.EmpAadhar, tblEmployee.EmpAddr1, tblEmployee.EmpAddr2, tblEmployee.EmpCity, tblEmployee.EmpPincode, EmpModifyDate],(err, result)=>{
+>>>>>>> b978f119b62dbb8d924664031e1aa5201213dc60
     if (!err) {
       if (result.affectedRows === 0) {
         return res.status(404).json({ message: 'Employee does not found' });
