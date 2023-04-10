@@ -287,13 +287,8 @@ exports.updateAsset = (req,res)=>{
   const { AstId } = req.params;
   let tblAsset = req.body;
   let AstModifyDate = moment().format('YYYY-MM-DD hh:mm:ss');
-<<<<<<< HEAD
   let query = `UPDATE tblasset SET AstRegNo=?, AstName=?, AstModel=?, AstChasNo=?, AstEngNo=?, AstPermitNo=?, AstInsurExp=?, AstPermitExp=?, AstModifyDate=?, AStatus=? WHERE AstId  = '${AstId}'`
   db.query(query,[tblAsset.astRegNo, tblAsset.astName, tblAsset.astModel, tblAsset.astChasNo, tblAsset.astEngNo, tblAsset.astPermitNo, tblAsset.astInsurExp, tblAsset.astPermitExp, AstModifyDate, tblAsset.astatus],(err, result)=>{
-=======
-  let query = `UPDATE tblasset SET AstRegNo=?, AstName=?, AstModel=?, AstChasNo=?, AstEngNo=?, AstPermitNo=?, AstInsurExp=?, AstPermitExp=?, AstModifyDate=? WHERE AstId  = '${AstId}'`
-  db.query(query,[tblAsset.astRegNo, tblAsset.astName, tblAsset.astModel, tblAsset.astChasNo, tblAsset.astEngNo, tblAsset.astPermitNo, tblAsset.astInsurExp, tblAsset.astPermitExp, AstModifyDate],(err, result)=>{
->>>>>>> b978f119b62dbb8d924664031e1aa5201213dc60
     if (!err) {
       if (result.affectedRows === 0) {
         return res.status(404).json({ message: 'Asset does not found' });

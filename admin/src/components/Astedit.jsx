@@ -13,10 +13,7 @@ const Astedit = () => {
   const [astPermitNo, setAstPermitNo] = useState('');
   const [astInsurExp, setAstInsurExp] = useState('');
   const [astPermitExp, setAstPermitExp] = useState('');
-<<<<<<< HEAD
   const [astatus, setAstatus] = useState('');
-=======
->>>>>>> b978f119b62dbb8d924664031e1aa5201213dc60
   const history = useNavigate();
 
   const { AstId } = useParams();
@@ -47,13 +44,9 @@ const Astedit = () => {
   const setData8 = (e) => {
     setAstPermitExp(e.target.value);
   };
-<<<<<<< HEAD
   const setData9 = (e) => {
     setAstatus(e.target.value);
   };
-=======
-
->>>>>>> b978f119b62dbb8d924664031e1aa5201213dc60
   const getData = async () => {
     const res1 = await axios.get(
       `http://localhost:8004/operator/astread/${AstId}`
@@ -69,10 +62,7 @@ const Astedit = () => {
       setAstPermitNo(res1.data.data[0].AstPermitNo);
       setAstInsurExp(res1.data.data[0].AstInsurExp);
       setAstPermitExp(res1.data.data[0].AstPermitExp);
-<<<<<<< HEAD
       setAstatus(res1.data.data[0].AStatus);
-=======
->>>>>>> b978f119b62dbb8d924664031e1aa5201213dc60
       return;
     } else {
       console.log('error');
@@ -90,12 +80,8 @@ const Astedit = () => {
       !astEngNo ||
       !astPermitNo ||
       !astInsurExp ||
-<<<<<<< HEAD
       !astPermitExp ||
       !astatus
-=======
-      !astPermitExp
->>>>>>> b978f119b62dbb8d924664031e1aa5201213dc60
     ) {
       alert('Fill the details');
       return;
@@ -111,7 +97,6 @@ const Astedit = () => {
           astPermitNo,
           astInsurExp,
           astPermitExp,
-<<<<<<< HEAD
           astatus,
         }
       );
@@ -121,16 +106,6 @@ const Astedit = () => {
         return;
       } else {
         alert('Asset unable to update');
-=======
-        }
-      );
-      if (res.data.status === 201) {
-        alert('Employee successfully update');
-        history('/astview');
-        return;
-      } else {
-        alert('Employee unable to update');
->>>>>>> b978f119b62dbb8d924664031e1aa5201213dc60
         return;
       }
     }
@@ -228,7 +203,6 @@ const Astedit = () => {
                 className='border rounded w-full hover:border-pink-500 duration-200 p-1'
               />
             </div>
-<<<<<<< HEAD
             <div className='flex flex-col py-1'>
               <label>Status</label>
               <select
@@ -241,8 +215,6 @@ const Astedit = () => {
                 <option value='I'>I</option>
               </select>
             </div>
-=======
->>>>>>> b978f119b62dbb8d924664031e1aa5201213dc60
             <button
               className='border w-full my-2 py-2 text-white bg-pink-500 rounded text-lg hover:bg-pink-400 duration-200'
               onClick={handleSub}

@@ -69,12 +69,9 @@ const Astview = () => {
                       <label className='p-1 my-1 text-start'>
                         Insurance Expire Date:<span className='ml-2'>{moment(el.AstInsurExp).format("DD-MM-YYYY")}</span>
                       </label>
-<<<<<<< HEAD
                       <label className='p-1 my-1 text-start'>
                         Status:<span className='ml-2'>{el.AStatus}</span>
                       </label>
-=======
->>>>>>> b978f119b62dbb8d924664031e1aa5201213dc60
                       <div className='flex flex-row justify-evenly m-4'>
                         <Link to={'/astview'}>
                           <button className='hover:bg-pink-300  px-4 py-2 rounded-lg w-max'>
