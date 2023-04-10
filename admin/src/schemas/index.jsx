@@ -34,9 +34,6 @@ export const empRegisterSchema = Yup.object({
   EmpIntId: Yup.string().min(4,'Name must be at least 4 characters').max(15,'Name must be at max 15 characters').matches(/^[a-zA-Z0-9]+$/, '* This field cannot contain white space and special character').required('Please enter employee id'),
   EmpPhone: Yup.string().matches(phoneRegExp, 'Phone number is not valid').max(10,'Phone number must be equal to 10').required('Please enter phone number'),
   EmpAadhar: Yup.string().matches(aadharRegExp, 'Aadhar number is not valid').max(12,'Aadhar number must be equal to 12').required('Please enter aadhar number'),
-  EmpPassword: Yup.string().min(
-    8,'Password must contain 8 or more characters with at least one of each: uppercase, lowercase, number and special'
-  ).matches(/[a-zA-Z]/, 'Password can only contain Latin letters.').required('Password is required'),
   EmpAddr1: Yup.string().required('Please enter Address'),
   EmpAddr2: Yup.string().required('Please enter Address'), 
   EmpCity: Yup.string().required('Please enter city'),

@@ -15,6 +15,7 @@ const Empedit = () => {
   const [EmpPincode, setEmpPincode] = useState('');
   const [EmpDOB, setEmpDOB] = useState('');
   const [EmpType, setEmpType] = useState('');
+  const [estatus, setEstatus] = useState('');
   const history = useNavigate();
 
   const { EmpId } = useParams();
@@ -50,6 +51,9 @@ const Empedit = () => {
   const setData10 = (e) => {
     setEmpPincode(e.target.value);
   };
+  const setData11 = (e) =>{
+    setEstatus(e.target.value);
+  }
 
   const getData = async () => {
     const res1 = await axios.get(
@@ -67,6 +71,7 @@ const Empedit = () => {
       setEmpAddr2(res1.data.data[0].EmpAddr2);
       setEmpCity(res1.data.data[0].EmpCity);
       setEmpPincode(res1.data.data[0].EmpPincode);
+      setEstatus(res1.data.data[0].EStatus);
       return;
     } else {
       console.log('error');
@@ -86,7 +91,8 @@ const Empedit = () => {
       !EmpAddr1 ||
       !EmpAddr2 ||
       !EmpCity ||
-      !EmpPincode
+      !EmpPincode||
+      !estatus
     ) {
       alert('Fill the details');
       return;
@@ -104,6 +110,7 @@ const Empedit = () => {
           EmpAddr2,
           EmpCity,
           EmpPincode,
+          estatus
         }
       );
       if (res.data.status === 201) {
@@ -232,6 +239,18 @@ const Empedit = () => {
                 className='border p-1 rounded w-full hover:border-pink-500 duration-200'
                 onChange={setData10}
               />
+            </div>
+            <div className='flex flex-col py-1'>
+              <label>Status</label>
+              <select
+                className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+                name='estatus'
+                value={estatus}
+                onChange={setData11}
+              >
+                <option value='A'>A</option>
+                <option value='I'>I</option>
+              </select>
             </div>
             <button
               className='border  w-full my-2 py-2 text-white bg-pink-500 rounded text-lg hover:bg-pink-400 duration-200'

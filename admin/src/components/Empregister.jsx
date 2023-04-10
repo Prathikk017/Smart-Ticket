@@ -11,7 +11,6 @@ const initialValues = {
   EmpIntId: '',
   EmpPhone: '',
   EmpAadhar: '',
-  EmpPassword: '',
   EmpAddr1: '',
   EmpAddr2: '',
   EmpCity: '',
@@ -40,7 +39,6 @@ const Empregister = () => {
    const EmpIntId=values.EmpIntId;
    const EmpMobile=values.EmpPhone;
    const EmpAadhar=values.EmpAadhar;
-   const EmpPassword=values.EmpPassword;
    const EmpAddr1=values.EmpAddr1;
    const EmpAddr2=values.EmpAddr2;
    const EmpCity=values.EmpCity;
@@ -69,7 +67,6 @@ const Empregister = () => {
       !EmpType ||
       !EmpMobile ||
       !EmpAadhar ||
-      !EmpPassword ||
       !EmpAddr1 ||
       !EmpAddr2 ||
       !EmpCity ||
@@ -85,7 +82,6 @@ const Empregister = () => {
       EmpType,
       EmpMobile,
       EmpAadhar,
-      EmpPassword,
       EmpAddr1,
       EmpAddr2,
       EmpCity,
@@ -184,20 +180,6 @@ const Empregister = () => {
               />
                {errors.EmpAadhar && touched.EmpAadhar ? (
                 <p className='text-red-500 text-xs '>{errors.EmpAadhar}</p>
-              ) : null}
-            </div>
-            <div className='flex flex-col py-1'>
-              <label>Password</label>
-              <input
-                type='password'
-                name='EmpPassword'
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.EmpPassword}
-                className='border p-1 rounded w-full hover:border-pink-500 duration-200'
-              />
-               {errors.EmpPassword && touched.EmpPassword ? (
-                <p className='text-red-500 text-xs '>{errors.EmpPassword}</p>
               ) : null}
             </div>
             <div className='flex flex-col py-1'>

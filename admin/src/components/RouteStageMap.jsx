@@ -95,6 +95,7 @@ const RouteStageMap = () => {
       setRoute('');
       setStage('');
       setFare('');
+      window.location.reload();
       return;
     } else {
       const res1 = await axios.post(
@@ -112,6 +113,7 @@ const RouteStageMap = () => {
         setRoute('');
         setStage('');
         setFare('');
+        window.location.reload();
         var form = document.getElementsByName('contact-form')[0];
         form.reset();
         return;

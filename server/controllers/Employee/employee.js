@@ -17,10 +17,9 @@ exports.createEmployee = (req, res) => {
         var EmpId = `${OperID}EMP${empid}`;
         var EStatus = 'I';
         var EmpCreatedDate = moment().format('YYYY-MM-DD hh:mm:ss');
-        bcrypt.hash(tblEmployee.EmpPassword, saltRounds, (err, hash) => {
           if (!err) {
             var query =
-              'INSERT INTO tblemployee (Num, EmpId, EmpName, EmpIntId, EmpDOB, EmpType, EmpMobile, EmpAadhar, EmpPassword, EmpAddr1, EmpAddr2, EmpCity, EmpPincode, EStatus,  EmpCreatedDate) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+              'INSERT INTO tblemployee (Num, EmpId, EmpName, EmpIntId, EmpDOB, EmpType, EmpMobile, EmpAadhar, EmpAddr1, EmpAddr2, EmpCity, EmpPincode, EStatus,  EmpCreatedDate) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
             db.query(
               query,
               [
@@ -32,7 +31,6 @@ exports.createEmployee = (req, res) => {
                 tblEmployee.EmpType,
                 tblEmployee.EmpMobile,
                 tblEmployee.EmpAadhar,
-                hash,
                 tblEmployee.EmpAddr1,
                 tblEmployee.EmpAddr2,
                 tblEmployee.EmpCity,
@@ -57,17 +55,15 @@ exports.createEmployee = (req, res) => {
           } else {
             console.log(err);
           }
-        });
       }else {
       let empid = result.length;
       empid = empid + 1;
       var EmpId = `${OperID}EMP${empid}`;
       var EStatus = 'I';
       var EmpCreatedDate = moment().format('YYYY-MM-DD hh:mm:ss');
-      bcrypt.hash(tblEmployee.EmpPassword, saltRounds, (err, hash) => {
         if (!err) {
           var query =
-            'INSERT INTO tblemployee (Num, EmpId, EmpName, EmpIntId, EmpDOB, EmpType, EmpMobile, EmpAadhar, EmpPassword, EmpAddr1, EmpAddr2, EmpCity, EmpPincode, EStatus,  EmpCreatedDate) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+            'INSERT INTO tblemployee (Num, EmpId, EmpName, EmpIntId, EmpDOB, EmpType, EmpMobile, EmpAadhar,  EmpAddr1, EmpAddr2, EmpCity, EmpPincode, EStatus,  EmpCreatedDate) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
           db.query(
             query,
             [
@@ -79,7 +75,6 @@ exports.createEmployee = (req, res) => {
               tblEmployee.EmpType,
               tblEmployee.EmpMobile,
               tblEmployee.EmpAadhar,
-              hash,
               tblEmployee.EmpAddr1,
               tblEmployee.EmpAddr2,
               tblEmployee.EmpCity,
@@ -99,7 +94,6 @@ exports.createEmployee = (req, res) => {
         } else {
           console.log(err);
         }
-      });
     }
   }else{
     console.log(err);
@@ -158,8 +152,8 @@ exports.updateEmployee = (req,res)=>{
   const { EmpId } = req.params;
   let tblEmployee = req.body;
   let EmpModifyDate = moment().format('YYYY-MM-DD hh:mm:ss');
-  let query = `UPDATE tblemployee SET EmpName=?, EmpIntId=?, EmpDOB=?, EmpType=?, EmpMobile=?, EmpAadhar=?, EmpAddr1=?, EmpAddr2=?, EmpCity=?, EmpPincode=?, EmpModifyDate=? WHERE EmpId  = '${EmpId}'`
-  db.query(query,[tblEmployee.EmpName, tblEmployee.EmpIntId, tblEmployee.EmpDOB, tblEmployee.EmpType, tblEmployee.EmpMobile, tblEmployee.EmpAadhar, tblEmployee.EmpAddr1, tblEmployee.EmpAddr2, tblEmployee.EmpCity, tblEmployee.EmpPincode, EmpModifyDate],(err, result)=>{
+  let query = `UPDATE tblemployee SET EmpName=?, EmpIntId=?, EmpDOB=?, EmpType=?, EmpMobile=?, EmpAadhar=?, EmpAddr1=?, EmpAddr2=?, EmpCity=?, EmpPincode=?, EmpModifyDate=?, EStatus=? WHERE EmpId  = '${EmpId}'`
+  db.query(query,[tblEmployee.EmpName, tblEmployee.EmpIntId, tblEmployee.EmpDOB, tblEmployee.EmpType, tblEmployee.EmpMobile, tblEmployee.EmpAadhar, tblEmployee.EmpAddr1, tblEmployee.EmpAddr2, tblEmployee.EmpCity, tblEmployee.EmpPincode, EmpModifyDate, tblEmployee.estatus],(err, result)=>{
     if (!err) {
       if (result.affectedRows === 0) {
         return res.status(404).json({ message: 'Employee does not found' });

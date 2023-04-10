@@ -25,7 +25,7 @@ const Astview = () => {
       );
       if (res.data.status === 201) {
         alert(res.data.data);
-        history('/operdashboard');
+        history('/astview');
         return;
       } else {
         console.log('error');
@@ -68,6 +68,9 @@ const Astview = () => {
                       </label>
                       <label className='p-1 my-1 text-start'>
                         Insurance Expire Date:<span className='ml-2'>{moment(el.AstInsurExp).format("DD-MM-YYYY")}</span>
+                      </label>
+                      <label className='p-1 my-1 text-start'>
+                        Status:<span className='ml-2'>{el.AStatus}</span>
                       </label>
                       <div className='flex flex-row justify-evenly m-4'>
                         <Link to={'/astview'}>
