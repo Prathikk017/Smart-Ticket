@@ -264,7 +264,7 @@ exports.getAssetById = (req, res) => {
   });
 };
 
-//soft delete from tblemployee by id
+//soft delete from tblasset by id
 exports.deleteAsset = (req, res) => {
   const { AstId } = req.params;
   var AStatus = 'I';
@@ -281,6 +281,25 @@ exports.deleteAsset = (req, res) => {
     }
   });
 };
+
+//update in tblasset by id
+exports.updateAsset = (req,res)=>{
+  const { AstId } = req.params;
+  let tblAsset = req.body;
+  let AstModifyDate = moment().format('YYYY-MM-DD hh:mm:ss');
+  let query = `UPDATE tblasset SET AstRegNo=?, AstName=?, AstModel=?, AstChasNo=?, AstEngNo=?, AstPermitNo=?, AstInsurExp=?, AstPermitExp=?, AstModifyDate=? WHERE AstId  = '${AstId}'`
+  db.query(query,[tblAsset.astRegNo, tblAsset.astName, tblAsset.astModel, tblAsset.astChasNo, tblAsset.astEngNo, tblAsset.astPermitNo, tblAsset.astInsurExp, tblAsset.astPermitExp, AstModifyDate],(err, result)=>{
+    if (!err) {
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ message: 'Asset does not found' });
+      }
+     res.status(201).json({status: 201, data: "Asset update successfully"});
+     return ;
+    } else {
+      return res.status(500).json(err);
+    }
+  })
+}
 
 //Create Stage
 exports.createStage = (req, res) => {

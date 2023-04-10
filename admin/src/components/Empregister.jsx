@@ -201,7 +201,7 @@ const Empregister = () => {
               ) : null}
             </div>
             <div className='flex flex-col py-1'>
-              <label>Address1</label>
+              <label>Address 1</label>
               <input
                 type='text'
                 name='EmpAddr1'
@@ -215,7 +215,7 @@ const Empregister = () => {
               ) : null}
             </div>
             <div className='flex flex-col py-1'>
-              <label>Address2</label>
+              <label>Address 2</label>
               <input
                 type='text'
                 name='EmpAddr2'
