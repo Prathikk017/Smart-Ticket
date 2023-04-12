@@ -68,9 +68,9 @@ const Stgedit = () => {
   return (
     <div className='flex flex-row gap-4'>
       <Opersidebar />
-      <div className='grid grid-cols-1 sm:grid-cols-2 h-screen w-[90%] max-h-[100vh] overflow-y-auto mx-auto'>
-        <div className='py-2 flex flex-col justify-center items-center'>
-          <form className='max-w-[400px] w-full mx-auto text-sm flex-row'>
+      <div className='grid h-screen w-[90%] '>
+        <div className=' flex flex-col items-center mt-[10%]'>
+          <form className='max-w-[400px] w-full  text-sm flex-row'>
             <h2 className='text-3xl text-pink-500 text-center py-2'>
               Update Stage
             </h2>
