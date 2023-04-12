@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom';
 const Opersidebar = () => {
   const [showAssetDropdown, setShowAssetDropdown] = useState(false);
   const [showEmployeeDropdown, setShowEmployeeDropdown] = useState(false);
-
+  const [showStageDropdown, setShowStageDropdown] = useState(false);
   const history = useNavigate();
 
   const handlesub = () => {
@@ -26,6 +26,10 @@ const Opersidebar = () => {
   const handleEmployeeDropdown = () => {
     setShowEmployeeDropdown(!showEmployeeDropdown);
   };
+  const handleStageDropdown = () => {
+    setShowStageDropdown(!showStageDropdown);
+  };
+
   return (
     <div className='bg-neutral-100 flex flex-col py-3 px-1 w-64 h-screen'>
       <div className='flex items-center justify-start hover:cursor-pointer'>
@@ -110,12 +114,35 @@ const Opersidebar = () => {
               </div>
             )}
           </div>
+          <div>
+            <button
+              className='flex justify-start items-center p-2 ml-2 mr-0 mt-2 rounded-lg text-center hover:bg-pink-300 hover:cursor-pointer w-max'
+              onClick={handleStageDropdown}
+            >
+              <li className='flex justify-start items-center pr-1 mr-20 text-center'>
+              <BsFillXDiamondFill />
+                <span className='ml-2'>Stage</span>
+              </li>
+            </button>
+          {showStageDropdown && (
+              <div className=' mt-2'>
           <Link to='/stageregister'>
             <li className=' flex justify-start items-center p-2 m-2 rounded-lg text-center hover:bg-pink-300 hover:cursor-pointer'>
-              <BsFillXDiamondFill />
-              <span className='ml-2'>Stage</span>
+            <IoIosCreate />
+              <span className='ml-2'>Stage Register</span>
             </li>
           </Link>
+          <Link to='/stgview'>
+                  <button className='flex justify-start items-center p-2 m-2 rounded-lg text-center hover:bg-pink-300 hover:cursor-pointer'>
+                    <li className='flex justify-start items-center pr-1 mr-4 text-center'>
+                      <GrView />
+                      <span className='ml-2'>View Stage</span>
+                    </li>
+                  </button>
+                </Link>
+              </div>
+            )}
+            </div>
           <Link to='/routeregister'>
             <li className=' flex justify-start items-center p-2 m-2 rounded-lg text-center hover:bg-pink-300 hover:cursor-pointer'>
               <TbRoute />

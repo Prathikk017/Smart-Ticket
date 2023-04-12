@@ -6,7 +6,7 @@ import moment from 'moment';
 import Opersidebar from './Opersidebar';
 import './pagination.css';
 
-const Asttable = () => {
+const Stgtable = () => {
   const [data, setData] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -14,7 +14,7 @@ const Asttable = () => {
   var operId = JSON.parse(ID);
 
   const getAstData = async () => {
-    const res = await axios.post('http://localhost:8004/operator/readast', {
+    const res = await axios.post('http://localhost:8004/operator/readstg', {
       operId,
     });
     if (res.data.status === 201) {
@@ -59,21 +59,19 @@ const Asttable = () => {
       <div>
         <div className='flex flex-row gap-10'>
           <Opersidebar />
-          <div className='flex-col  mr-10'>
+          <div className='flex-col justify-center items-center ml-[10%]'>
             <div className='bg-white p-4 mt-4 mr-10 ml-8 max-h-96 items-center rounded-md w-[160%] flex-1'>
               <h1 className='text-gray-700 text-3xl text-center font-semibold pb-1'>
-                Asset Table
+                Stage Table
               </h1>
               <div className=' rounded-sm mt-2'>
                 <table className='w-full text-gray-700 justify-between mx-1 border border-gray-800'>
                   <thead>
                     <tr className='border border-gray-800'>
                       <th className='p-1 ml-1'>Sl No</th>
-                      <th className='p-1 ml-1'>Asset Reg No</th>
-                      <th className='p-1 ml-1'>Asset Model</th>
-                      <th className='p-1 ml-1'>Insurance Exp</th>
-                      <th className='p-1 ml-1'>Permit Exp</th>
+                      <th className='p-1 ml-1'>Stage Name</th>
                       <th className='p-1 ml-1'>Status</th>
+                      <th className='p-1 ml-1'>Created Date</th>
                       <th className='p-2 ml-1'>View</th>
                     </tr>
                   </thead>
@@ -84,19 +82,15 @@ const Asttable = () => {
                             <>
                               <tr>
                                 <td className='p-1 ml-1'>
-                                  {indexOfFirstItem + i + 1}
+                                  {indexOfFirstItem + i + 1} 
                                 </td>
-                                <td className='p-1 ml-1'>{el.AstRegNo}</td>
-                                <td className='p-1 ml-1'>{el.AstName}</td>
+                                <td className='p-1 ml-1'>{el.StageName}</td>
+                                <td className='p-1 ml-1'>{el.StageStatus}</td>
                                 <td className='p-1 ml-1'>
-                                  {moment(el.AstInsurExp).format('DD-MM-YYYY')}
+                                  {moment(el.CreatedDate).format('DD-MM-YYYY')}
                                 </td>
-                                <td className='p-1 ml-1'>
-                                  {moment(el.AstPermitExp).format('DD-MM-YYYY')}
-                                </td>
-                                <td className='p-1 ml-1'>{el.AStatus}</td>
                                 <td className='p-2 ml-1'>
-                                  <Link to={`/operator/asset/${el.AstId}`}>
+                                  <Link to={`/operator/stage/${el.StageID}`}>
                                     <button className='hover:bg-pink-300  px-4 py-2 rounded-lg w-max'>
                                       View
                                     </button>
@@ -158,4 +152,4 @@ const Asttable = () => {
   );
 };
 
-export default Asttable;
+export default Stgtable;

@@ -5,12 +5,12 @@ import { Link, useParams } from 'react-router-dom';
 import moment from 'moment';
 import Opersidebar from './Opersidebar';
 
-const Astview = () => {
+const Stgview = () => {
     const history = useNavigate();
     const [data, setData] = useState([]);
-    const { AstId } = useParams();
+    const { StageID } = useParams();
     const getAssetData = async () => {
-      const res = await axios.get(`http://localhost:8004/operator/asset/${AstId}`);
+      const res = await axios.get(`http://localhost:8004/operator/stage/${StageID}`);
   
       if (res.data.status === 201) {
         setData(res.data.data);
@@ -21,11 +21,11 @@ const Astview = () => {
   
     const handleSub = async () => {
       const res = await axios.patch(
-        `http://localhost:8004/operator/asset/delete/${AstId}`
+        `http://localhost:8004/operator/stage/delete/${StageID}`
       );
       if (res.data.status === 201) {
         alert(res.data.data);
-        history('/astview');
+        history('/stgview');
         return;
       } else {
         console.log('error');
@@ -41,7 +41,7 @@ const Astview = () => {
         <Opersidebar />
         <div className='container  my-8 h-full w-[40%] p-4 mx-auto pr-6 border'>
           <h1 className='text-center text-4xl text-pink-500  py-6'>
-            Asset Detail
+            Stage Detail
           </h1>
           {data.length > 0
             ? data.map((el, i) => {
@@ -49,36 +49,22 @@ const Astview = () => {
                   <>
                     <div className='flex flex-col ml-4' key={i+1}>
                       <label className='p-1 my-1 text-start'>
-                        Asset Registration No: <span className='ml-2'>{el.AstRegNo}</span>
+                        Stage Name: <span className='ml-2'>{el.StageName}</span>
                       </label>
                       <label className='p-1 my-1 text-start'>
-                        Asset Model: <span className='ml-2'>{el.AstName}</span>
+                        Status: <span className='ml-2'>{el.StageStatus}</span>
                       </label>
                       <label className='p-1 my-1 text-start'>
-                        Manufacturing Year: <span className='ml-2'>{el.AstModel}</span>
+                        Created Date: <span className='ml-2'>{moment(el.CreatedDate).format('DD-MM-YYYY')}</span>
                       </label>
-                      <label className='p-1 my-1 text-start'>
-                        Chasis No: <span className='ml-2'>{el.AstChasNo}</span>
-                      </label>
-                      <label className='p-1 my-1 text-start'>
-                        Engine No:<span className='ml-2'>{el.AstEngNo}</span>
-                      </label>
-                      <label className='p-1 my-1 text-start'>
-                        Permit No:<span className='ml-2'>{el.AstPermitNo}</span>
-                      </label>
-                      <label className='p-1 my-1 text-start'>
-                        Insurance Expire Date:<span className='ml-2'>{moment(el.AstInsurExp).format("DD-MM-YYYY")}</span>
-                      </label>
-                      <label className='p-1 my-1 text-start'>
-                        Status:<span className='ml-2'>{el.AStatus}</span>
-                      </label>
+                      
                       <div className='flex flex-row justify-evenly m-4'>
                         <Link to={'/astview'}>
                           <button className='hover:bg-pink-300  px-4 py-2 rounded-lg w-max'>
                             Cancel
                           </button>
                         </Link>
-                        <Link to={`/astupdate/${el.AstId}`}>
+                        <Link to={`/stgupdate/${el.StageID}`}>
                           <button className='hover:bg-pink-300  px-4 py-2 rounded-lg w-max'>
                             Edit
                           </button>
@@ -90,7 +76,6 @@ const Astview = () => {
                         >
                           Delete
                         </button>
-
                       </div>
                     </div>
                   </>
@@ -103,4 +88,4 @@ const Astview = () => {
   )
 }
 
-export default Astview
+export default Stgview;

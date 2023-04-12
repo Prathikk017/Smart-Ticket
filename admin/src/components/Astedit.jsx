@@ -53,7 +53,6 @@ const Astedit = () => {
     );
 
     if (res1.data.status === 201) {
-      console.log(res1.data.data[0]);
       setAstRegNo(res1.data.data[0].AstRegNo);
       setAstName(res1.data.data[0].AstName);
       setAstModel(res1.data.data[0].AstModel);

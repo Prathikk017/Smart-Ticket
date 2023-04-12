@@ -16,6 +16,9 @@ import Emptable from './components/Emptable';
 import Asttable from './components/Asttable';
 import Empedit from './components/Empedit';
 import Astedit from './components/Astedit';
+import Stgtable from './components/Stgtable';
+import Stgview from './components/Stgview';
+import Stgedit from './components/Stgedit';
 
 
 function App() {
@@ -40,6 +43,9 @@ function App() {
         <Route path='/astview' element={<Asttable/>}/>
         <Route path='/operator/asset/:AstId' element={<Astview/>}/>
         <Route path='/stageregister' element={<Stageregister/>} />
+        <Route path='/stgview' element={<Stgtable/>}/>
+        <Route path='/operator/stage/:StageID' element={<Stgview/>}/>
+        <Route path='/stgupdate/:StageID' element = {<Stgedit/>}/>
         <Route path='/routeregister' element={<Routeregister/>} /> 
         <Route path='/routemap' element={<RouteStageMap/>} />
       </Routes>

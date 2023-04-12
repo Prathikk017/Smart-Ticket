@@ -395,6 +395,73 @@ exports.readStage = (req, res) => {
     }
   });
 };
+// read stage for table
+exports.readStageTbl = (req, res) => {
+  var tblstagemaster = req.body;
+  var operID = tblstagemaster.operId;
+  var query1 = `SELECT * FROM tblstagemaster WHERE StageID LIKE '%${operID}%'`;
+  db.query(query1, (err, result) => {
+    if (!err) {
+      if (result.length > 0) {
+        res.status(200).json({ status: 201, data: result });
+        return;
+      } else {
+        res.status(200).json({ status: 201, data: 'Stage Not Found' });
+      }
+    } else {
+      console.log(err);
+    }
+  });
+};
+
+//get stage by id
+exports.getStageById = (req, res) => {
+  const { StageID } = req.params;
+  var query = `SELECT * FROM tblstagemaster WHERE StageID = '${StageID}'`;
+  db.query(query, (err, results) => {
+    if (!err) {
+      return res.status(200).json({ status: 201, data: results });
+    } else {
+      return res.status(500).json({ status: 500, data: err });
+    }
+  });
+};
+//soft delete from tblStage by id
+exports.deleteStage = (req, res) => {
+  const { StageID } = req.params;
+  var StageStatus = 'I';
+  var query = 'UPDATE tblstagemaster SET StageStatus = ? WHERE StageID = ? ';
+  db.query(query, [StageStatus, StageID], (err, results) => {
+    if (!err) {
+      if (results.affectedRows === 0) {
+        return res.status(404).json({ message: 'Stage does not found' });
+      }
+     res.status(201).json({status: 201, data: "Stage deleted successfully"});
+     return ;
+    } else {
+      return res.status(500).json(err);
+    }
+  });
+};
+
+//update in tblasset by id
+exports.updateStage = (req,res)=>{
+  const { StageID } = req.params;
+  let tblstagemaster = req.body;
+  let ModifyDate = moment().format('YYYY-MM-DD hh:mm:ss');
+  let query = `UPDATE tblstagemaster SET StageName=?, ModifyDate=?, StageStatus=? WHERE StageID  = '${StageID}'`
+  db.query(query,[ tblstagemaster.StageName, ModifyDate, tblstagemaster.stgstatus],(err, result)=>{
+    if (!err) {
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ message: 'Stage does not found' });
+      }
+     res.status(201).json({status: 201, data: "Stage update successfully"});
+     return ;
+    } else {
+      return res.status(500).json(err);
+    }
+  })
+}
 
 //create Route
 exports.createRoute = (req, res) => {

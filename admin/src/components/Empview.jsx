@@ -101,14 +101,14 @@ const Empview = () => {
                             Edit
                           </button>
                         </Link>
-                        <Link to={`/Delete/${el.EmpId}`}>
+                        
                           <button
                             className='hover:bg-pink-300  px-4 py-2 rounded-lg w-max'
                             onClick={handleSub}
                           >
                             Delete
                           </button>
-                        </Link>
+                    
                       </div>
                     </div>
                   </>
