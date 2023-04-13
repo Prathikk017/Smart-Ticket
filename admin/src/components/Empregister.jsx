@@ -1,4 +1,4 @@
-import React, {  useState } from 'react';
+import React, {  useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useFormik } from 'formik';
@@ -53,10 +53,6 @@ const Empregister = () => {
     setEmpType(e.target.value);
   };
   
-  
-
-  
-
   const handleSub = async (e) => {
     e.preventDefault();
     
@@ -99,6 +95,13 @@ const Empregister = () => {
     }
   };
 
+  useEffect(() => {
+    const token = window.localStorage.getItem('Lekpay');
+    const Token = JSON.parse(token);
+    if (!Token) {
+      history('/');
+    }
+  }, []);
 
   return (
     <div className='flex flex-row gap-4'>

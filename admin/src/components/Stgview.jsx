@@ -33,7 +33,13 @@ const Stgview = () => {
     };
   
     useEffect(() => {
+      const token = window.localStorage.getItem('Lekpay');
+    const Token = JSON.parse(token);
+    if (!Token) {
+      history('/');
+    }else{
       getAssetData();
+    } 
     }, []);
   return (
     <>

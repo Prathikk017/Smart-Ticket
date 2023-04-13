@@ -1,21 +1,21 @@
-import React, { useState } from 'react'
-import Opersidebar from './Opersidebar'
+import React, { useEffect, useState } from 'react';
+import Opersidebar from './Opersidebar';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Routeregister = () => {
-
   const [RouteName, setRouteName] = useState('');
   const [RouteEffDate, setRouteEffDate] = useState('');
   const [RouteSStage, setRouteSStage] = useState('');
   const [RouteEStage, setRouteEStage] = useState('');
-
+  const history = useNavigate();
   const ID = window.localStorage.getItem('OperID');
   var operId = JSON.parse(ID);
 
   //function
-  const setData = (e) =>{
+  const setData = (e) => {
     setRouteName(e.target.value);
-  }
+  };
 
   const setData1 = (e) => {
     setRouteEffDate(e.target.value);
@@ -31,39 +31,46 @@ const Routeregister = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (
-      !RouteName ||
-      !RouteEffDate ||
-      !RouteSStage ||
-      !RouteEStage 
-    ) {
+
+    if (!RouteName || !RouteEffDate || !RouteSStage || !RouteEStage) {
       alert('Fill the details');
     } else {
-    const res = await axios.post('http://localhost:8004/operator/routecreate', {
-      RouteName,
-      RouteEffDate,
-      RouteSStage,
-      RouteEStage,
-      operId 
-    });
-    if (res.data.status === 201) {
-      alert('Route created successfully');
-      var form = document.getElementsByName('contact-form')[0];
-      form.reset();
-      return;
-    } else {
-      alert('Route unable to register');
-      return;
-    }
+      const res = await axios.post(
+        'http://localhost:8004/operator/routecreate',
+        {
+          RouteName,
+          RouteEffDate,
+          RouteSStage,
+          RouteEStage,
+          operId,
+        }
+      );
+      if (res.data.status === 201) {
+        alert('Route created successfully');
+        var form = document.getElementsByName('contact-form')[0];
+        form.reset();
+        return;
+      } else {
+        alert('Route unable to register');
+        return;
+      }
     }
   };
+
+  useEffect(() => {
+    const token = window.localStorage.getItem('Lekpay');
+    const Token = JSON.parse(token);
+    if (!Token) {
+      history('/');
+    }
+  }, []);
+
   return (
     <div className='flex flex-row gap-4 bg-gray-50'>
-    <Opersidebar />
-    <div className='h-screen w-full py-4 max-h-[100vh] overflow-y-auto'>
+      <Opersidebar />
+      <div className='h-screen w-full py-4 max-h-[100vh] overflow-y-auto'>
         <div className='py-4 flex flex-col justify-center items-center'>
-          <form className='max-w-[400px] w-full mx-auto'  name='contact-form'>
+          <form className='max-w-[400px] w-full mx-auto' name='contact-form'>
             <h2 className='text-4xl text-pink-500 text-center py-1'>
               Route Register
             </h2>
@@ -108,8 +115,8 @@ const Routeregister = () => {
           </form>
         </div>
       </div>
-  </div>
-  )
-}
+    </div>
+  );
+};
 
-export default Routeregister
+export default Routeregister;

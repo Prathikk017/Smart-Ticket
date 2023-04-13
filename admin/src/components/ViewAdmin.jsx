@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import moment from 'moment';
 import Sidebar from './Sidebar';
 
 const ViewAdmin = () => {
 	const [data, setData] = useState([]);
+	const history = useNavigate();
 	const { AdminId } = useParams();
 	const getAdminData = async () => {
 		const res = await axios.get(`http://localhost:8004/admin/${AdminId}`);
@@ -19,7 +20,13 @@ const ViewAdmin = () => {
 	};
 
 	useEffect(() => {
+		const token = window.localStorage.getItem('Lekpay');
+    const Token = JSON.parse(token);
+    if (!Token) {
+      history('/');
+    }else{
 		getAdminData();
+	}
 	}, []);
 
 	return (

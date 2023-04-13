@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useState } from 'react';
 import axios from 'axios';
 import Opersidebar from './Opersidebar';
+import { useNavigate } from 'react-router-dom';
 
 let arr = [];
 let arr1 = [];
@@ -19,7 +20,7 @@ const RouteStageMap = () => {
   const [effDate, setEffDate] = useState('');
   const [stage, setStage] = useState([]);
   const [fare, setFare] = useState([]);
-
+  const history = useNavigate();
   //functions for getting values
   const setData1 = (e) => {
     setRoute(e.target.value);
@@ -104,7 +105,7 @@ const RouteStageMap = () => {
           route,
           stage,
           fare,
-          effDate
+          effDate,
         }
       );
 
@@ -128,8 +129,14 @@ const RouteStageMap = () => {
   };
 
   useEffect(() => {
-    getRoute();
-    getStage();
+    const token = window.localStorage.getItem('Lekpay');
+    const Token = JSON.parse(token);
+    if (!Token) {
+      history('/');
+    } else {
+      getRoute();
+      getStage();
+    }
   }, [operId]);
 
   return (
@@ -215,11 +222,11 @@ const RouteStageMap = () => {
                       })}
                     </select>
                     <label
-                  onClick={()=>handleDelete(i)}
-                  className='border w-max  px-2 py-2 ml-10 text-white bg-pink-500 rounded text-sm hover:bg-pink-400 duration-200 justify-between'
-                >
-                  x
-                </label>
+                      onClick={() => handleDelete(i)}
+                      className='border w-max  px-2 py-2 ml-10 text-white bg-pink-500 rounded text-sm hover:bg-pink-400 duration-200 justify-between'
+                    >
+                      x
+                    </label>
                   </div>
                   <div className='flex flex-col'>
                     <label className='pt-1'>Fare</label>

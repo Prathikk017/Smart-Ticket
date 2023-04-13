@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import {Link} from "react-router-dom"
+import {Link, useNavigate} from "react-router-dom"
 import Sidebar from './Sidebar';
 
 const Opertable = () => {
   const [data, setData] = useState('');
-
+  const history = useNavigate();
   const getUserdata = async () => {
     const res = await axios.get('http://localhost:8004/operator/read');
 
@@ -17,7 +17,14 @@ const Opertable = () => {
   };
 
   useEffect(() => {
-    getUserdata();
+      const token = window.localStorage.getItem('Lekpay');
+      const Token = JSON.parse(token);
+      if (!Token) {
+        history('/');
+      }else{
+        getUserdata();
+      }
+   
   }, []);
 
   return (

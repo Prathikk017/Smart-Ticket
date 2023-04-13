@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Opersidebar from './Opersidebar';
+import { useNavigate } from 'react-router-dom';
 
 const Astregister = () => {
   const [astRegNo, setAstRegNo] = useState('');
@@ -13,6 +14,7 @@ const Astregister = () => {
   const [astInsurExp, setAstInsurExp] = useState('');
   const [astPermitExp, setAstPermitExp] = useState('');
   const [qrcode, setQrcode] = useState('');
+  const history = useNavigate();
   // const history = useNavigate();
 
   const ID = window.localStorage.getItem('OperID');
@@ -100,6 +102,14 @@ const Astregister = () => {
       }
     }
   };
+
+  useEffect(() => {
+    const token = window.localStorage.getItem('Lekpay');
+    const Token = JSON.parse(token);
+    if (!Token) {
+      history('/');
+    }
+  }, []);
 
   return (
     <div className='flex flex-row gap-4'>

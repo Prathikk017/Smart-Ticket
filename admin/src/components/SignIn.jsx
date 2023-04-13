@@ -27,6 +27,7 @@ const SignIn = () => {
 	const Aname = values.Aname;
 	const Apassword = values.Apassword;
 	const [operid, setOperid] = useState('');
+	const [token, setToken] = useState('');
 
 	const handleSub = async (e) => {
 		e.preventDefault();
@@ -47,6 +48,7 @@ const SignIn = () => {
 			}
 			if (res.data.status === 201) {
 				alert('User Login Successfully');
+				setToken(res.data.token);
 				if (res.data.data.Flag === 'A') {
 					setTimeout(() => history('/admin/dashboard'), 500);
 					return;
@@ -68,7 +70,8 @@ const SignIn = () => {
 
 	useEffect(() => {
 		window.localStorage.setItem('OperID', JSON.stringify(operid));
-	}, [operid]);
+		window.localStorage.setItem('Lekpay', JSON.stringify(token));
+	}, [operid,token]);
 
 	return (
 		<>

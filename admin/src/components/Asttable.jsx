@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaAngleDoubleLeft, FaAngleDoubleRight } from 'react-icons/fa';
 import moment from 'moment';
 import Opersidebar from './Opersidebar';
@@ -10,6 +10,7 @@ const Asttable = () => {
   const [data, setData] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const history = useNavigate();
   const ID = window.localStorage.getItem('OperID');
   var operId = JSON.parse(ID);
 
@@ -51,7 +52,14 @@ const Asttable = () => {
   });
 
   useEffect(() => {
-    getAstData();
+      const token = window.localStorage.getItem('Lekpay');
+      const Token = JSON.parse(token);
+      if (!Token) {
+        history('/');
+      }else{
+        getAstData();
+      }
+    
   });
 
   return (

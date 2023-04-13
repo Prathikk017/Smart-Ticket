@@ -5,11 +5,13 @@ import { FaAngleDoubleLeft, FaAngleDoubleRight } from 'react-icons/fa';
 import moment from 'moment';
 import Sidebar from './Sidebar';
 import './pagination.css';
+import { useNavigate } from 'react-router-dom';
 
 const Admins = () => {
 	const [data, setData] = useState('');
 	const [currentPage, setCurrentPage] = useState(1);
 	const [itemsPerPage, setItemsPerPage] = useState(10);
+	const history = useNavigate();
 
 	const getAdminsData = async () => {
 		const res = await axios.get('http://localhost:8004/admin/read');
@@ -47,7 +49,14 @@ const Admins = () => {
 	});
 
 	useEffect(() => {
-		getAdminsData();
+		const token = window.localStorage.getItem('Lekpay');
+  const Token = JSON.parse(token);
+  if(!Token){
+    history('/');
+  }else{
+	getAdminsData();
+  }
+		
 	}, []);
 
 	return (

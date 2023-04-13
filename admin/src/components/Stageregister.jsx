@@ -1,9 +1,11 @@
-import React, {  useState } from 'react';
+import React, {  useEffect, useState } from 'react';
 import axios from 'axios';
 import Opersidebar from './Opersidebar';
+import { useNavigate } from 'react-router-dom';
 
 const Stageregister = () => {
   const [StageName, setStageName] = useState('');
+  const history = useNavigate();
  
   const setData = (e) => {
     setStageName(e.target.value);
@@ -58,7 +60,13 @@ const Stageregister = () => {
     }
   };
 
-  
+  useEffect(() => {
+    const token = window.localStorage.getItem('Lekpay');
+    const Token = JSON.parse(token);
+    if (!Token) {
+      history('/');
+    }
+  }, []);
 
   return (
     <div className='flex flex-row gap-4'>
