@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import moment from 'moment';
-import Opersidebar from './Opersidebar';
+import Sidebar from './Sidebar';
 
-const Empview = () => {
-	const history = useNavigate();
+const ViewEmployee = () => {
 	const [data, setData] = useState([]);
 	const { EmpId } = useParams();
-	const getEmployeeData = async () => {
-		const res = await axios.get(`http://localhost:8004/employee/${EmpId}`);
+	const getUserData = async () => {
+		const res = await axios.get(
+			`http://localhost:8004/admin/employees/${EmpId}`
+		);
 
 		if (res.data.status === 201) {
 			setData(res.data.data);
@@ -19,26 +19,14 @@ const Empview = () => {
 		}
 	};
 
-	const handleSub = async () => {
-		const res = await axios.patch(
-			`http://localhost:8004/employee/delete/${EmpId}`
-		);
-		if (res.data.status === 201) {
-			alert(res.data.data);
-			history('/empview');
-			return;
-		} else {
-			console.log('error');
-		}
-	};
-
 	useEffect(() => {
-		getEmployeeData();
+		getUserData();
 	}, []);
+
 	return (
 		<>
 			<div className='flex flex-row gap-4'>
-				<Opersidebar />
+				<Sidebar />
 				<div className='container  my-8 h-full w-[40%] p-4 mx-auto pr-6 border'>
 					<h1 className='text-center text-4xl text-pink-500  py-6'>
 						Employee Detail
@@ -91,24 +79,6 @@ const Empview = () => {
 												Status:
 												<span className='ml-2'>{el.EStatus}</span>
 											</label>
-											<div className='flex flex-row justify-evenly items-center m-4'>
-												<Link to={'/empview'}>
-													<button className='hover:bg-pink-300  px-4 py-2 rounded-lg w-max'>
-														Cancel
-													</button>
-												</Link>
-												<Link to={`/empupdate/${el.EmpId}`}>
-													<button className='hover:bg-pink-300  px-4 py-2 rounded-lg w-max'>
-														Edit
-													</button>
-												</Link>
-												<button
-													className='hover:bg-pink-300  px-4 py-2 rounded-lg w-max'
-													onClick={handleSub}
-												>
-													Delete
-												</button>
-											</div>
 										</div>
 									</>
 								);
@@ -120,4 +90,4 @@ const Empview = () => {
 	);
 };
 
-export default Empview;
+export default ViewEmployee;
