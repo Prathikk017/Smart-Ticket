@@ -13,12 +13,26 @@ const Astregister = () => {
   const [astPermitNo, setAstPermitNo] = useState('');
   const [astInsurExp, setAstInsurExp] = useState('');
   const [astPermitExp, setAstPermitExp] = useState('');
+  const [OperShortName, setOperShortName] = useState('');
   const [qrcode, setQrcode] = useState('');
   const history = useNavigate();
   // const history = useNavigate();
 
   const ID = window.localStorage.getItem('OperID');
   var operId = JSON.parse(ID);
+
+  const getOperator = async () => {
+    const res = await axios.post(
+      'http://localhost:8004/operator/readoperatorshortname',
+      { operId }
+    );
+
+    if (res.data.status === 201) {
+      setOperShortName(res.data.data[0].OperShortName);
+    } else {
+      console.log('error');
+    }
+  };
 
   const setData = (e) => {
     setAstRegNo(e.target.value);
@@ -80,23 +94,23 @@ const Astregister = () => {
           .post('http://localhost:8004/operator/createqrcode', {
             data: data,
           })
-          .then(response => {
+          .then((response) => {
             const qrCodeImg = document.createElement('img');
             qrCodeImg.src = 'data:image/png;base64,' + response.data;
             setQrcode(qrCodeImg.src);
-        })
-        .catch(error => {
+          })
+          .catch((error) => {
             console.error(error);
-        });
+          });
         var form = document.getElementsByName('contact-form')[0];
-				form.reset();
-      //   const res1= await axios.post('http://localhost:8004/operator/generate-qr-code', {
-      //     data: data
-      // })
-      // if(res1.data.status === 201){
-      //   setQrcode(res1.data.data.imageUrl);
-        
-      // }
+        form.reset();
+        //   const res1= await axios.post('http://localhost:8004/operator/generate-qr-code', {
+        //     data: data
+        // })
+        // if(res1.data.status === 201){
+        //   setQrcode(res1.data.data.imageUrl);
+
+        // }
         return;
       } else {
         alert('Asset unable to register');
@@ -104,6 +118,91 @@ const Astregister = () => {
       }
     }
   };
+  const handleDownload = (e) => {
+    const qrImage = document.getElementById('qr-img');
+    const printWindow = window.open(
+      '',
+      '_blank',
+      'left=0,top=0,width=800,height=600,toolbar=0,scrollbars=0,status=0'
+    );
+    printWindow.document.write(`
+        <html>
+          <head>
+            <title>Print QR Code</title>
+            <style>
+              @media print {
+                /* Set page size to A4 */
+                @page {
+                  size: A4;
+                  margin: 0;
+                }
+                /* Center the QR code and label */
+                body {
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                
+                }
+                #qr-img-container {
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: center;
+                  align-items: center;
+                  margin-top: 0;
+                  padding-top:0;
+                  margin-bottom: 0;
+                  padding-bottom: 0;
+                }
+                 #assetReg{
+                  text-align: center;
+                  font-size: 100px;
+                  font-weight: bold;
+                  margin-top:0;
+                  padding-top:0;
+                  margin-bottom: 0;
+                  padding-bottom: 0;
+                }
+                #opershortname{
+                  text-align: center;
+                  font-size: 100px;
+                  font-weight: bold;
+                  margin-top:20;
+                  padding-top:0;
+                  margin-bottom: 0;
+                  padding-bottom: 0;
+                }
+                #qr-img {
+                  display: block;
+                  margin: 0 auto;
+                  margin-top: 0;
+                  padding-top:0;
+                  margin-bottom: 0;
+                  padding-bottom: 0;
+                  width:850px;
+                  heigth:750px;
+                }
+              }
+            </style>
+          </head>
+          <body>
+          
+            <div id="qr-img-container">
+              <h1 id="opershortname">${OperShortName}</h1>
+              <img src="${qrImage.src}" alt="QR Code" id="qr-img" />
+              <h4 id="assetReg">${e}<h4>
+            </div>
+          </body>
+        </html>
+      `);
+    printWindow.document.close();
+    printWindow.focus();
+    printWindow.print();
+    printWindow.close();
+  };
+
+  useEffect(() => {
+    getOperator();
+  }, [operId]);
 
   useEffect(() => {
     const token = window.localStorage.getItem('Lekpay');
@@ -196,13 +295,17 @@ const Astregister = () => {
         </div>
 
         {qrcode && (
-          <div className=' justify-center items-center m-auto'>
-            <a href={qrcode} download={`${astRegNo}.png`}>
-              <img src={qrcode} className='w-[200px] border' alt='QR Code' />
-              <span className='text-md justify-center items-center ml-6'>
+          <div className='flex flex-col justify-center items-center m-auto'>
+            <img src={qrcode} className='w-[200px] border' alt='QR Code' id='qr-img'/>
+            <span className='text-md justify-center items-center ml-6'>
               Reg No: {astRegNo}
-              </span>
-            </a>
+            </span>
+            <button
+              className='hover:bg-pink-300 rounded-lg w-28 h-10 mt-4 '
+              onClick={() => handleDownload(astRegNo)}
+            >
+              Print QR
+            </button>
           </div>
         )}
       </div>

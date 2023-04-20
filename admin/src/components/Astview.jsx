@@ -8,7 +8,23 @@ import Opersidebar from './Opersidebar';
 const Astview = () => {
   const history = useNavigate();
   const [data, setData] = useState([]);
+  const [OperShortName, setOperShortName] = useState('');
   const { AstId } = useParams();
+  const ID = window.localStorage.getItem('OperID');
+  var operId = JSON.parse(ID);
+
+  const getOperator = async () => {
+    const res = await axios.post(
+      'http://localhost:8004/operator/readoperatorshortname',
+      { operId }
+    );
+
+    if (res.data.status === 201) {
+      setOperShortName(res.data.data[0].OperShortName);
+    } else {
+      console.log('error');
+    }
+  };
   const getAssetData = async () => {
     const res = await axios.get(
       `http://localhost:8004/operator/asset/${AstId}`
@@ -33,15 +49,8 @@ const Astview = () => {
       console.log('error');
     }
   };
-
+ 
   const handleDownload = (e) => {
-    // const qrImage = document.getElementById('qr-img');
-    // const downloadLink = document.createElement('a');
-    // downloadLink.href = qrImage.src;
-    // downloadLink.download = `${e}.png`;
-    // document.body.appendChild(downloadLink);
-    // downloadLink.click();
-    // document.body.removeChild(downloadLink);
     const qrImage = document.getElementById('qr-img');
     const printWindow = window.open(
       '',
@@ -76,28 +85,41 @@ const Astview = () => {
                   margin-bottom: 0;
                   padding-bottom: 0;
                 }
-                 #assetReg {
+                 #assetReg{
                   text-align: center;
-                  font-size: 110px;
+                  font-size: 100px;
                   font-weight: bold;
                   margin-top:0;
                   padding-top:0;
-                  margin-bottom: 40;
-                  padding-bottom: 40;
+                  margin-bottom: 0;
+                  padding-bottom: 0;
+                }
+                #opershortname{
+                  text-align: center;
+                  font-size: 100px;
+                  font-weight: bold;
+                  margin-top:20;
+                  padding-top:0;
+                  margin-bottom: 0;
+                  padding-bottom: 0;
                 }
                 #qr-img {
                   display: block;
                   margin: 0 auto;
+                  margin-top: 0;
+                  padding-top:0;
                   margin-bottom: 0;
                   padding-bottom: 0;
                   width:850px;
-                  heigth:850px
+                  heigth:750px;
                 }
               }
             </style>
           </head>
           <body>
+          
             <div id="qr-img-container">
+              <h1 id="opershortname">${OperShortName}</h1>
               <img src="${qrImage.src}" alt="QR Code" id="qr-img" />
               <h4 id="assetReg">${e}<h4>
             </div>
@@ -109,6 +131,10 @@ const Astview = () => {
     printWindow.print();
     printWindow.close();
   };
+
+  useEffect(() => {
+    getOperator();
+  }, [operId]);
 
   useEffect(() => {
     const token = window.localStorage.getItem('Lekpay');
