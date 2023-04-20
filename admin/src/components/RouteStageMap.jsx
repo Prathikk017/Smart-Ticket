@@ -1,43 +1,67 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import axios from 'axios';
+import { AiOutlineClose } from 'react-icons/ai';
 import Opersidebar from './Opersidebar';
 import { useNavigate } from 'react-router-dom';
 
 let arr = [];
 let arr1 = [];
-let num;
-let nums;
+
 const RouteStageMap = () => {
-  // if(num !=null){
-  //   arr1.push(num);
-  // }
+  
   //states
-  const [val, setVal] = useState([]);
+  const [intermediateStages, setIntermediateStages] = useState([]);
+  const [intermediateStageValues, setIntermediateStageValues] = useState([]);
   const [routeData, setRouteData] = useState([]);
   const [stageData, setStageData] = useState([]);
+  const [TicketData, setTicketData] = useState([]);
+  const [TicketShortData, setTicketShortData] = useState([]);
   const [route, setRoute] = useState('');
+  const [StartStage, setStartStage] = useState('');
+  const [EndStage, setEndStage] = useState('');
   const [effDate, setEffDate] = useState('');
-  const [stage, setStage] = useState([]);
-  const [fare, setFare] = useState([]);
+  const [RouteTicket, setRouteTicket] = useState('');
+  const [startFareData, setStartFareData] = useState(
+    TicketShortData.reduce((obj, key, index) => ({ ...obj, [key]: 0 }), {})
+  );
+  const [endFareData, setEndFareData] = useState(
+    TicketShortData.reduce((obj, key, index) => ({ ...obj, [key]: 0 }), {})
+  );
+
   const history = useNavigate();
   //functions for getting values
   const setData1 = (e) => {
     setRoute(e.target.value);
+    setRouteTicket(e.target.value);
   };
 
-  const setData2 = (e) => {
-    arr.push(e.target.value);
-    setStage(arr);
+  const startStage = (e) => {
+    if (e.target.value !== 'Select') {
+      setStartStage(e.target.value);
+    } else {
+      setStartStage('');
+    }
   };
 
-  const setData3 = (e) => {
-    num = e.target.value;
-    setFare(arr1);
+  const endStage = (e) => {
+    if (e.target.value !== 'Select') {
+      setEndStage(e.target.value);
+    } else {
+      setEndStage('');
+    }
   };
 
-  const setData4 = (e) => {
-    nums = e.target.value;
+  const setData3 = (event, key) => {
+    const newFareData = { ...startFareData };
+    newFareData[key] = parseInt(event.target.value);
+    setStartFareData(newFareData);
+  };
+
+  const setData4 = (event, key) => {
+    const newFareData = { ...endFareData };
+    newFareData[key] = parseInt(event.target.value);
+    setEndFareData(newFareData);
   };
 
   const setData5 = (e) => {
@@ -71,62 +95,112 @@ const RouteStageMap = () => {
     }
   };
 
-  const addStage = () => {
-    arr1.push(num);
-    num = '';
-    const addstage = [...val, []];
-    setVal(addstage);
+  // function to handle adding a new intermediate stage
+  const addIntermediateStage = () => {
+    setIntermediateStages([...intermediateStages, {}]);
+    setIntermediateStageValues([...intermediateStageValues, '']);
   };
 
-  const handleDelete = (i) => {
-    const deleteVal = [...val];
-    deleteVal.splice(i, 1);
-    setVal(deleteVal);
+  // function to handle deleting an intermediate stage
+  const deleteIntermediateStage = (index) => {
+    const updatedStages = [...intermediateStages];
+    updatedStages.splice(index, 1);
+    setIntermediateStages(updatedStages);
+
+    const updatedValues = [...intermediateStageValues];
+    updatedValues.splice(index, 1);
+    setIntermediateStageValues(updatedValues);
+  };
+
+  // function to handle updating the fare for an intermediate stage
+  const updateIntermediateFare = (event, stageIndex, fareShortName) => {
+    const updatedStages = [...intermediateStages];
+    updatedStages[stageIndex][fareShortName] = parseInt(event.target.value);
+    setIntermediateStages(updatedStages);
+  };
+
+  // function to handle updating the value for an intermediate stage
+  const updateIntermediateStageValue = (event, index) => {
+    const updatedValues = [...intermediateStageValues];
+    updatedValues[index] = event.target.value;
+    setIntermediateStageValues(updatedValues);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (num !== '' && nums !== '') {
-      arr1.push(num);
-      arr1.push(nums);
+    if (StartStage !== '') {
+      arr.push(StartStage);
     }
 
-    if (!route || !stage || !fare) {
+    if (intermediateStageValues !== '') {
+      for (let i = 0; i < intermediateStageValues.length; i++) {
+        arr.push(intermediateStageValues[i]);
+      }
+      setIntermediateStageValues([]);
+    }
+    if (EndStage !== '') {
+      arr.push(EndStage);
+    }
+    if (startFareData !== '') {
+      arr1.push(startFareData);
+      setStartFareData([]);
+    }
+    if (intermediateStages !== '') {
+      for (let i = 0; i < intermediateStages.length; i++) {
+        arr1.push(intermediateStages[i]);
+      }
+      setIntermediateStages([]);
+    }
+    if (endFareData !== '') {
+      arr1.push(endFareData);
+      setEndFareData([]);
+    }
+
+    if (arr === [] || arr1=== [] || route === ' ') {
       alert('Fill the details');
-      setRoute('');
-      setStage('');
-      setFare('');
-      window.location.reload();
-      return;
     } else {
       const res1 = await axios.post(
         'http://localhost:8004/operator/createroutemap',
         {
           route,
-          stage,
-          fare,
+          arr,
+          arr1,
           effDate,
         }
       );
 
       if (res1.data.status === 201) {
-        alert('Route Mapped Successfully');
-        setRoute('');
-        setStage('');
-        setFare('');
-        window.location.reload();
-        var form = document.getElementsByName('contact-form')[0];
+        alert('Route successfully mapped');
+        const form = document.getElementsByName('contact-form')[0];
         form.reset();
-        return;
+        setTicketData([]);
+        setTicketShortData([]);
       } else {
         alert('Route unable to Map');
-        setRoute('');
-        setStage('');
-        setFare('');
-        return;
+        const form = document.getElementsByName('contact-form')[0];
+        form.reset();
       }
     }
   };
+
+  const getTicketType = async () => {
+    if (RouteTicket) {
+      const res = await axios.post(
+        'http://localhost:8004/operator/readroutetictype',
+        {
+          RouteTicket,
+        }
+      );
+      if (res.data.status === 201) {
+        setTicketShortData(res.data.data1);
+        setTicketData(res.data.data);
+      }
+    }
+  };
+
+  useEffect(() => {
+    getTicketType();
+  }, [RouteTicket, TicketData]);
 
   useEffect(() => {
     const token = window.localStorage.getItem('Lekpay');
@@ -148,8 +222,8 @@ const RouteStageMap = () => {
             <h2 className='text-4xl text-pink-500 text-center py-1'>
               Route Map
             </h2>
-            <div className='flex flex-col py-1'>
-              <label>Route Name</label>
+            <div className='flex flex-col py-2'>
+              <label>Route Name:</label>
               <select
                 className='border p-1 rounded w-full hover:border-pink-500 duration-200'
                 onChange={setData1}
@@ -164,8 +238,8 @@ const RouteStageMap = () => {
                 })}
               </select>
             </div>
-            <div className='flex flex-col py-1'>
-              <label>Route Effective date</label>
+            <div className='flex flex-col py-2'>
+              <label>Route Effective date:</label>
               <input
                 type='date'
                 onChange={setData5}
@@ -173,10 +247,10 @@ const RouteStageMap = () => {
               />
             </div>
             <div className='flex flex-col py-1'>
-              <label>Route Start Stage</label>
+              <label>Route Start Stage:</label>
               <select
                 className='border p-1 rounded w-full hover:border-pink-500 duration-200'
-                onChange={setData2}
+                onChange={startStage}
               >
                 <option>Select</option>
                 {stageData.map((el, i) => {
@@ -187,65 +261,104 @@ const RouteStageMap = () => {
                   );
                 })}
               </select>
-              <label className='pt-1'>Fare</label>
-              <div className='flex-row'>
-                <input
-                  type='number'
-                  className='w-[25%] px-2 py-1 border rounded hover:border-pink-500 duration-200'
-                  min={0}
-                  onChange={setData3}
-                />
-                <label
-                  onClick={addStage}
-                  className='border w-max  px-2 py-2 ml-10 text-white bg-pink-500 rounded text-sm hover:bg-pink-400 duration-200 justify-between'
+            </div>
+            <label className='pt-2'>Fare:</label>
+            <div className='grid grid-cols-3 gap-2'>
+              {TicketShortData.map((key, index) => {
+                return (
+                  <div className='flex flex-col' key={index}>
+                    <label className='mr-2 justify-center items-center'>
+                      {TicketData[index]}:
+                    </label>
+                    <input
+                      type='number'
+                      className='w-[70%] px-3 py-1 border rounded hover:border-pink-500 duration-200'
+                      min={0}
+                      onChange={(event) => setData3(event, key)}
+                      value={startFareData[key]}
+                    />
+                  </div>
+                );
+              })}
+
+              <div className='col-span-3'>
+                <button
+                  type='button'
+                  onClick={addIntermediateStage}
+                  className='justify-end items-end border w-max p-2 m-4  text-white bg-pink-500 rounded text-sm hover:bg-pink-400 duration-200'
                 >
                   Add Stage
-                </label>
+                </button>
               </div>
             </div>
-            {val.map((data, i) => {
+            {intermediateStages.map((stage, stageIndex) => {
               return (
-                <div className=' flex-col py-1 ' key={i}>
-                  <label>Intermediate Stage</label>
+                <div className=' flex-col py-2 ' key={stageIndex}>
+                  <label>Intermediate Stage:</label>
                   <div>
                     <select
                       className='border p-1 rounded w-[70%] hover:border-pink-500 duration-200'
-                      onChange={setData2}
+                      value={intermediateStageValues[stageIndex]}
+                      onChange={(event) =>
+                        updateIntermediateStageValue(event, stageIndex)
+                      }
                     >
                       <option>Select</option>
-                      {stageData.map((el, i) => {
+                      {stageData.map((el, k) => {
                         return (
-                          <option key={i} value={`${el.StageID}`}>
+                          <option key={k} value={`${el.StageID}`}>
                             {el.StageName}
                           </option>
                         );
                       })}
                     </select>
-                    <label
-                      onClick={() => handleDelete(i)}
-                      className='border w-max  px-2 py-2 ml-10 text-white bg-pink-500 rounded text-sm hover:bg-pink-400 duration-200 justify-between'
+                    <button
+                      type='button'
+                      onClick={() => deleteIntermediateStage(stageIndex)}
+                      className='border w-max p-3 ml-20  text-white bg-pink-500 rounded text-sm hover:bg-pink-400 duration-200 justify-between'
                     >
-                      x
-                    </label>
+                      <AiOutlineClose />
+                    </button>
                   </div>
                   <div className='flex flex-col'>
-                    <label className='pt-1'>Fare</label>
-                    <input
-                      type='number'
-                      className='w-[25%] px-2 py-1 border rounded hover:border-pink-500 duration-200'
-                      min={0}
-                      onChange={setData3}
-                    />
+                    <label className='pt-2'>Fare:</label>
+
+                    <div className='grid grid-cols-3 gap-2'>
+                      {TicketShortData.map((shortName, fareIndex) => {
+                        return (
+                          <div className='flex flex-col' key={fareIndex}>
+                            <label className='mr-2  justify-center items-center'>
+                              {TicketData[fareIndex]}:
+                            </label>
+                            <input
+                              type='number'
+                              className='w-[70%]  px-3 py-1 border rounded hover:border-pink-500 duration-200'
+                              min={0}
+                              value={
+                                intermediateStages[stageIndex][shortName] || ''
+                              }
+                              onChange={(event) =>
+                                updateIntermediateFare(
+                                  event,
+                                  stageIndex,
+                                  shortName
+                                )
+                              }
+                            />
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
               );
             })}
 
             <div className='flex flex-col py-1'>
-              <label>Route End Stage</label>
+              <label>Route End Stage:</label>
               <select
                 className='border p-1 rounded w-full hover:border-pink-500 duration-200'
-                onChange={setData2}
+                onChange={endStage}
               >
                 <option>Select</option>
                 {stageData.map((el, i) => {
@@ -256,17 +369,29 @@ const RouteStageMap = () => {
                   );
                 })}
               </select>
-              <label className='pt-1'>Fare</label>
-              <input
-                type='number'
-                className='w-[20%] px-2 py-1 border rounded hover:border-pink-500 duration-200'
-                min={0}
-                onChange={setData4}
-              />
+              <label className='pt-2'>Fare:</label>
+              <div className='grid grid-cols-3 gap-2'>
+                {TicketShortData.map((key, index) => {
+                  return (
+                    <div className='flex flex-col' key={index}>
+                      <label className='mr-2 justify-center items-center'>
+                        {TicketData[index]}:
+                      </label>
+                      <input
+                        type='number'
+                        className='w-[70%] px-3 py-1 border rounded hover:border-pink-500 duration-200'
+                        min={0}
+                        onChange={(event) => setData4(event, key)}
+                        value={endFareData[key]}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
             </div>
             <button
               type='submit'
-              className='border w-full my-2 py-2 text-white bg-pink-500 rounded text-lg hover:bg-pink-400 duration-200'
+              className='border w-full my-3 py-2 text-white bg-pink-500 rounded text-lg hover:bg-pink-400 duration-200'
               onClick={handleSubmit}
             >
               Register

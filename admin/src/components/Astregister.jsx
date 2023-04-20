@@ -88,6 +88,8 @@ const Astregister = () => {
         .catch(error => {
             console.error(error);
         });
+        var form = document.getElementsByName('contact-form')[0];
+				form.reset();
       //   const res1= await axios.post('http://localhost:8004/operator/generate-qr-code', {
       //     data: data
       // })
@@ -116,7 +118,7 @@ const Astregister = () => {
       <Opersidebar />
       <div className='grid grid-cols-1 sm:grid-cols-2 h-screen w-full'>
         <div className='py-4 flex flex-col justify-center items-center'>
-          <form className='max-w-[400px] w-full mx-auto'>
+          <form className='max-w-[400px] w-full mx-auto' name='contact-form'>
             <h2 className='text-4xl text-pink-500 text-center py-1'>
               Asset Register
             </h2>

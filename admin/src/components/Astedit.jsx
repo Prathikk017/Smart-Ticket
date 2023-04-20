@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import Opersidebar from './Opersidebar';
 
 const Astedit = () => {
-  const [astRegNo, setAstRegNo] = useState('');
+  
   const [astName, setAstName] = useState('');
   const [astModel, setAstModel] = useState('');
   const [astChasNo, setAstChasNo] = useState('');
@@ -19,9 +19,7 @@ const Astedit = () => {
   const { AstId } = useParams();
 
   // function
-  const setData1 = (e) => {
-    setAstRegNo(e.target.value);
-  };
+  
 
   const setData2 = (e) => {
     setAstName(e.target.value);
@@ -53,7 +51,6 @@ const Astedit = () => {
     );
 
     if (res1.data.status === 201) {
-      setAstRegNo(res1.data.data[0].AstRegNo);
       setAstName(res1.data.data[0].AstName);
       setAstModel(res1.data.data[0].AstModel);
       setAstChasNo(res1.data.data[0].AstChasNo);
@@ -72,7 +69,7 @@ const Astedit = () => {
     e.preventDefault();
 
     if (
-      !astRegNo ||
+    
       !astName ||
       !astModel ||
       !astChasNo ||
@@ -88,7 +85,7 @@ const Astedit = () => {
       const res = await axios.patch(
         `http://localhost:8004/operator/asset/update/${AstId}`,
         {
-          astRegNo,
+        
           astName,
           astModel,
           astChasNo,
@@ -129,16 +126,7 @@ const Astedit = () => {
             <h2 className='text-4xl text-pink-500 text-center py-1'>
               Update Asset
             </h2>
-            <div className='flex flex-col py-1'>
-              <label>Asset Registration Number</label>
-              <input
-                name='astRegNo'
-                type='text'
-                value={astRegNo}
-                onChange={setData1}
-                className='border rounded w-full hover:border-pink-500 duration-200 p-1'
-              />
-            </div>
+            
             <div className='flex flex-col py-1'>
               <label>Asset Model</label>
               <input

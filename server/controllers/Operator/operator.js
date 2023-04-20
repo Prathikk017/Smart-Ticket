@@ -199,7 +199,17 @@ exports.createQrcodeAsset = async (req, res) => {
   //Qrcode using Qr-image
   const qrCode = qr.image(data, { type: 'png' });
   const qrCodeData = qr.imageSync(data, { type: 'png' }); // Get the QR code image data as a buffer
-  res.send(qrCodeData.toString('base64')); // Send the QR code image data as the response
+  var qr1 = qrCodeData.toString('base64');
+  const query = 'UPDATE tblAsset SET QR = ? WHERE AstRegNo = ?';
+  db.query(query,[qr1, data],(err, result)=>{
+    if(!err){
+      res.send(qrCodeData.toString('base64'));
+      return;
+    }else{
+      console.log(err);
+    }
+  })
+   // Send the QR code image data as the response
   
   // Create Qr code using Qr-code monkey
   // const apiKey =
@@ -287,8 +297,8 @@ exports.updateAsset = (req,res)=>{
   const { AstId } = req.params;
   let tblAsset = req.body;
   let AstModifyDate = moment().format('YYYY-MM-DD hh:mm:ss');
-  let query = `UPDATE tblasset SET AstRegNo=?, AstName=?, AstModel=?, AstChasNo=?, AstEngNo=?, AstPermitNo=?, AstInsurExp=?, AstPermitExp=?, AstModifyDate=?, AStatus=? WHERE AstId  = '${AstId}'`
-  db.query(query,[tblAsset.astRegNo, tblAsset.astName, tblAsset.astModel, tblAsset.astChasNo, tblAsset.astEngNo, tblAsset.astPermitNo, tblAsset.astInsurExp, tblAsset.astPermitExp, AstModifyDate, tblAsset.astatus],(err, result)=>{
+  let query = `UPDATE tblasset SET  AstName=?, AstModel=?, AstChasNo=?, AstEngNo=?, AstPermitNo=?, AstInsurExp=?, AstPermitExp=?, AstModifyDate=?, AStatus=? WHERE AstId  = '${AstId}'`
+  db.query(query,[ tblAsset.astName, tblAsset.astModel, tblAsset.astChasNo, tblAsset.astEngNo, tblAsset.astPermitNo, tblAsset.astInsurExp, tblAsset.astPermitExp, AstModifyDate, tblAsset.astatus],(err, result)=>{
     if (!err) {
       if (result.affectedRows === 0) {
         return res.status(404).json({ message: 'Asset does not found' });
@@ -472,8 +482,8 @@ exports.createRoute = (req, res) => {
     if (!err) {
       if (result.length > 0) {
         var rut = parseInt(result[0].Num);
-        var rutid = rut + 1;
-        let RouteID = `${OperId}R${rutid}`;
+        let rutid = rut + 1;
+        var RouteID = `${OperId}R${rutid}`;
         let CreatedDate = moment(new Date()).format('YYYY-MM-DD hh:mm:ss');
         var query =
           'INSERT INTO tblroutemaster (Num, RouteID, RouteName, RouteEffDate, RouteSStage, RouteEStage, CreatedDate) values(?, ?, ?, ?, ?, ?, ?)';
@@ -489,17 +499,18 @@ exports.createRoute = (req, res) => {
             CreatedDate,
           ],
           (err, results) => {
+            
             if (!err) {
               return res
                 .status(200)
-                .json({ status: 201, data: 'route created successfully' });
+                .json({ status: 201, routeId:RouteID, data: 'route created successfully'  });
             } else {
               return res.status(500).json(err);
             }
           }
         );
       } else {
-        rutid = result.length;
+       let rutid = result.length;
         rutid = rutid + 1;
         let RouteID = `${OperId}R${rutid}`;
         let CreatedDate = moment(new Date()).format('YYYY-MM-DD hh:mm:ss');
@@ -556,14 +567,14 @@ exports.readRoute = (req, res) => {
 exports.createRoutemap = (req, res) => {
   let tblroutestagemap = req.body;
   const RouteID = tblroutestagemap.route;
-  const stageArr = tblroutestagemap.stage;
-  const fareArr = tblroutestagemap.fare;
+  const stageArr = tblroutestagemap.arr;
+  const fareArr = tblroutestagemap.arr1;
   const effDate = tblroutestagemap.effDate;
 
   const insertValues = async () => {
     for (let i = 0; i < stageArr.length; i++) {
       const routeVal = stageArr[i];
-      const fareVal = fareArr[i];
+      const fareVal = JSON.stringify(fareArr[i]);
       const query =
         'INSERT INTO tblroutestagemap (RouteID, StageID, Fare, EffectiveDate) VALUES (?, ?, ?, ?)';
       await new Promise((resolve, reject) => {
@@ -593,3 +604,71 @@ exports.createRoutemap = (req, res) => {
       res.status(500).send('Error inserting values');
     });
 };
+
+//get data from tbltickettype
+exports.readTicket = (req, res) => {
+  let tbltickettype = req.body;
+  const TTstatus = tbltickettype.ttstatus;
+  var query1 = `SELECT TTid, TTname FROM tbltickettype WHERE TTstatus = '${TTstatus}'`;
+  db.query(query1, (err, result) => {
+    if (!err) {
+      if (result.length > 0) {
+        res.status(200).json({ status: 201, data: result });
+        return;
+      } else {
+        res.status(200).json({ status: 201, data: 'ticket  Not Found' });
+      }
+    } else {
+      console.log(err);
+    }
+  });
+};
+
+//create route with ticket type in tblroutetickettype
+exports.createRouteTicType = (req, res) =>{
+  let tblroutetickettype = req.body;
+  let RouteID = tblroutetickettype.RouteID;
+  let CreatedDate = moment(new Date()).format('YYYY-MM-DD');
+  const TicketType = JSON.stringify(tblroutetickettype.ApplicableTickets);
+  let query = 'INSERT INTO tblRouteTicketType (RouteID , TicketType, CreatedDate) VALUES (?, ?, ?)';
+  db.query(query,[RouteID, TicketType, CreatedDate],(err,result)=>{
+    if(!err){
+      res.status(200).json({status:201});
+      return;
+    }else{
+      console.log(err);
+    }
+  })
+}
+
+//get ticket type based on route id
+exports.readRouteTicType = (req, res)=>{
+  let RouteID = req.body.RouteTicket;
+  let query = `SELECT TicketType FROM tblRouteTicketType WHERE RouteID = '${RouteID}'`;
+  db.query(query,(err,result)=>{
+    if(!err){
+      const data = JSON.parse(result[0].TicketType);
+      let Ticketname = [];
+      let TicketShortname = [];
+      for(let i = 0; i< data.length; i++){
+        const TicketType = data[i];
+        let query2 = 'SELECT TTname, TTshortname FROM tblTicketType WHERE TTid = ?';
+        db.query(query2,[TicketType],(err2,result2)=>{
+          if(!err2){
+              const ttname = result2[0].TTname;
+              const ttshortname = result2[0].TTshortname;
+              Ticketname.push(ttname);
+              TicketShortname.push(ttshortname);
+          } else {
+            console.log(err2);
+          }
+        })
+      }
+      setTimeout(() => {
+        res.status(200).json({status: 201, data:Ticketname, data1:TicketShortname});
+      }, 1000);
+    } else {
+      console.log(err);
+    }
+  })
+}
