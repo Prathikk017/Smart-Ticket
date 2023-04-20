@@ -5,9 +5,9 @@ const axios = require('axios');
 const qr = require('qr-image');
 const saltRounds = 10;
 
-//read last row from tbloperator by id
+//read last row from tblOperator by id
 exports.getOperator = (req, res) => {
-  var query = 'SELECT Num FROM tbloperator ORDER BY Num DESC LIMIT 1';
+  var query = 'SELECT Num FROM tblOperator ORDER BY Num DESC LIMIT 1';
   db.query(query, (err, results) => {
     if (!err) {
       if (results.length > 0) {
@@ -23,35 +23,35 @@ exports.getOperator = (req, res) => {
 
 //register operator
 exports.createOperator = (req, res) => {
-  let tbloperator = req.body;
-  let opid = parseInt(tbloperator.OperId);
+  let tblOperator = req.body;
+  let opid = parseInt(tblOperator.OperId);
   opid = opid + 1;
   var OperId = `OP${opid}`;
   var OperStatus = 'I';
   let CreatedDate = moment(new Date()).format('YYYY-MM-DD hh:mm:ss');
-  bcrypt.hash(tbloperator.OperPassword, saltRounds, (err, hash) => {
+  bcrypt.hash(tblOperator.OperPassword, saltRounds, (err, hash) => {
     if (!err) {
       let query =
-        'INSERT INTO tbloperator (Num, OperId, OperName, OperShortName, OperEmail, OperPhone, OperGSTIN, OperAddr1, OperAddr2, OperPassword, OperCity, OperPincode, OperStatus, OperContactName, OperContactMobile, OperContactEmail, OperCreatedDate) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        'INSERT INTO tblOperator (Num, OperId, OperName, OperShortName, OperEmail, OperPhone, OperGSTIN, OperAddr1, OperAddr2, OperPassword, OperCity, OperPincode, OperStatus, OperContactName, OperContactMobile, OperContactEmail, OperCreatedDate) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
       db.query(
         query,
         [
           opid,
           OperId,
-          tbloperator.OperName,
-          tbloperator.OperShortName,
-          tbloperator.OperEmail,
-          tbloperator.OperPhone,
-          tbloperator.OperGSTIN,
-          tbloperator.OperAddr1,
-          tbloperator.OperAddr2,
+          tblOperator.OperName,
+          tblOperator.OperShortName,
+          tblOperator.OperEmail,
+          tblOperator.OperPhone,
+          tblOperator.OperGSTIN,
+          tblOperator.OperAddr1,
+          tblOperator.OperAddr2,
           hash,
-          tbloperator.OperCity,
-          tbloperator.OperPincode,
+          tblOperator.OperCity,
+          tblOperator.OperPincode,
           OperStatus,
-          tbloperator.OperContactName,
-          tbloperator.OperPhone,
-          tbloperator.OperContactEmail,
+          tblOperator.OperContactName,
+          tblOperator.OperPhone,
+          tblOperator.OperContactEmail,
           CreatedDate,
         ],
         (err, results) => {
@@ -70,7 +70,7 @@ exports.createOperator = (req, res) => {
 
 //get all operators
 exports.getAllOperators = (req, res) => {
-  let query = "SELECT * FROM tbloperator WHERE OperStatus = 'I'";
+  let query = "SELECT * FROM tblOperator WHERE OperStatus = 'I'";
   db.query(query, (err, results) => {
     if (!err) {
       return res.status(200).json({ status: 201, data: results });
@@ -83,7 +83,7 @@ exports.getAllOperators = (req, res) => {
 //get operators by id
 exports.getOperators = (req, res) => {
   const { OperId } = req.params;
-  var query = `SELECT * FROM tbloperator WHERE OperId = '${OperId}'`;
+  var query = `SELECT * FROM tblOperator WHERE OperId = '${OperId}'`;
   db.query(query, (err, results) => {
     if (!err) {
       return res.status(200).json({ status: 201, data: results });
@@ -95,12 +95,12 @@ exports.getOperators = (req, res) => {
 
 //validate Operators by email
 exports.validateOperator = (req, res) => {
-  const tbloperator = req.body;
+  const tblOperator = req.body;
   var query =
-    'SELECT * FROM tbloperator WHERE OperEmail=? or OperContactEmail=?';
+    'SELECT * FROM tblOperator WHERE OperEmail=? or OperContactEmail=?';
   db.query(
     query,
-    [tbloperator.OperEmail, tbloperator.OperContactEmail],
+    [tblOperator.OperEmail, tblOperator.OperContactEmail],
     (err, results) => {
       if (!err) {
         if (results.length > 0) {
@@ -130,9 +130,9 @@ exports.getOperatorShortName = (req,res) =>{
 }
 //Create Asset
 exports.createAsset = (req, res) => {
-  let tblasset = req.body;
-  const OperID = tblasset.operId;
-  var query1 = `SELECT Num,AstId FROM tblasset WHERE AstId LIKE '%${OperID}%' ORDER BY Num DESC LIMIT 1`;
+  let tblAsset = req.body;
+  const OperID = tblAsset.operId;
+  var query1 = `SELECT Num,AstId FROM tblAsset WHERE AstId LIKE '%${OperID}%' ORDER BY Num DESC LIMIT 1`;
   db.query(query1, (err, result) => {
     if (!err) {
       if (result.length > 0) {
@@ -141,20 +141,20 @@ exports.createAsset = (req, res) => {
         let AstId = `${OperID}A${astid}`;
         let CreatedDate = moment(new Date()).format('YYYY-MM-DD hh:mm:ss');
         var query =
-          'INSERT INTO tblasset (Num, AstId, AstRegNo, AstName, AstModel, AstChasNo, AstEngNo, AstPermitNo, AstInsurExp, AstPermitExp, AstCreatedDate) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+          'INSERT INTO tblAsset (Num, AstId, AstRegNo, AstName, AstModel, AstChasNo, AstEngNo, AstPermitNo, AstInsurExp, AstPermitExp, AstCreatedDate) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
         db.query(
           query,
           [
             astid,
             AstId,
-            tblasset.astRegNo,
-            tblasset.astName,
-            tblasset.astModel,
-            tblasset.astChasNo,
-            tblasset.astEngNo,
-            tblasset.astPermitNo,
-            tblasset.astInsurExp,
-            tblasset.astPermitExp,
+            tblAsset.astRegNo,
+            tblAsset.astName,
+            tblAsset.astModel,
+            tblAsset.astChasNo,
+            tblAsset.astEngNo,
+            tblAsset.astPermitNo,
+            tblAsset.astInsurExp,
+            tblAsset.astPermitExp,
             CreatedDate,
           ],
           (err, results) => {
@@ -173,20 +173,20 @@ exports.createAsset = (req, res) => {
         let AstId = `${OperID}A${astid}`;
         let CreatedDate = moment(new Date()).format('YYYY-MM-DD hh:mm:ss');
         var query =
-          'INSERT INTO tblasset (Num, AstId, AstRegNo, AstName, AstModel, AstChasNo, AstEngNo, AstPermitNo, AstInsurExp, AstPermitExp, AstCreatedDate) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+          'INSERT INTO tblAsset (Num, AstId, AstRegNo, AstName, AstModel, AstChasNo, AstEngNo, AstPermitNo, AstInsurExp, AstPermitExp, AstCreatedDate) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
         db.query(
           query,
           [
             astid,
             AstId,
-            tblasset.astRegNo,
-            tblasset.astName,
-            tblasset.astModel,
-            tblasset.astChasNo,
-            tblasset.astEngNo,
-            tblasset.astPermitNo,
-            tblasset.astInsurExp,
-            tblasset.astPermitExp,
+            tblAsset.astRegNo,
+            tblAsset.astName,
+            tblAsset.astModel,
+            tblAsset.astChasNo,
+            tblAsset.astEngNo,
+            tblAsset.astPermitNo,
+            tblAsset.astInsurExp,
+            tblAsset.astPermitExp,
             CreatedDate,
           ],
           (err, results) => {
@@ -262,9 +262,9 @@ exports.createQrcodeAsset = async (req, res) => {
 
 //read asset by operator id
 exports.readAsset = (req,res) =>{
-  let tblasset = req.body;
-  let operID = tblasset.operId;
-  let query = `SELECT AstId,AstRegNo,AstName,AstInsurExp,AstPermitExp,AStatus FROM tblasset WHERE  AstId LIKE '%${operID}%'`;
+  let tblAsset = req.body;
+  let operID = tblAsset.operId;
+  let query = `SELECT AstId,AstRegNo,AstName,AstInsurExp,AstPermitExp,AStatus FROM tblAsset WHERE  AstId LIKE '%${operID}%'`;
   db.query(query, (err, result) =>{
     if(!err){
       res.status(200).json({status: 201, data: result});
@@ -277,7 +277,7 @@ exports.readAsset = (req,res) =>{
 //get asset by id
 exports.getAssetById = (req, res) => {
   const { AstId } = req.params;
-  var query = `SELECT * FROM tblasset WHERE AstId = '${AstId}'`;
+  var query = `SELECT * FROM tblAsset WHERE AstId = '${AstId}'`;
   db.query(query, (err, results) => {
     if (!err) {
       return res.status(200).json({ status: 201, data: results });
@@ -287,11 +287,11 @@ exports.getAssetById = (req, res) => {
   });
 };
 
-//soft delete from tblasset by id
+//soft delete from tblAsset by id
 exports.deleteAsset = (req, res) => {
   const { AstId } = req.params;
   var AStatus = 'I';
-  var query = 'UPDATE tblasset SET AStatus = ? WHERE AstId = ? ';
+  var query = 'UPDATE tblAsset SET AStatus = ? WHERE AstId = ? ';
   db.query(query, [AStatus, AstId], (err, results) => {
     if (!err) {
       if (results.affectedRows === 0) {
@@ -305,12 +305,12 @@ exports.deleteAsset = (req, res) => {
   });
 };
 
-//update in tblasset by id
+//update in tblAsset by id
 exports.updateAsset = (req,res)=>{
   const { AstId } = req.params;
   let tblAsset = req.body;
   let AstModifyDate = moment().format('YYYY-MM-DD hh:mm:ss');
-  let query = `UPDATE tblasset SET  AstName=?, AstModel=?, AstChasNo=?, AstEngNo=?, AstPermitNo=?, AstInsurExp=?, AstPermitExp=?, AstModifyDate=?, AStatus=? WHERE AstId  = '${AstId}'`
+  let query = `UPDATE tblAsset SET  AstName=?, AstModel=?, AstChasNo=?, AstEngNo=?, AstPermitNo=?, AstInsurExp=?, AstPermitExp=?, AstModifyDate=?, AStatus=? WHERE AstId  = '${AstId}'`
   db.query(query,[ tblAsset.astName, tblAsset.astModel, tblAsset.astChasNo, tblAsset.astEngNo, tblAsset.astPermitNo, tblAsset.astInsurExp, tblAsset.astPermitExp, AstModifyDate, tblAsset.astatus],(err, result)=>{
     if (!err) {
       if (result.affectedRows === 0) {
@@ -326,9 +326,9 @@ exports.updateAsset = (req,res)=>{
 
 //Create Stage
 exports.createStage = (req, res) => {
-  var tblstagemaster = req.body;
-  var operID = tblstagemaster.operId;
-  var query1 = `SELECT Num,StageID FROM tblstagemaster WHERE StageID LIKE '%${operID}%' ORDER BY Num DESC LIMIT 1`;
+  var tblStageMaster = req.body;
+  var operID = tblStageMaster.operId;
+  var query1 = `SELECT Num,StageID FROM tblStageMaster WHERE StageID LIKE '%${operID}%' ORDER BY Num DESC LIMIT 1`;
   db.query(query1, (err, result) => {
     if (!err) {
       if (result.length > 0) {
@@ -338,10 +338,10 @@ exports.createStage = (req, res) => {
         let CreatedDate = moment(new Date()).format('YYYY-MM-DD hh:mm:ss');
 
         var query =
-          'INSERT INTO tblstagemaster (Num, StageID, StageName, CreatedDate) values(?, ?, ?, ?)';
+          'INSERT INTO tblStageMaster (Num, StageID, StageName, CreatedDate) values(?, ?, ?, ?)';
         db.query(
           query,
-          [stgid, StageID, tblstagemaster.StageName, CreatedDate],
+          [stgid, StageID, tblStageMaster.StageName, CreatedDate],
           (err, results) => {
             if (!err) {
               return res
@@ -358,10 +358,10 @@ exports.createStage = (req, res) => {
         let StageID = `${operID}S${stgid}`;
         let CreatedDate = moment(new Date()).format('YYYY-MM-DD hh:mm:ss');
         var query =
-          'INSERT INTO tblstagemaster (Num, StageID, StageName, CreatedDate) values(?, ?, ?, ?)';
+          'INSERT INTO tblStageMaster (Num, StageID, StageName, CreatedDate) values(?, ?, ?, ?)';
         db.query(
           query,
-          [stgid, StageID, tblstagemaster.StageName, CreatedDate],
+          [stgid, StageID, tblStageMaster.StageName, CreatedDate],
           (err, results) => {
             if (!err) {
               return res
@@ -381,15 +381,15 @@ exports.createStage = (req, res) => {
 
 //validate Stage by StageName
 exports.validateStage = (req, res) => {
-  const tblstagemaster = req.body;
-  const operID = tblstagemaster.operId;
-  var query = `SELECT * FROM tblstagemaster WHERE StageName = ? AND StageID LIKE '%${operID}%`;
-  db.query(query, [tblstagemaster.StageName], (err, results) => {
+  const tblStageMaster = req.body;
+  const operID = tblStageMaster.operId;
+  var query = `SELECT * FROM tblStageMaster WHERE StageName = ? AND StageID LIKE '%${operID}%`;
+  db.query(query, [tblStageMaster.StageName], (err, results) => {
     if (!err) {
       if (results.length > 0) {
         res.status(201).json({
           status: 201,
-          data: `${tblstagemaster.StageName} already exist`,
+          data: `${tblStageMaster.StageName} already exist`,
         });
       } else {
         res.send({ data: 'User doesnt exist' });
@@ -402,9 +402,9 @@ exports.validateStage = (req, res) => {
 
 //read Stage
 exports.readStage = (req, res) => {
-  var tblstagemaster = req.body;
-  var operID = tblstagemaster.operId;
-  var query1 = `SELECT StageID,StageName FROM tblstagemaster WHERE StageID LIKE '%${operID}%'`;
+  var tblStageMaster = req.body;
+  var operID = tblStageMaster.operId;
+  var query1 = `SELECT StageID,StageName FROM tblStageMaster WHERE StageID LIKE '%${operID}%'`;
   db.query(query1, (err, result) => {
     if (!err) {
       if (result.length > 0) {
@@ -420,9 +420,9 @@ exports.readStage = (req, res) => {
 };
 // read stage for table
 exports.readStageTbl = (req, res) => {
-  var tblstagemaster = req.body;
-  var operID = tblstagemaster.operId;
-  var query1 = `SELECT * FROM tblstagemaster WHERE StageID LIKE '%${operID}%'`;
+  var tblStageMaster = req.body;
+  var operID = tblStageMaster.operId;
+  var query1 = `SELECT * FROM tblStageMaster WHERE StageID LIKE '%${operID}%'`;
   db.query(query1, (err, result) => {
     if (!err) {
       if (result.length > 0) {
@@ -440,7 +440,7 @@ exports.readStageTbl = (req, res) => {
 //get stage by id
 exports.getStageById = (req, res) => {
   const { StageID } = req.params;
-  var query = `SELECT * FROM tblstagemaster WHERE StageID = '${StageID}'`;
+  var query = `SELECT * FROM tblStageMaster WHERE StageID = '${StageID}'`;
   db.query(query, (err, results) => {
     if (!err) {
       return res.status(200).json({ status: 201, data: results });
@@ -453,7 +453,7 @@ exports.getStageById = (req, res) => {
 exports.deleteStage = (req, res) => {
   const { StageID } = req.params;
   var StageStatus = 'I';
-  var query = 'UPDATE tblstagemaster SET StageStatus = ? WHERE StageID = ? ';
+  var query = 'UPDATE tblStageMaster SET StageStatus = ? WHERE StageID = ? ';
   db.query(query, [StageStatus, StageID], (err, results) => {
     if (!err) {
       if (results.affectedRows === 0) {
@@ -467,13 +467,13 @@ exports.deleteStage = (req, res) => {
   });
 };
 
-//update in tblasset by id
+//update in tblAsset by id
 exports.updateStage = (req,res)=>{
   const { StageID } = req.params;
-  let tblstagemaster = req.body;
+  let tblStageMaster = req.body;
   let ModifyDate = moment().format('YYYY-MM-DD hh:mm:ss');
-  let query = `UPDATE tblstagemaster SET StageName=?, ModifyDate=?, StageStatus=? WHERE StageID  = '${StageID}'`
-  db.query(query,[ tblstagemaster.StageName, ModifyDate, tblstagemaster.stgstatus],(err, result)=>{
+  let query = `UPDATE tblStageMaster SET StageName=?, ModifyDate=?, StageStatus=? WHERE StageID  = '${StageID}'`
+  db.query(query,[ tblStageMaster.StageName, ModifyDate, tblStageMaster.stgstatus],(err, result)=>{
     if (!err) {
       if (result.affectedRows === 0) {
         return res.status(404).json({ message: 'Stage does not found' });
@@ -488,9 +488,9 @@ exports.updateStage = (req,res)=>{
 
 //create Route
 exports.createRoute = (req, res) => {
-  let tblroutemaster = req.body;
-  const OperId = tblroutemaster.operId;
-  var query1 = `SELECT Num,RouteID FROM tblroutemaster WHERE RouteID LIKE '%${OperId}%' ORDER BY Num DESC LIMIT 1`;
+  let tblRouteMaster = req.body;
+  const OperId = tblRouteMaster.operId;
+  var query1 = `SELECT Num,RouteID FROM tblRouteMaster WHERE RouteID LIKE '%${OperId}%' ORDER BY Num DESC LIMIT 1`;
   db.query(query1, (err, result) => {
     if (!err) {
       if (result.length > 0) {
@@ -499,16 +499,16 @@ exports.createRoute = (req, res) => {
         var RouteID = `${OperId}R${rutid}`;
         let CreatedDate = moment(new Date()).format('YYYY-MM-DD hh:mm:ss');
         var query =
-          'INSERT INTO tblroutemaster (Num, RouteID, RouteName, RouteEffDate, RouteSStage, RouteEStage, CreatedDate) values(?, ?, ?, ?, ?, ?, ?)';
+          'INSERT INTO tblRouteMaster (Num, RouteID, RouteName, RouteEffDate, RouteSStage, RouteEStage, CreatedDate) values(?, ?, ?, ?, ?, ?, ?)';
         db.query(
           query,
           [
             rutid,
             RouteID,
-            tblroutemaster.RouteName,
-            tblroutemaster.RouteEffDate,
-            tblroutemaster.RouteSStage,
-            tblroutemaster.RouteEStage,
+            tblRouteMaster.RouteName,
+            tblRouteMaster.RouteEffDate,
+            tblRouteMaster.RouteSStage,
+            tblRouteMaster.RouteEStage,
             CreatedDate,
           ],
           (err, results) => {
@@ -528,16 +528,16 @@ exports.createRoute = (req, res) => {
         let RouteID = `${OperId}R${rutid}`;
         let CreatedDate = moment(new Date()).format('YYYY-MM-DD hh:mm:ss');
         var query =
-          'INSERT INTO tblroutemaster (Num, RouteID, RouteName, RouteEffDate, RouteSStage, RouteEStage, CreatedDate) values(?, ?, ?, ?, ?, ?, ?)';
+          'INSERT INTO tblRouteMaster (Num, RouteID, RouteName, RouteEffDate, RouteSStage, RouteEStage, CreatedDate) values(?, ?, ?, ?, ?, ?, ?)';
         db.query(
           query,
           [
             rutid,
             RouteID,
-            tblroutemaster.RouteName,
-            tblroutemaster.RouteEffDate,
-            tblroutemaster.RouteSStage,
-            tblroutemaster.RouteEStage,
+            tblRouteMaster.RouteName,
+            tblRouteMaster.RouteEffDate,
+            tblRouteMaster.RouteSStage,
+            tblRouteMaster.RouteEStage,
             CreatedDate,
           ],
           (err, results) => {
@@ -559,9 +559,9 @@ exports.createRoute = (req, res) => {
 
 //read Route
 exports.readRoute = (req, res) => {
-  let tblroutemaster = req.body;
-  const OperId = tblroutemaster.operId;
-  var query1 = `SELECT RouteID,RouteName,RouteSStage,RouteEStage FROM tblroutemaster WHERE RouteID LIKE '%${OperId}%'`;
+  let tblRouteMaster = req.body;
+  const OperId = tblRouteMaster.operId;
+  var query1 = `SELECT RouteID,RouteName,RouteSStage,RouteEStage FROM tblRouteMaster WHERE RouteID LIKE '%${OperId}%'`;
   db.query(query1, (err, result) => {
     if (!err) {
       if (result.length > 0) {
@@ -578,18 +578,18 @@ exports.readRoute = (req, res) => {
 
 //create routestage map
 exports.createRoutemap = (req, res) => {
-  let tblroutestagemap = req.body;
-  const RouteID = tblroutestagemap.route;
-  const stageArr = tblroutestagemap.arr;
-  const fareArr = tblroutestagemap.arr1;
-  const effDate = tblroutestagemap.effDate;
+  let tblRouteStageMap = req.body;
+  const RouteID = tblRouteStageMap.route;
+  const stageArr = tblRouteStageMap.arr;
+  const fareArr = tblRouteStageMap.arr1;
+  const effDate = tblRouteStageMap.effDate;
 
   const insertValues = async () => {
     for (let i = 0; i < stageArr.length; i++) {
       const routeVal = stageArr[i];
       const fareVal = JSON.stringify(fareArr[i]);
       const query =
-        'INSERT INTO tblroutestagemap (RouteID, StageID, Fare, EffectiveDate) VALUES (?, ?, ?, ?)';
+        'INSERT INTO tblRouteStageMap (RouteID, StageID, Fare, EffectiveDate) VALUES (?, ?, ?, ?)';
       await new Promise((resolve, reject) => {
         db.query(
           query,
@@ -618,11 +618,11 @@ exports.createRoutemap = (req, res) => {
     });
 };
 
-//get data from tbltickettype
+//get data from tblTicketType
 exports.readTicket = (req, res) => {
-  let tbltickettype = req.body;
-  const TTstatus = tbltickettype.ttstatus;
-  var query1 = `SELECT TTid, TTname FROM tbltickettype WHERE TTstatus = '${TTstatus}'`;
+  let tblTicketType = req.body;
+  const TTstatus = tblTicketType.ttstatus;
+  var query1 = `SELECT TTid, TTname FROM tblTicketType WHERE TTstatus = '${TTstatus}'`;
   db.query(query1, (err, result) => {
     if (!err) {
       if (result.length > 0) {
@@ -637,12 +637,12 @@ exports.readTicket = (req, res) => {
   });
 };
 
-//create route with ticket type in tblroutetickettype
+//create route with ticket type in tblRouteTicketType
 exports.createRouteTicType = (req, res) =>{
-  let tblroutetickettype = req.body;
-  let RouteID = tblroutetickettype.RouteID;
+  let tblRouteTicketType = req.body;
+  let RouteID = tblRouteTicketType.RouteID;
   let CreatedDate = moment(new Date()).format('YYYY-MM-DD');
-  const TicketType = JSON.stringify(tblroutetickettype.ApplicableTickets);
+  const TicketType = JSON.stringify(tblRouteTicketType.ApplicableTickets);
   let query = 'INSERT INTO tblRouteTicketType (RouteID , TicketType, CreatedDate) VALUES (?, ?, ?)';
   db.query(query,[RouteID, TicketType, CreatedDate],(err,result)=>{
     if(!err){

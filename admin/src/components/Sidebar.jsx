@@ -13,10 +13,12 @@ import { GiPoliceOfficerHead } from 'react-icons/gi';
 import { BiShowAlt } from 'react-icons/bi';
 import { FaUser } from 'react-icons/fa';
 import { ImUser } from 'react-icons/im';
+import { IoTicketOutline } from 'react-icons/io5';
 
 const Sidebar = () => {
 	const [showOperatorDropdown, setShowOperatorDropdown] = useState(false);
 	const [showTeamDropdown, setShowTeamDropdown] = useState(false);
+	const [showTTDropdown, setShowTTDropdown] = useState(false);
 
 	const history = useNavigate();
 
@@ -30,14 +32,18 @@ const Sidebar = () => {
 	const handleTeamDropdown = () => {
 		setShowTeamDropdown(!showTeamDropdown);
 	};
+	const handleTTDropdown = () => {
+		setShowTTDropdown(!showTTDropdown);
+	};
 
 	useEffect(() => {
 		const token = window.localStorage.getItem('Lekpay');
 		const Token = JSON.parse(token);
 		if (!Token) {
-		  history('/');
+			history('/');
 		}
-	  }, []);
+	}, []);
+
 	return (
 		<div className='bg-neutral-100 flex flex-col py-3 px-1 w-64 h-screen'>
 			<div className='flex items-center justify-start hover:cursor-pointer'>
@@ -61,12 +67,12 @@ const Sidebar = () => {
 							className='flex justify-start items-center p-2 ml-2 mr-0 mt-2 rounded-lg text-center hover:bg-pink-300 hover:cursor-pointer w-max'
 							onClick={handleOperatorDropdown}
 						>
-							<li className='flex justify-start items-center pr-1 mr-6 text-center'>
+							<li className='flex justify-start items-center pr-12 text-center'>
 								<MdApproval />
 								<span className='ml-2'>Operator</span>
 								<FontAwesomeIcon
 									icon={faChevronRight}
-									className={`transition-transform duration-300 ml-[73px] ${
+									className={`transition-transform duration-300 ml-[54px] ${
 										showOperatorDropdown ? 'transform rotate-90' : ''
 									}`}
 								/>
@@ -74,6 +80,14 @@ const Sidebar = () => {
 						</button>
 						{showOperatorDropdown && (
 							<div className=' mt-2'>
+								<Link to='/admin/approveopersview'>
+									<button className='flex justify-start items-center p-2 m-2 rounded-lg text-center hover:bg-pink-300 hover:cursor-pointer'>
+										<li className='flex justify-start items-center pr-1 mr-4 text-center'>
+											<GiPoliceOfficerHead />
+											<span className='ml-2'>Approve Operators</span>
+										</li>
+									</button>
+								</Link>
 								<Link to='/admin/operatorsview'>
 									<button className='flex justify-start items-center p-2 m-2 rounded-lg text-center hover:bg-pink-300 hover:cursor-pointer'>
 										<li className='flex justify-start items-center pr-1 mr-4 text-center'>
@@ -106,12 +120,12 @@ const Sidebar = () => {
 							className='flex justify-start items-center p-2 ml-2 mr-0 mt-2 rounded-lg text-center hover:bg-pink-300 hover:cursor-pointer w-max'
 							onClick={handleTeamDropdown}
 						>
-							<li className='flex justify-start items-center pr-1 mr-6 text-center'>
+							<li className='flex justify-start items-center pr-12 text-center'>
 								<GrGroup />
 								<span className='ml-2'>Team</span>
 								<FontAwesomeIcon
 									icon={faChevronRight}
-									className={`ml-auto transition-transform duration-300 ml-[99px] ${
+									className={`ml-auto transition-transform duration-300 ml-[81px] ${
 										showTeamDropdown ? 'transform rotate-90' : ''
 									}`}
 								/>
@@ -144,6 +158,43 @@ const Sidebar = () => {
 							<span className='ml-1'>Users</span>
 						</li>
 					</Link>
+					<div>
+						<button
+							className='flex justify-start items-center p-2 ml-2 mr-0 mt-2 rounded-lg text-center hover:bg-pink-300 hover:cursor-pointer w-max'
+							onClick={handleTTDropdown}
+						>
+							<li className='flex justify-start items-center pr-12 text-center'>
+								<IoTicketOutline />
+								<span className='ml-2'>Ticket Type</span>
+								<FontAwesomeIcon
+									icon={faChevronRight}
+									className={`ml-auto transition-transform duration-300 ml-[81px] ${
+										showTTDropdown ? 'transform rotate-90' : ''
+									}`}
+								/>
+							</li>
+						</button>
+						{showTTDropdown && (
+							<div className=' mt-2'>
+								<Link to='/admin/ticket-type/add'>
+									<button className='flex justify-start items-center p-2 m-2 rounded-lg text-center hover:bg-pink-300 hover:cursor-pointer'>
+										<li className='flex justify-start items-center pr-1 mr-4 text-center'>
+											<BsFillPersonPlusFill />
+											<span className='ml-2'>Add Ticket Type</span>
+										</li>
+									</button>
+								</Link>
+								<Link to='/admin/ticket-types'>
+									<button className='flex justify-start items-center p-2 m-2 rounded-lg text-center hover:bg-pink-300 hover:cursor-pointer'>
+										<li className='flex justify-start items-center pr-1 mr-4 text-center'>
+											<BiShowAlt />
+											<span className='ml-2'>Show Ticket Type</span>
+										</li>
+									</button>
+								</Link>
+							</div>
+						)}
+					</div>
 				</ul>
 			</div>
 			<div className='opacity-70'>

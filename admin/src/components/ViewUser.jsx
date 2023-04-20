@@ -6,9 +6,10 @@ import Sidebar from './Sidebar';
 
 const ViewUser = () => {
 	const [data, setData] = useState([]);
-	const history = useNavigate();
 	const { UserId } = useParams();
-	const getUserData = async () => {
+	const history = useNavigate();
+
+	const getSingleUserData = async () => {
 		const res = await axios.get(`http://localhost:8004/admin/users/${UserId}`);
 
 		if (res.data.status === 201) {
@@ -21,12 +22,12 @@ const ViewUser = () => {
 
 	useEffect(() => {
 		const token = window.localStorage.getItem('Lekpay');
-    const Token = JSON.parse(token);
-    if (!Token) {
-      history('/');
-    }else{
-		getUserData();
-	}
+		const Token = JSON.parse(token);
+		if (!Token) {
+			history('/');
+		} else {
+			getSingleUserData();
+		}
 	}, []);
 
 	return (

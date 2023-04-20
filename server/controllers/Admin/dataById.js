@@ -51,10 +51,24 @@ exports.getEmployeeById = (req, res) => {
 		}
 	});
 };
+
 //get user by id
 exports.getUserById = (req, res) => {
 	const { UserId } = req.params;
 	var query = `SELECT * FROM tblCommuter WHERE UserId = '${UserId}'`;
+	db.query(query, (err, results) => {
+		if (!err) {
+			return res.status(200).json({ status: 201, data: results });
+		} else {
+			return res.status(500).json({ status: 500, data: err });
+		}
+	});
+};
+
+//get ticket type by id
+exports.getTicketTypeById = (req, res) => {
+	const { TTid } = req.params;
+	var query = `SELECT * FROM tblTicketType WHERE TTid = '${TTid}'`;
 	db.query(query, (err, results) => {
 		if (!err) {
 			return res.status(200).json({ status: 201, data: results });

@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { FaAngleDoubleLeft, FaAngleDoubleRight } from 'react-icons/fa';
 import moment from 'moment';
 import Sidebar from './Sidebar';
 import './pagination.css';
 
-const Users = () => {
+const Transaction = () => {
 	const [data, setData] = useState('');
 	const [currentPage, setCurrentPage] = useState(1);
 	const [itemsPerPage, setItemsPerPage] = useState(10);
-	const history = useNavigate();
 
-	const getUsersData = async () => {
-		const res = await axios.get('http://localhost:8004/admin/users');
+	const getAdminsData = async () => {
+		const res = await axios.get('http://localhost:8004/admin/transactions/');
 		if (res.data.status === 201) {
 			setData(res.data.data);
 		} else {
@@ -48,13 +47,7 @@ const Users = () => {
 	});
 
 	useEffect(() => {
-		const token = window.localStorage.getItem('Lekpay');
-		const Token = JSON.parse(token);
-		if (!Token) {
-			history('/');
-		} else {
-			getUsersData();
-		}
+		getAdminsData();
 	}, []);
 
 	return (
@@ -62,10 +55,10 @@ const Users = () => {
 			<div>
 				<div className='flex flex-row gap-10'>
 					<Sidebar />
-					<div className='flex-col mt-10 ml-5'>
-						<div className='bg-white pl-1 pt-1 justify-center items-center rounded-md sm:w-[100%] lg:w-[120%] xl:w-[150%] 2xl:w-[180%] flex-1'>
+					<div className='flex-col mr-8'>
+						<div className='bg-white pl-10 pt-1 mt-10 mr-10 ml-8 items-center rounded-md w-[160%] flex-1'>
 							<h1 className='text-pink-500 text-3xl text-center font-semibold pb-1'>
-								Users Table
+								Admins Table
 							</h1>
 							<div className=' rounded-sm mt-2'>
 								<table className='w-full text-gray-700 justify-between mx-1 border border-gray-800 h-auto'>
@@ -89,15 +82,15 @@ const Users = () => {
 																<td className='p-1 ml-1'>
 																	{indexOfFirstItem + i + 1}
 																</td>
-																<td className='p-1 ml-1'>{el.Uname}</td>
-																<td className='p-1 ml-1'>{el.Ugender}</td>
-																<td className='p-1 ml-1'>{el.Umobile}</td>
+																<td className='p-1 ml-1'>{el.Aname}</td>
+																<td className='p-1 ml-1'>{el.Agender}</td>
+																<td className='p-1 ml-1'>{el.Amobile}</td>
 																<td className='p-1 ml-1'>
-																	{moment(el.UDoB).format('DD-MM-YYYY')}
+																	{moment(el.ADoB).format('DD-MM-YYYY')}
 																</td>
-																<td className='p-1 ml-1'>{el.UStatus}</td>
+																<td className='p-1 ml-1'>{el.AStatus}</td>
 																<td className='p-1 ml-1'>
-																	<Link to={`/admin/usersview/${el.UserId}`}>
+																	<Link to={`/admin/adminview/${el.AdminId}`}>
 																		<button className='hover:bg-pink-300  px-4 py-2 rounded-lg w-max'>
 																			View
 																		</button>
@@ -120,7 +113,7 @@ const Users = () => {
 												} page-item`}
 											>
 												<button
-													className='page-link  rounded-r-md focus:outline-none rounded-l-md mr-6 mt-1'
+													className='page-link rounded-r-md focus:outline-none rounded-l-md mr-6 mt-1'
 													onClick={() =>
 														setCurrentPage((prev) =>
 															prev === 1 ? prev : prev - 1
@@ -137,7 +130,7 @@ const Users = () => {
 												} page-item`}
 											>
 												<button
-													className='page-link  rounded-r-md focus:outline-none rounded-l-md ml-6 mt-1'
+													className='page-link rounded-r-md focus:outline-none rounded-l-md ml-6 mt-1'
 													onClick={() =>
 														setCurrentPage((prev) =>
 															prev === pageNumber.length ? prev : prev + 1
@@ -159,4 +152,4 @@ const Users = () => {
 	);
 };
 
-export default Users;
+export default Transaction;

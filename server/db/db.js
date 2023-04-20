@@ -1,15 +1,15 @@
 const mysql = require("mysql");
 
 var db = mysql.createConnection({
+  host: "localhost",
   user: "root",
-    host: "localhost",
-    password: "password",
-    database: "smarttic",
+  password: "password",
+  database: "smarttic",
 });
 
 db.connect((err) => {
   if (!err) {
-    console.log("DB is Connected");
+    console.log("Connected");
   } else {
     console.log(err);
   }

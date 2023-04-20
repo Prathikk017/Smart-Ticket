@@ -29,18 +29,24 @@ import ViewUser from './components/ViewUser';
 import ViewOperator from './components/ViewOperator';
 import ViewEmployee from './components/ViewEmployee';
 import ViewAsset from './components/ViewAsset';
+import AdmiCreate from './components/AdmiCreate';
+import TicketType from './components/TicketType';
+import TicketTypes from './components/TicketTypes';
+import ViewTicketType from './components/ViewTicketType';
 
 function App() {
 	return (
 		<BrowserRouter>
 			<Routes>
+				
 				<Route path='/' element={<SignIn />} />
 				<Route path='/register' element={<Register />} />
 				<Route path='/admin/dashboard' element={<Dashboard />} />
-				<Route path='/opertable' element={<Opertable />} />
+				<Route path='/admin/addAdmin' element={<AdmiCreate />} />
+				<Route path='admin/approveopersview' element={<Opertable />} />
+				<Route path='/admin/approveoper/:OperId' element={<Operview />} />
 				<Route path='/operdashboard' element={<Operdashboard />} />
 				<Route path='/approve/:OperId' element={<Opertable />} />
-				<Route path='/operator/:OperId' element={<Operview />} />
 				<Route path='/empregister' element={<Empregister />} />
 				<Route path='/empupdate/:EmpId' element={<Empedit />} />
 				<Route path='/empview' element={<Emptable />} />
@@ -66,6 +72,9 @@ function App() {
 				<Route path='/admin/adminview/:AdminId' element={<ViewAdmin />} />
 				<Route path='/admin/usersview' element={<Users />} />
 				<Route path='/admin/usersview/:UserId' element={<ViewUser />} />
+				<Route path='/admin/ticket-type/add' element={<TicketType />} />
+				<Route path='/admin/ticket-types' element={<TicketTypes />} />
+				<Route path='/admin/ticket-types/:TTid' element={<ViewTicketType />} />
 			</Routes>
 		</BrowserRouter>
 	);
