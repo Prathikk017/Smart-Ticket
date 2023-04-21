@@ -544,7 +544,7 @@ exports.createRoute = (req, res) => {
             if (!err) {
               return res
                 .status(200)
-                .json({ status: 201, data: 'route created successfully' });
+                .json({ status: 201,routeId:RouteID, data: 'route created successfully' });
             } else {
               return res.status(500).json(err);
             }

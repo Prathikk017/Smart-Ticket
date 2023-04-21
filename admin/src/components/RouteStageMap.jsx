@@ -175,6 +175,7 @@ const RouteStageMap = () => {
         form.reset();
         setTicketData([]);
         setTicketShortData([]);
+        window.location.reload();
       } else {
         alert('Route unable to Map');
         const form = document.getElementsByName('contact-form')[0];

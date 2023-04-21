@@ -71,14 +71,15 @@ const Routeregister = () => {
       );
       if (res.data.status === 201) {
         const RouteID = res.data.routeId;
-        alert('Route created successfully');
-        
         const  res2 = await axios.post('http://localhost:8004/operator/routettypecreate',{
           RouteID,
           ApplicableTickets
         })
         if(res2.data.status === 201){
+          alert('Route created successfully');
           alert('Route Ticket Type added');
+        }else{
+          console.log('error');
         }
         var form = document.getElementsByName('contact-form')[0];
         form.reset();

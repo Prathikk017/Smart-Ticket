@@ -15,20 +15,32 @@ const ViewTicketType = () => {
 		);
 
 		if (res.data.status === 201) {
-			console.log(res.data.data);
 			setData(res.data.data);
 		} else {
 			console.log('error');
 		}
 	};
 
-	const handleSub = async () => {
+	const handleEnableSub = async () => {
 		const res = await axios.patch(
-			`http://localhost:8004/admin//ticket-types/enable/${TTid}`
+			`http://localhost:8004/admin/ticket-types/enable/${TTid}`
 		);
 		if (res.data.status === 201) {
 			alert('Ticket Type Activated');
-			setTimeout(() => history('/admin/dashboard'), 500);
+			setTimeout(() => history('/admin/ticket-types'), 500);
+			return;
+		} else {
+			console.log('error');
+		}
+	};
+
+	const handleDisableSub = async () => {
+		const res = await axios.patch(
+			`http://localhost:8004/admin/ticket-types/disable/${TTid}`
+		);
+		if (res.data.status === 201) {
+			alert('Ticket Type Deactivated');
+			setTimeout(() => history('/admin/ticket-types'), 500);
 			return;
 		} else {
 			console.log('error');
@@ -81,19 +93,18 @@ const ViewTicketType = () => {
 												</span>
 											</label>
 											<div className='flex flex-row justify-between m-4'>
-												<Link to={'/admin/approveopersview'}>
-													<button className='hover:bg-pink-300 px-4 py-2 rounded-lg w-max'>
-														Disable
-													</button>
-												</Link>
-												<Link to={`/admin/approveoper/${el.OperId}`}>
-													<button
-														className='hover:bg-pink-300 px-4 py-2 rounded-lg w-max'
-														onClick={handleSub}
-													>
-														Enable
-													</button>
-												</Link>
+												<button
+													className='hover:bg-pink-300 px-4 py-2 rounded-lg w-max'
+													onClick={handleDisableSub}
+												>
+													Disable
+												</button>
+												<button
+													className='hover:bg-pink-300 px-4 py-2 rounded-lg w-max'
+													onClick={handleEnableSub}
+												>
+													Enable
+												</button>
 											</div>
 										</div>
 									</>
