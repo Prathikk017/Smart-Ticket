@@ -46,7 +46,7 @@ const Opersidebar = () => {
 	  }, []);
 
 	return (
-		<div className='bg-neutral-100 flex flex-col py-3 px-1 w-64 h-screen'>
+		<div className='bg-neutral-100 flex flex-col p-3 w-60 h-screen'>
 			<div className='flex items-center justify-start hover:cursor-pointer'>
 				<img
 					className='w-[50px] ml-2 rounded-r-full rounded-l-full'

@@ -14,7 +14,7 @@ const Stgtable = () => {
   const ID = window.localStorage.getItem('OperID');
   var operId = JSON.parse(ID);
 
-  const getAstData = async () => {
+  const getStgData = async () => {
     const res = await axios.post('http://localhost:8004/operator/readstg', {
       operId,
     });
@@ -57,7 +57,7 @@ const Stgtable = () => {
     if (!Token) {
       history('/');
     }else{
-      getAstData();
+      getStgData();
     }
   });
 
