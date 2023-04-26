@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ReCAPTCHA from 'react-google-recaptcha';
-import Header from './Header';
-import login from '../assets/login.jpg';
+import Header from '../Header';
+import login from '../../assets/login.jpg';
 import { useFormik } from 'formik';
 import axios from 'axios';
-import { operRegisterSchema } from '../schemas';
+import { operRegisterSchema } from '../../schemas';
 
 const initialValues = {
   OperName: '',

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { HiOutlineViewGrid, HiOutlineLogout } from 'react-icons/hi';
 import { GrBus, GrView } from 'react-icons/gr';
 import { Link } from 'react-router-dom';
-import logo from '../assets/logo.jpg';
+import logo from '../../assets/logo.jpg';
 import { AiFillSetting } from 'react-icons/ai';
 import { FaMapMarkedAlt } from 'react-icons/fa';
 import { BsFillXDiamondFill } from 'react-icons/bs';
@@ -12,7 +12,7 @@ import { MdApproval } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { AuthProvider } from '../Contexts/authContext';
+import { AuthProvider } from '../../Contexts/authContext';
 
 const Opersidebar = () => {
 	const [showAssetDropdown, setShowAssetDropdown] = useState(false);

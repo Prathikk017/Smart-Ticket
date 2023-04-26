@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Opersidebar from './Opersidebar';
+import Opersidebar from '../Operator/Opersidebar';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,10 +10,24 @@ const Routeregister = () => {
   const [RouteEStage, setRouteEStage] = useState('');
   const [ApplicableTickets, setApplicableTickets] = useState([]);
   const [checkboxOptions, setCheckBoxOptions] = useState([]);
- 
+  const [stageData, setStageData] = useState([]);
+
   const history = useNavigate();
   const ID = window.localStorage.getItem('OperID');
   var operId = JSON.parse(ID);
+
+
+  const getStage = async () => {
+    const res1 = await axios.post('http://localhost:8004/operator/readstage', {
+      operId,
+    });
+    if (res1.data.status === 201) {
+      setStageData(res1.data.data);
+      return;
+    } else {
+      console.log('error');
+    }
+  };
 
   //function
   const setData = (e) => {
@@ -24,12 +38,20 @@ const Routeregister = () => {
     setRouteEffDate(e.target.value);
   };
 
-  const setData2 = (e) => {
-    setRouteSStage(e.target.value);
+  const startStage = (e) => {
+    if (e.target.value !== 'Select') {
+      setRouteSStage(e.target.value);
+    } else {
+      setRouteSStage('');
+    }
   };
 
-  const setData3 = (e) => {
-    setRouteEStage(e.target.value);
+  const endStage = (e) => {
+    if (e.target.value !== 'Select') {
+      setRouteEStage(e.target.value);
+    } else {
+      setRouteEStage('');
+    }
   };
  
   const handleCheckboxChange = (e) => {
@@ -98,6 +120,7 @@ const Routeregister = () => {
       history('/');
     }else{
      getTicketData();
+     getStage();
     }
   }, []);
 
@@ -128,19 +151,35 @@ const Routeregister = () => {
             </div>
             <div className='flex flex-col py-2'>
               <label>Route Start Stage</label>
-              <input
-                type='text'
-                onChange={setData2}
-                className='border rounded w-full hover:border-pink-500 duration-200 p-1'
-              />
+              <select
+                className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+                onChange={startStage}
+              >
+                <option>Select</option>
+                {stageData.map((el, i) => {
+                  return (
+                    <option key={i} value={`${el.StageID}`}>
+                      {el.StageName}
+                    </option>
+                  );
+                })}
+              </select>
             </div>
             <div className='flex flex-col py-2'>
               <label>Route End Stage</label>
-              <input
-                type='text'
-                onChange={setData3}
-                className='border rounded w-full hover:border-pink-500 duration-200 p-1'
-              />
+              <select
+                className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+                onChange={endStage}
+              >
+                <option>Select</option>
+                {stageData.map((el, i) => {
+                  return (
+                    <option key={i} value={`${el.StageID}`}>
+                      {el.StageName}
+                    </option>
+                  );
+                })}
+              </select>
             </div>
             <div className='flex flex-col py-2'>
               <label>Applicable Ticket:</label>

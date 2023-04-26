@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import Opersidebar from './Opersidebar';
+import Opersidebar from '../Operator/Opersidebar';
 
 const Astedit = () => {
   
@@ -205,15 +205,15 @@ const Astedit = () => {
                 value={astatus}
                 onChange={setData9}
               >
-                <option value='A'>A</option>
-                <option value='I'>I</option>
+                <option value='A'>Active</option>
+                <option value='I'>Inactive</option>
               </select>
             </div>
             <button
               className='border w-full my-2 py-2 text-white bg-pink-500 rounded text-lg hover:bg-pink-400 duration-200'
               onClick={handleSub}
             >
-              Register
+              Update
             </button>
           </form>
         </div>

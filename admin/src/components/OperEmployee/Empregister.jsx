@@ -2,9 +2,8 @@ import React, {  useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useFormik } from 'formik';
-
-import Opersidebar from './Opersidebar';
-import { empRegisterSchema } from '../schemas';
+import Opersidebar from '../Operator/Opersidebar';
+import { empRegisterSchema } from '../../schemas';
 
 const initialValues = {
   EmpName: '',

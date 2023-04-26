@@ -1,6 +1,6 @@
 import React, {  useEffect, useState } from 'react';
 import axios from 'axios';
-import Opersidebar from './Opersidebar';
+import Opersidebar from '../Operator/Opersidebar';
 import { useNavigate } from 'react-router-dom';
 
 const Stageregister = () => {

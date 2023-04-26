@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useState } from 'react';
 import axios from 'axios';
 import { AiOutlineClose } from 'react-icons/ai';
-import Opersidebar from './Opersidebar';
+import Opersidebar from '../Operator/Opersidebar';
 import { useNavigate } from 'react-router-dom';
 
 let arr = [];

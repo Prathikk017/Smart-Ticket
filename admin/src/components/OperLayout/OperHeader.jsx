@@ -6,7 +6,7 @@ import {
 } from 'react-icons/hi';
 import { Popover, Transition } from '@headlessui/react';
 import classNames from 'classnames';
-const Header = () => {
+const OperHeader = () => {
   return (
     <div className='bg-white h-16 px-4 flex justify-between items-center border-b border-gray-200 shadow-md shadow-gray-200 '>
       <div className='relative'>
@@ -90,4 +90,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default OperHeader;

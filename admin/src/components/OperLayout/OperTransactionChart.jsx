@@ -7,9 +7,6 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-  ResponsiveContainer,
-  LineChart,
-  Line,
 } from 'recharts';
 
 const data = [
@@ -64,7 +61,7 @@ const data = [
   },
 ];
 
-export default function TransactionChart() {
+export default function OperTransactionChart() {
   return (
     <div className='h-[22rem] bg-white p-4 rounded-sm border border-gray-200 flex flex-col flex-1 w-min'>
       <strong className='text-gray-700 font-medium'>Transactions</strong>

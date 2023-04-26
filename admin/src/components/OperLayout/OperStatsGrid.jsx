@@ -5,7 +5,8 @@ import { BiRupee } from 'react-icons/bi';
 import { IoPeople, IoPieChart } from 'react-icons/io5';
 import { BsFillXDiamondFill } from 'react-icons/bs';
 import axios from 'axios';
-const StatsGrid = () => {
+
+const OperStatsGrid = () => {
   const history = useNavigate();
   // total asset data
   const [data, setData] = useState('');
@@ -169,7 +170,7 @@ const StatsGrid = () => {
   );
 };
 
-export default StatsGrid;
+export default OperStatsGrid;
 
 function BoxWrapper({ children }) {
   return (
