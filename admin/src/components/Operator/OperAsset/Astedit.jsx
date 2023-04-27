@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import Opersidebar from '../Operator/Opersidebar';
+import Opersidebar from '../Opersidebar';
 
 const Astedit = () => {
   

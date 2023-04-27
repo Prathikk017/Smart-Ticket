@@ -1,35 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import Opersidebar from '../Operator/Opersidebar';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import moment from 'moment';
+import { useParams } from 'react-router-dom';
+import Opersidebar from '../Opersidebar';
 
-const Routeregister = () => {
+const Rutedit = () => {
+  
   const [RouteName, setRouteName] = useState('');
   const [RouteEffDate, setRouteEffDate] = useState('');
   const [RouteSStage, setRouteSStage] = useState('');
   const [RouteEStage, setRouteEStage] = useState('');
-  const [ApplicableTickets, setApplicableTickets] = useState([]);
-  const [checkboxOptions, setCheckBoxOptions] = useState([]);
+  const [RouteStatus, setRouteStatus] = useState('');
   const [stageData, setStageData] = useState([]);
-
   const history = useNavigate();
   const ID = window.localStorage.getItem('OperID');
   var operId = JSON.parse(ID);
+  const { RouteID } = useParams();
 
-
-  const getStage = async () => {
-    const res1 = await axios.post('http://localhost:8004/operator/readstage', {
-      operId,
-    });
-    if (res1.data.status === 201) {
-      setStageData(res1.data.data);
-      return;
-    } else {
-      console.log('error');
-    }
-  };
-
-  //function
+  // function
   const setData = (e) => {
     setRouteName(e.target.value);
   };
@@ -54,60 +43,68 @@ const Routeregister = () => {
     }
   };
  
-  const handleCheckboxChange = (e) => {
-    const ticketValue = e.target.value;
-    const isChecked = e.target.checked;
-    if (isChecked) {
-      setApplicableTickets([...ApplicableTickets, ticketValue]);
+  const setData2 = (e) => {
+    setRouteStatus(e.target.value);
+  };
+  const getData = async () => {
+    const res1 = await axios.get(
+      `http://localhost:8004/operator/rutread/${RouteID}`
+    );
+
+    if (res1.data.status === 201) {
+      setRouteName(res1.data.data[0].RouteName);
+      setRouteEffDate(moment(res1.data.data[0].RouteEffDate).format('YYYY-MM-DD'));
+      setRouteSStage(res1.data.data[0].RouteSStage);
+      setRouteEStage(res1.data.data[0].RouteEStage);
+      setRouteStatus(res1.data.data[0].RouteStatus);
+      return;
     } else {
-      setApplicableTickets(ApplicableTickets.filter((t) => t !== ticketValue));
+      console.log('error');
     }
   };
 
-  const getTicketData = async() => {
-    let ttstatus = 'A';
-     const res1 = await axios.post('http://localhost:8004/operator/readticket',{ttstatus});
+  const getStage = async () => {
+    const res1 = await axios.post('http://localhost:8004/operator/readstage', {
+      operId,
+    });
+    if (res1.data.status === 201) {
+      setStageData(res1.data.data);
+      return;
+    } else {
+      console.log('error');
+    }
+  };
 
-     if(res1.data.status === 201){
-      setCheckBoxOptions(res1.data.data);
-     }else{
-      console.log("err");
-     }
-  }
-// console.log(ApplicableTickets)
-  const handleSubmit = async (e) => {
+  const handleSub = async (e) => {
     e.preventDefault();
 
-    if (!RouteName || !RouteEffDate || !RouteSStage || !RouteEStage) {
+    if (
+    
+      !RouteName ||
+      !RouteEffDate ||
+      !RouteSStage ||
+      !RouteEStage ||
+      !RouteStatus
+    ) {
       alert('Fill the details');
+      return;
     } else {
-      const res = await axios.post(
-        'http://localhost:8004/operator/routecreate',
+      const res = await axios.patch(
+        `http://localhost:8004/operator/route/update/${RouteID}`,
         {
           RouteName,
           RouteEffDate,
           RouteSStage,
           RouteEStage,
-          operId,
+          RouteStatus,
         }
       );
       if (res.data.status === 201) {
-        const RouteID = res.data.routeId;
-        const  res2 = await axios.post('http://localhost:8004/operator/routettypecreate',{
-          RouteID,
-          ApplicableTickets
-        })
-        if(res2.data.status === 201){
-          alert('Route created successfully');
-          alert('Route Ticket Type added');
-        }else{
-          console.log('error');
-        }
-        var form = document.getElementsByName('contact-form')[0];
-        form.reset();
+        alert('Route successfully update');
+        history('/rutview');
         return;
       } else {
-        alert('Route unable to register');
+        alert('Route unable to update');
         return;
       }
     }
@@ -119,24 +116,26 @@ const Routeregister = () => {
     if (!Token) {
       history('/');
     }else{
-     getTicketData();
-     getStage();
+      getData();
+      getStage();
     }
+ 
   }, []);
-
   return (
-    <div className='flex flex-row gap-4 bg-gray-50'>
+    <div className='flex flex-row gap-4'>
       <Opersidebar />
-      <div className='h-screen w-full py-4 max-h-[100vh] overflow-y-auto'>
-        <div className='py-4 flex flex-col justify-center items-center'>
-          <form className='max-w-[400px] w-full mx-auto' name='contact-form'>
+      <div className='grid grid-cols-1 sm:grid-cols-2 h-screen w-full'>
+        <div className='py-2 flex flex-col justify-center items-center'>
+          <form className='max-w-[400px] w-full'>
             <h2 className='text-4xl text-pink-500 text-center py-1'>
-              Route Register
+              Update Route
             </h2>
             <div className='flex flex-col py-2'>
               <label>Route Name</label>
               <input
                 type='text'
+                name='RouteName'
+                value={RouteName}
                 onChange={setData}
                 className='border rounded w-full hover:border-pink-500 duration-200 p-1'
               />
@@ -145,6 +144,8 @@ const Routeregister = () => {
               <label>Route Effective date</label>
               <input
                 type='date'
+                name='RouteEffDate'
+                value={RouteEffDate}
                 onChange={setData1}
                 className='border rounded w-full hover:border-pink-500 duration-200 p-1'
               />
@@ -154,11 +155,13 @@ const Routeregister = () => {
               <select
                 className='border p-1 rounded w-full hover:border-pink-500 duration-200'
                 onChange={startStage}
+                name='RouteSStage'
+                value={RouteSStage}
               >
                 <option>Select</option>
                 {stageData.map((el, i) => {
                   return (
-                    <option key={i} value={`${el.StageID}`}>
+                    <option key={i} value={`${el.StageName}`}>
                       {el.StageName}
                     </option>
                   );
@@ -170,40 +173,36 @@ const Routeregister = () => {
               <select
                 className='border p-1 rounded w-full hover:border-pink-500 duration-200'
                 onChange={endStage}
+                name='RouteEStage'
+                value={RouteEStage}
               >
                 <option>Select</option>
                 {stageData.map((el, i) => {
                   return (
-                    <option key={i} value={`${el.StageID}`}>
+                    <option key={i} value={`${el.StageName}`}>
                       {el.StageName}
                     </option>
                   );
                 })}
               </select>
             </div>
-            <div className='flex flex-col py-2'>
-              <label>Applicable Ticket:</label>
-              <div className='grid grid-cols-3 gap-3 m-2'>
-              { checkboxOptions.map((el, i) => {
-                  return (
-              <div className='flex items-center p-1' key={i}>
-                <input
-                  type='checkbox'
-                  value={el.TTid}
-                  onChange={handleCheckboxChange}
-                  className='mr-1'
-                />
-                <label>{el.TTname}</label>
-              </div>
-                );
-              })}
-          </div>
+            <div className='flex flex-col py-1'>
+              <label>Status</label>
+              <select
+                className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+                name='RouteStatus'
+                value={RouteStatus}
+                onChange={setData2}
+              >
+                <option value='A'>Active</option>
+                <option value='I'>Inactive</option>
+              </select>
             </div>
             <button
               className='border w-full my-2 py-2 text-white bg-pink-500 rounded text-lg hover:bg-pink-400 duration-200'
-              onClick={handleSubmit}
+              onClick={handleSub}
             >
-              Register
+              Update
             </button>
           </form>
         </div>
@@ -212,4 +211,4 @@ const Routeregister = () => {
   );
 };
 
-export default Routeregister;
+export default Rutedit;

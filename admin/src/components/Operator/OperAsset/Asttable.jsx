@@ -3,10 +3,10 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaAngleDoubleLeft, FaAngleDoubleRight } from 'react-icons/fa';
 import moment from 'moment';
-import Opersidebar from '../Operator/Opersidebar';
-import '../pagination.css';
+import Opersidebar from '../Opersidebar';
+import '../../pagination.css';
 
-const Stgtable = () => {
+const Asttable = () => {
   const [data, setData] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -14,8 +14,8 @@ const Stgtable = () => {
   const ID = window.localStorage.getItem('OperID');
   var operId = JSON.parse(ID);
 
-  const getStgData = async () => {
-    const res = await axios.post('http://localhost:8004/operator/readstg', {
+  const getAstData = async () => {
+    const res = await axios.post('http://localhost:8004/operator/readast', {
       operId,
     });
     if (res.data.status === 201) {
@@ -52,13 +52,14 @@ const Stgtable = () => {
   });
 
   useEffect(() => {
-    const token = window.localStorage.getItem('Lekpay');
-    const Token = JSON.parse(token);
-    if (!Token) {
-      history('/');
-    }else{
-      getStgData();
-    }
+      const token = window.localStorage.getItem('Lekpay');
+      const Token = JSON.parse(token);
+      if (!Token) {
+        history('/');
+      }else{
+        getAstData();
+      }
+    
   });
 
   return (
@@ -66,38 +67,44 @@ const Stgtable = () => {
       <div>
         <div className='flex flex-row gap-6'>
           <Opersidebar />
-          <div className='flex-col justify-center items-center ml-6'>
-            <div className='bg-white p-4 mt-4 max-h-96 items-center rounded-md sm:w-[100%] lg:w-[130%] xl:w-[200%] 2xl:w-[220%] flex-1'>
+          <div className='flex-col  mr-5'>
+            <div className='bg-white p-4 mt-4 max-h-96 items-center rounded-md sm:w-[90%] lg:w-[120%] xl:w-[140%] 2xl:w-[170%] flex-1'>
               <h1 className='text-gray-700 text-3xl text-center font-semibold pb-1'>
-                Stage Table
+                Asset Table
               </h1>
               <div className=' rounded-sm mt-2'>
                 <table className='w-full text-gray-700 justify-between mx-1 border border-gray-800'>
                   <thead>
                     <tr className='border border-gray-800'>
-                      <th className='p-1 ml-1 w-[10%] text-center'>Sl No</th>
-                      <th className='p-1 ml-1 text-start'>Stage Name</th>
-                      <th className='p-1 ml-1 w-[5%] text-center'>Status</th>
-                      <th className='p-1 ml-1 w-[15%] text-end'>Created Date</th>
-                      <th className='p-2 ml-1 w-[15%]'>View</th>
+                      <th className='p-1 ml-1'>Sl No</th>
+                      <th className='p-1 ml-1 w-[15%] text-start'>Asset Reg No</th>
+                      <th className='p-1 ml-1 w-[15%] text-start'>Asset Model</th>
+                      <th className='p-1 ml-1 w-[15%] text-end'>Insurance Exp</th>
+                      <th className='p-1 ml-1 w-[15%] text-end'>Permit Exp</th>
+                      <th className='p-1 ml-1 w-[10%] text-center'>Status</th>
+                      <th className='p-2 ml-1'>View</th>
                     </tr>
                   </thead>
-                  <tbody className='justify-between '>
+                  <tbody className='justify-between  text-center'>
                     {currentItems.length > 0
                       ? currentItems.map((el, i) => {
                           return (
                             <>
                               <tr>
-                                <td className='p-1 ml-1 text-center'>
-                                  {indexOfFirstItem + i + 1} 
+                                <td className='p-1 ml-1'>
+                                  {indexOfFirstItem + i + 1}
                                 </td>
-                                <td className='p-1 ml-1 text-start w-[15%]'>{el.StageName}</td>
-                                <td className='p-1 ml-1 w-[5%] text-center'>{el.StageStatus}</td>
-                                <td className='p-1 ml-1 text-end w-[15%]'>
-                                  {moment(el.CreatedDate).format('DD-MM-YYYY')}
+                                <td className='p-1 ml-1 w-[15%] text-start'>{el.AstRegNo}</td>
+                                <td className='p-1 ml-1 w-[15%] text-start'>{el.AstName}</td>
+                                <td className='p-1 ml-1 w-[15%] text-end'>
+                                  {moment(el.AstInsurExp).format('DD-MM-YYYY')}
                                 </td>
-                                <td className='p-2 ml-1 text-center'>
-                                  <Link to={`/operator/stage/${el.StageID}`}>
+                                <td className='p-1 ml-1 w-[15%] text-end'>
+                                  {moment(el.AstPermitExp).format('DD-MM-YYYY')}
+                                </td>
+                                <td className='p-1 ml-1 w-[10%] text-center'>{el.AStatus}</td>
+                                <td className='p-2 ml-1'>
+                                  <Link to={`/operator/asset/${el.AstId}`}>
                                     <button className='hover:bg-pink-300  px-4 py-2 rounded-lg w-max'>
                                       View
                                     </button>
@@ -159,4 +166,4 @@ const Stgtable = () => {
   );
 };
 
-export default Stgtable;
+export default Asttable;

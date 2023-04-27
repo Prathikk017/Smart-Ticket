@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
 import Opersidebar from '../Operator/Opersidebar';
 import { useNavigate } from 'react-router-dom';
-
-import OperHeader from '../OperLayout/OperHeader';
-import OperStatsGrid from '../OperLayout/OperStatsGrid';
-import OperTransactionChart from '../OperLayout/OperTransactionChart';
+import OperHeader from '../Operator/OperLayout/OperHeader';
+import OperStatsGrid from '../Operator/OperLayout/OperStatsGrid';
+// import OperTransactionChart from '../Operator/OperLayout/OperTransactionChart';
 
 
 const Operdashboard = () => {
@@ -24,7 +23,7 @@ const Operdashboard = () => {
         <OperHeader/>
         <div className="flex flex-col gap-4">
         <OperStatsGrid/>
-        <OperTransactionChart/>
+        {/* <OperTransactionChart/> */}
         </div>
       </div>
     </div>

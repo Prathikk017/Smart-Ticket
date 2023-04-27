@@ -6,20 +6,23 @@ import Operview from './components/Operview';
 import SignIn from './components/SignIn';
 import Register from './components/Operator/Register';
 import Operdashboard from './components/Operator/Operdashboard';
-import Astregister from './components/OperAsset/Astregister';
-import Astedit from './components/OperAsset/Astedit';
-import Asttable from './components/OperAsset/Asttable';
-import Astview from './components/OperAsset/Astview';
-import Empregister from './components/OperEmployee/Empregister';
-import Empedit from './components/OperEmployee/Empedit';
-import Empview from './components/OperEmployee/Empview';
-import Emptable from './components/OperEmployee/Emptable';
-import Routeregister from './components/OperRoute/Routeregister';
-import RouteStageMap from './components/OperRouteStage/RouteStageMap';
-import Stageregister from './components/OperStage/Stageregister';
-import Stgedit from './components/OperStage/Stgedit';
-import Stgtable from './components/OperStage/Stgtable';
-import Stgview from './components/OperStage/Stgview';
+import Astregister from './components/Operator/OperAsset/Astregister';
+import Astedit from './components/Operator/OperAsset/Astedit';
+import Asttable from './components/Operator/OperAsset/Asttable';
+import Astview from './components/Operator/OperAsset/Astview';
+import Empregister from './components/Operator/OperEmployee/Empregister';
+import Empedit from './components/Operator/OperEmployee/Empedit';
+import Empview from './components/Operator/OperEmployee/Empview';
+import Emptable from './components/Operator/OperEmployee/Emptable';
+import Routeregister from './components/Operator/OperRoute/Routeregister';
+import Rutedit from './components/Operator/OperRoute/Rutedit';
+import Rutview from './components/Operator/OperRoute/Rutview';
+import Ruttable from './components/Operator/OperRoute/Ruttable';
+import RouteStageMap from './components/Operator/OperRouteStage/RouteStageMap';
+import Stageregister from './components/Operator/OperStage/Stageregister';
+import Stgedit from './components/Operator/OperStage/Stgedit';
+import Stgtable from './components/Operator/OperStage/Stgtable';
+import Stgview from './components/Operator/OperStage/Stgview';
 import Assets from './components/Assets';
 import Employees from './components/Employees';
 import Operators from './components/Operators';
@@ -62,6 +65,9 @@ function App() {
 				<Route path='/operator/stage/:StageID' element={<Stgview />} />
 				<Route path='/stgupdate/:StageID' element={<Stgedit />} />
 				<Route path='/routeregister' element={<Routeregister />} />
+				<Route path='/rutview' element={<Ruttable />} />
+				<Route path='/operator/route/:RouteID' element={<Rutview />} />
+				<Route path='/rutupdate/:RouteID' element={<Rutedit />} />
 				<Route path='/routemap' element={<RouteStageMap />} />
 				<Route path='/admin/assetsview' element={<Assets />} />
 				<Route path='/admin/assetsview/:AstId' element={<ViewAsset />} />

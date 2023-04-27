@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 // import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Opersidebar from '../Operator/Opersidebar';
+import Opersidebar from '../Opersidebar';
 import { useNavigate } from 'react-router-dom';
 
 const Astregister = () => {

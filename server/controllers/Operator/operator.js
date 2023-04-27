@@ -274,6 +274,20 @@ exports.readAsset = (req,res) =>{
     }
   })
 }
+//read asset by operator id
+exports.readAssetActive = (req,res) =>{
+  let tblAsset = req.body;
+  let operID = tblAsset.operId;
+  let query = `SELECT AstId FROM tblAsset WHERE  AstId LIKE '%${operID}%' AND AStatus = 'A'`;
+  db.query(query, (err, result) =>{
+    if(!err){
+      res.status(200).json({status: 201, data: result});
+      return;
+    }else{
+      res.status(500).json({message:"asset not found to operator"});
+    }
+  })
+}
 //get asset by id
 exports.getAssetById = (req, res) => {
   const { AstId } = req.params;
@@ -467,7 +481,7 @@ exports.deleteStage = (req, res) => {
   });
 };
 
-//update in tblAsset by id
+//update in tblStage by id
 exports.updateStage = (req,res)=>{
   const { StageID } = req.params;
   let tblStageMaster = req.body;
@@ -561,7 +575,7 @@ exports.createRoute = (req, res) => {
 exports.readRoute = (req, res) => {
   let tblRouteMaster = req.body;
   const OperId = tblRouteMaster.operId;
-  var query1 = `SELECT RouteID,RouteName,RouteSStage,RouteEStage FROM tblRouteMaster WHERE RouteID LIKE '%${OperId}%'`;
+  var query1 = `SELECT RouteID,RouteName,RouteSStage,RouteEStage, RouteStatus FROM tblRouteMaster WHERE RouteID LIKE '%${OperId}%'`;
   db.query(query1, (err, result) => {
     if (!err) {
       if (result.length > 0) {
@@ -575,6 +589,56 @@ exports.readRoute = (req, res) => {
     }
   });
 };
+
+//get route by id
+exports.getRouteById = (req, res) => {
+  const { RouteID } = req.params;
+  var query = `SELECT * FROM tblRouteMaster WHERE RouteID = '${RouteID}'`;
+  db.query(query, (err, results) => {
+    if (!err) {
+      return res.status(200).json({ status: 201, data: results });
+    } else {
+      return res.status(500).json({ status: 500, data: err });
+    }
+  });
+};
+
+//soft delete from tblRoute by id
+exports.deleteRoute = (req, res) => {
+  const { RouteID } = req.params;
+  var RouteStatus = 'I';
+  var query = 'UPDATE tblRouteMaster SET RouteStatus = ? WHERE RouteID = ? ';
+  db.query(query, [RouteStatus, RouteID], (err, results) => {
+    if (!err) {
+      if (results.affectedRows === 0) {
+        return res.status(404).json({ message: 'Route does not found' });
+      }
+     res.status(201).json({status: 201, data: "Route deleted successfully"});
+     return ;
+    } else {
+      return res.status(500).json(err);
+    }
+  });
+};
+
+//update in tblRoute by id
+exports.updateRoute = (req,res)=>{
+  const { RouteID } = req.params;
+  let tblRouteMaster = req.body;
+  let RutModifyDate = moment().format('YYYY-MM-DD hh:mm:ss');
+  let query = `UPDATE tblRouteMaster SET  RouteName=?, RouteEffDate=?, RouteSStage=?, RouteEStage=?, RutModifyDate=?, RouteStatus=? WHERE RouteID  = '${RouteID}'`
+  db.query(query,[ tblRouteMaster.RouteName, tblRouteMaster.RouteEffDate, tblRouteMaster.RouteSStage, tblRouteMaster.RouteEStage, RutModifyDate, tblRouteMaster.RouteStatus],(err, result)=>{
+    if (!err) {
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ message: 'Route does not found' });
+      }
+     res.status(201).json({status: 201, data: "Route update successfully"});
+     return ;
+    } else {
+      return res.status(500).json(err);
+    }
+  })
+}
 
 //create routestage map
 exports.createRoutemap = (req, res) => {
