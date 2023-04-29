@@ -147,6 +147,7 @@ const Routeregister = () => {
                 type='date'
                 onChange={setData1}
                 className='border rounded w-full hover:border-pink-500 duration-200 p-1'
+                min={(new Date(Date.now() + 86400000)).toISOString().split('T')[0]}
               />
             </div>
             <div className='flex flex-col py-2'>

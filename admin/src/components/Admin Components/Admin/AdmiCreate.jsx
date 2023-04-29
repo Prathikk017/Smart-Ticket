@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useFormik } from 'formik';
 
 import Sidebar from './Sidebar';
-import { adminRegisterSchema } from '../schemas';
+import { adminRegisterSchema } from '../../../schemas';
 
 const initialValues = {
 	Aname: '',

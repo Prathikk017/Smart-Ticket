@@ -2,16 +2,16 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import moment from 'moment';
-import Sidebar from './Sidebar';
+import Sidebar from '../Admin/Sidebar';
 
-const ViewEmployee = () => {
+const ViewOperator = () => {
 	const [data, setData] = useState([]);
-	const { EmpId } = useParams();
+	const { OperId } = useParams();
 	const history = useNavigate();
 
-	const getSingleEmployeeData = async () => {
+	const getSingleOperatorData = async () => {
 		const res = await axios.get(
-			`http://localhost:8004/admin/employees/${EmpId}`
+			`http://localhost:8004/admin/operators/${OperId}`
 		);
 
 		if (res.data.status === 201) {
@@ -27,7 +27,7 @@ const ViewEmployee = () => {
 		if (!Token) {
 			history('/');
 		} else {
-			getSingleEmployeeData();
+			getSingleOperatorData();
 		}
 	}, []);
 
@@ -37,7 +37,7 @@ const ViewEmployee = () => {
 				<Sidebar />
 				<div className='container  my-8 h-full w-[40%] p-4 mx-auto pr-6 border'>
 					<h1 className='text-center text-4xl text-pink-500  py-6'>
-						Employee Detail
+						Operator Detail
 					</h1>
 					{data.length > 0
 						? data.map((el, i) => {
@@ -45,47 +45,35 @@ const ViewEmployee = () => {
 									<>
 										<div className='flex flex-col ml-4' key={i + 1}>
 											<label className='p-1 my-1 text-start'>
-												Employee Name:{' '}
-												<span className='ml-2'>{el.EmpName}</span>
+												Company Name:{' '}
+												<span className='ml-2'>{el.OperShortName}</span>
 											</label>
 											<label className='p-1 my-1 text-start'>
-												Employee ID: <span className='ml-2'>{el.EmpIntId}</span>
+												Company Email:{' '}
+												<span className='ml-2'>{el.OperEmail}</span>
 											</label>
 											<label className='p-1 my-1 text-start'>
-												Date Of Birth:{' '}
+												GST No: <span className='ml-2'>{el.OperGSTIN}</span>
+											</label>
+											<label className='p-1 my-1 text-start'>
+												Phone No: <span className='ml-2'>{el.OperPhone}</span>
+											</label>
+											<label className='p-1 my-1 text-start'>
+												Contact Name:
+												<span className='ml-2'>{el.OperContactName}</span>
+											</label>
+											<label className='p-1 my-1 text-start'>
+												Contact Email:
+												<span className='ml-2'>{el.OperContactEmail}</span>
+											</label>
+											<label className='p-1 my-1 text-start'>
+												Created Date:
 												<span className='ml-2'>
-													{moment(el.EmpDOB).format('DD-MM-YYYY')}
+													{moment(el.OperCreatedDate).format('DD-MM-YYYY')}
 												</span>
 											</label>
 											<label className='p-1 my-1 text-start'>
-												Employee Type:{' '}
-												<span className='ml-2'>{el.EmpType}</span>
-											</label>
-											<label className='p-1 my-1 text-start'>
-												Mobile No:<span className='ml-2'>{el.EmpMobile}</span>
-											</label>
-											<label className='p-1 my-1 text-start'>
-												Aadhar No:<span className='ml-2'>{el.EmpAadhar}</span>
-											</label>
-											<label className='p-1 my-1 text-start'>
-												Address 1:
-												<span className='ml-2'>{el.EmpAddr1}</span>
-											</label>
-											<label className='p-1 my-1 text-start'>
-												Address 2:
-												<span className='ml-2'>{el.EmpAddr2}</span>
-											</label>
-											<label className='p-1 my-1 text-start'>
-												City:
-												<span className='ml-2'>{el.EmpCity}</span>
-											</label>
-											<label className='p-1 my-1 text-start'>
-												Pincode:
-												<span className='ml-2'>{el.EmpPincode}</span>
-											</label>
-											<label className='p-1 my-1 text-start'>
-												Status:
-												<span className='ml-2'>{el.EStatus}</span>
+												Status:<span className='ml-2'>{el.OperStatus}</span>
 											</label>
 										</div>
 									</>
@@ -98,4 +86,4 @@ const ViewEmployee = () => {
 	);
 };
 
-export default ViewEmployee;
+export default ViewOperator;

@@ -2,18 +2,19 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import moment from 'moment';
-import Sidebar from './Sidebar';
+import Sidebar from '../Admin/Sidebar';
 
-const ViewAdmin = () => {
+const ViewEmployee = () => {
 	const [data, setData] = useState([]);
-	const { AdminId } = useParams();
+	const { EmpId } = useParams();
 	const history = useNavigate();
 
-	const getSingleAdminData = async () => {
-		const res = await axios.get(`http://localhost:8004/admin/${AdminId}`);
+	const getSingleEmployeeData = async () => {
+		const res = await axios.get(
+			`http://localhost:8004/admin/employees/${EmpId}`
+		);
 
 		if (res.data.status === 201) {
-			console.log(res.data.data);
 			setData(res.data.data);
 		} else {
 			console.log('error');
@@ -26,7 +27,7 @@ const ViewAdmin = () => {
 		if (!Token) {
 			history('/');
 		} else {
-			getSingleAdminData();
+			getSingleEmployeeData();
 		}
 	}, []);
 
@@ -36,7 +37,7 @@ const ViewAdmin = () => {
 				<Sidebar />
 				<div className='container  my-8 h-full w-[40%] p-4 mx-auto pr-6 border'>
 					<h1 className='text-center text-4xl text-pink-500  py-6'>
-						Admin Detail
+						Employee Detail
 					</h1>
 					{data.length > 0
 						? data.map((el, i) => {
@@ -44,38 +45,47 @@ const ViewAdmin = () => {
 									<>
 										<div className='flex flex-col ml-4' key={i + 1}>
 											<label className='p-1 my-1 text-start'>
-												Name: <span className='ml-2'>{el.Aname}</span>
+												Employee Name:{' '}
+												<span className='ml-2'>{el.EmpName}</span>
 											</label>
 											<label className='p-1 my-1 text-start'>
-												Email: <span className='ml-2'>{el.Aemail}</span>
+												Employee ID: <span className='ml-2'>{el.EmpIntId}</span>
 											</label>
 											<label className='p-1 my-1 text-start'>
-												Mobile No: <span className='ml-2'>{el.Amobile}</span>
-											</label>
-											<label className='p-1 my-1 text-start'>
-												Date of Birth:{' '}
+												Date Of Birth:{' '}
 												<span className='ml-2'>
-													{moment(el.ADoB).format('DD-MM-YYYY')}
+													{moment(el.EmpDOB).format('DD-MM-YYYY')}
 												</span>
 											</label>
 											<label className='p-1 my-1 text-start'>
-												Gender:
-												<span className='ml-2'>{el.Agender}</span>
+												Employee Type:{' '}
+												<span className='ml-2'>{el.EmpType}</span>
 											</label>
 											<label className='p-1 my-1 text-start'>
-												Created Date:
-												<span className='ml-2'>
-													{moment(el.ACreatedDate).format('DD-MM-YYYY')}
-												</span>
+												Mobile No:<span className='ml-2'>{el.EmpMobile}</span>
 											</label>
 											<label className='p-1 my-1 text-start'>
-												Modified Date:
-												<span className='ml-2'>
-													{moment(el.AModifiedDate).format('DD-MM-YYYY')}
-												</span>
+												Aadhar No:<span className='ml-2'>{el.EmpAadhar}</span>
 											</label>
 											<label className='p-1 my-1 text-start'>
-												Status:<span className='ml-2'>{el.AStatus}</span>
+												Address 1:
+												<span className='ml-2'>{el.EmpAddr1}</span>
+											</label>
+											<label className='p-1 my-1 text-start'>
+												Address 2:
+												<span className='ml-2'>{el.EmpAddr2}</span>
+											</label>
+											<label className='p-1 my-1 text-start'>
+												City:
+												<span className='ml-2'>{el.EmpCity}</span>
+											</label>
+											<label className='p-1 my-1 text-start'>
+												Pincode:
+												<span className='ml-2'>{el.EmpPincode}</span>
+											</label>
+											<label className='p-1 my-1 text-start'>
+												Status:
+												<span className='ml-2'>{el.EStatus}</span>
 											</label>
 										</div>
 									</>
@@ -88,4 +98,4 @@ const ViewAdmin = () => {
 	);
 };
 
-export default ViewAdmin;
+export default ViewEmployee;

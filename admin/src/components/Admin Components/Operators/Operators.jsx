@@ -3,17 +3,17 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaAngleDoubleLeft, FaAngleDoubleRight } from 'react-icons/fa';
 import moment from 'moment';
-import Sidebar from './Sidebar';
-import './pagination.css';
+import Sidebar from '../Admin/Sidebar';
+import '../../pagination.css';
 
-const TicketTypes = () => {
+const Operators = () => {
 	const [data, setData] = useState('');
 	const [currentPage, setCurrentPage] = useState(1);
 	const [itemsPerPage, setItemsPerPage] = useState(10);
 	const history = useNavigate();
 
-	const getTransactionsData = async () => {
-		const res = await axios.get('http://localhost:8004/admin/ticket-types');
+	const getOperatorsData = async () => {
+		const res = await axios.get('http://localhost:8004/admin/operators');
 		if (res.data.status === 201) {
 			setData(res.data.data);
 		} else {
@@ -53,7 +53,7 @@ const TicketTypes = () => {
 		if (!Token) {
 			history('/');
 		} else {
-			getTransactionsData();
+			getOperatorsData();
 		}
 	}, []);
 
@@ -63,35 +63,40 @@ const TicketTypes = () => {
 				<div className='flex flex-row gap-10'>
 					<Sidebar />
 					<div className='flex-col mt-10 ml-5'>
-						<div className='bg-white pl-1 pt-1 justify-center items-center rounded-md sm:w-[110%] lg:w-[130%] xl:w-[150%] 2xl:w-[180%] flex-1'>
+						<div className='bg-white  pt-1 mt-4 pl-4 max-h-96 justify-center items-center rounded-md sm:w-[120%] md:w-[150%] flex-1'>
 							<h1 className='text-pink-500 text-3xl text-center font-semibold pb-1'>
-								Ticket Types Table
+								Operators Table
 							</h1>
 							<div className=' rounded-sm mt-2'>
 								<table className='w-full text-gray-700 justify-between mx-1 border border-gray-800 h-auto'>
 									<thead>
 										<tr className='border border-gray-800'>
-											<th className='p-1 ml-1'>Sl No</th>
-											<th className='p-1 ml-1'>Name</th>
-											<th className='p-1 ml-1'>Short Name</th>
-											<th className='p-1 ml-1'>Status</th>
+											<th>Sl No</th>
+											<th>Name</th>
+											<th>Mobile</th>
+											<th>Email</th>
+											<th>City</th>
+											<th>Status</th>
+											<th>View</th>
 										</tr>
 									</thead>
-									<tbody className='justify-between text-center'>
+									<tbody className='justify-between  text-center'>
 										{currentItems.length > 0
 											? currentItems.map((el, i) => {
 													return (
 														<>
 															<tr>
-																<td className='p-1 ml-1'>
-																	{indexOfFirstItem + i + 1}
-																</td>
-																<td className='p-1 ml-1'>{el.TTname}</td>
-																<td className='p-1 ml-1'>{el.TTshortname}</td>
-																<td className='p-1 ml-1'>{el.TTstatus}</td>
-																<td className='p-1 ml-1'>
-																	<Link to={`/admin/ticket-types/${el.TTid}`}>
-																		<button className='hover:bg-pink-300  px-4 py-2 rounded-lg w-max'>
+																<td>{indexOfFirstItem + i + 1}</td>
+																<td>{el.OperShortName}</td>
+																<td>{el.OperPhone}</td>
+																<td>{el.OperEmail}</td>
+																<td>{el.OperCity}</td>
+																<td>{el.OperStatus}</td>
+																<td>
+																	<Link
+																		to={`/admin/operatorsview/${el.OperId}`}
+																	>
+																		<button className='hover:bg-pink-300  px-2 py-2 rounded-lg w-max'>
 																			View
 																		</button>
 																	</Link>
@@ -152,4 +157,4 @@ const TicketTypes = () => {
 	);
 };
 
-export default TicketTypes;
+export default Operators;

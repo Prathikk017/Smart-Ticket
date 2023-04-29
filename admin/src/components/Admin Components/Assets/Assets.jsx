@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaAngleDoubleLeft, FaAngleDoubleRight } from 'react-icons/fa';
 import moment from 'moment';
-import Sidebar from './Sidebar';
-import './pagination.css';
+import Sidebar from '../Admin/Sidebar';
+import '../../pagination.css';
 
-const Transaction = () => {
+const Assets = () => {
 	const [data, setData] = useState('');
 	const [currentPage, setCurrentPage] = useState(1);
 	const [itemsPerPage, setItemsPerPage] = useState(10);
+	const history = useNavigate();
 
-	const getAdminsData = async () => {
-		const res = await axios.get('http://localhost:8004/admin/transactions/');
+	const getAssetsData = async () => {
+		const res = await axios.get('http://localhost:8004/admin/assets');
 		if (res.data.status === 201) {
 			setData(res.data.data);
 		} else {
@@ -47,7 +48,13 @@ const Transaction = () => {
 	});
 
 	useEffect(() => {
-		getAdminsData();
+		const token = window.localStorage.getItem('Lekpay');
+		const Token = JSON.parse(token);
+		if (!Token) {
+			history('/');
+		} else {
+			getAssetsData();
+		}
 	}, []);
 
 	return (
@@ -55,42 +62,39 @@ const Transaction = () => {
 			<div>
 				<div className='flex flex-row gap-10'>
 					<Sidebar />
-					<div className='flex-col mr-8'>
-						<div className='bg-white pl-10 pt-1 mt-10 mr-10 ml-8 items-center rounded-md w-[160%] flex-1'>
+					<div className='flex-col mt-10 ml-5'>
+						<div className='bg-white  pt-1 mt-4 pl-4 max-h-96 justify-center items-center rounded-md sm:w-[100%] md:w-[130%] flex-1'>
 							<h1 className='text-pink-500 text-3xl text-center font-semibold pb-1'>
-								Admins Table
+								Assets Table
 							</h1>
 							<div className=' rounded-sm mt-2'>
 								<table className='w-full text-gray-700 justify-between mx-1 border border-gray-800 h-auto'>
 									<thead>
 										<tr className='border border-gray-800'>
 											<th className='p-1 ml-1'>Sl No</th>
+											<th className='p-1 ml-1'>Operator</th>
 											<th className='p-1 ml-1'>Name</th>
-											<th className='p-1 ml-1'>Gender</th>
-											<th className='p-1 ml-1'>Mobile</th>
-											<th className='p-1 ml-1'>Date of Birth</th>
+											<th className='p-1 ml-1'>Model No</th>
 											<th className='p-1 ml-1'>Status</th>
 											<th className='p-2 ml-1'>View</th>
 										</tr>
 									</thead>
-									<tbody className='justify-between  text-center'>
+									<tbody className='justify-between text-center'>
 										{currentItems.length > 0
 											? currentItems.map((el, i) => {
+													const opid = el.AstId.substring(0, 3);
 													return (
 														<>
 															<tr>
 																<td className='p-1 ml-1'>
 																	{indexOfFirstItem + i + 1}
 																</td>
-																<td className='p-1 ml-1'>{el.Aname}</td>
-																<td className='p-1 ml-1'>{el.Agender}</td>
-																<td className='p-1 ml-1'>{el.Amobile}</td>
-																<td className='p-1 ml-1'>
-																	{moment(el.ADoB).format('DD-MM-YYYY')}
-																</td>
+																<td className='p-1 ml-1'>{opid}</td>
+																<td className='p-1 ml-1'>{el.AstName}</td>
+																<td className='p-1 ml-1'>{el.AstModel}</td>
 																<td className='p-1 ml-1'>{el.AStatus}</td>
 																<td className='p-1 ml-1'>
-																	<Link to={`/admin/adminview/${el.AdminId}`}>
+																	<Link to={`/admin/assetsview/${el.AstId}`}>
 																		<button className='hover:bg-pink-300  px-4 py-2 rounded-lg w-max'>
 																			View
 																		</button>
@@ -152,4 +156,4 @@ const Transaction = () => {
 	);
 };
 
-export default Transaction;
+export default Assets;

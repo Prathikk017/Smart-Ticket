@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useFormik } from 'formik';
 
-import Sidebar from './Sidebar';
-import { adminRegisterSchema } from '../schemas';
+import Sidebar from '../Admin/Sidebar';
+import { adminRegisterSchema } from '../../../schemas/index';
 
 const initialValues = {
 	TTname: '',

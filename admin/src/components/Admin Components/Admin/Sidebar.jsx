@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { HiOutlineViewGrid } from 'react-icons/hi';
 import { Link } from 'react-router-dom';
-import logo from '../assets/logo.jpg';
+import logo from '../../../assets/logo.jpg';
 import { AiFillSetting } from 'react-icons/ai';
 import { MdApproval } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';

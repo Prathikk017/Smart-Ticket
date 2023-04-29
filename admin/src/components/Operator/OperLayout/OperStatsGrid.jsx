@@ -17,8 +17,13 @@ const OperStatsGrid = () => {
   const [data2, setData2] = useState('');
   //total route data
   const [data3, setData3] = useState('');
-  //total asset active
+  //total asset active data
   const[data4, setData4] = useState('');
+  //total transaction data
+  const [data5, setData5] = useState('');
+  //total Passengers data
+  const [data6, setData6] = useState('');
+
   const ID = window.localStorage.getItem('OperID');
   var operId = JSON.parse(ID);
 
@@ -76,6 +81,17 @@ const OperStatsGrid = () => {
     }
   };
 
+  const getTransactionsData = async () =>{
+      const res = await axios.post('http://localhost:8004/operator/readtransaction', {
+        operId,
+      });
+     if(res.data.status === 201){
+      setData5(res.data.data);
+      setData6(res.data.Passengers);
+     }else{
+      console.log('error')
+     }
+  }
   //Navigate to particular table
   const handleClick = () => {
     history('/astview');
@@ -89,6 +105,12 @@ const OperStatsGrid = () => {
   const handleClick3 = () => {
     history('/rutview');
   };
+
+  useEffect(() => {
+    getTransactionsData();
+    getAstActiveData();
+  })
+
   useEffect(() => {
     const token = window.localStorage.getItem('Lekpay');
     const Token = JSON.parse(token);
@@ -99,11 +121,10 @@ const OperStatsGrid = () => {
         getEmpData();
         getStgData();
         getRutData();
-        getAstActiveData();
       }
   }, []);
   return (
-    <div className='grid lg:grid-cols-6 md:grid-cols-3 gap-4 md:w-[98%] w-[20rem] mt-4 ml-0 '>
+    <div className='grid lg:grid-cols-4 md:grid-cols-3 gap-6 md:w-[98%] w-[20rem] mt-4 ml-0 '>
       <BoxWrapper>
         <div
           className='rounded-full h-10 w-10 flex items-center justify-center bg-sky-400 cursor-pointer'
@@ -158,7 +179,7 @@ const OperStatsGrid = () => {
               <BiRupee size={19} className='mt-1' />
             </span>
             <strong className='text-xl text-gray-700 font-semibold'>
-              10000
+              {data5}
             </strong>
           </div>
         </div>
@@ -214,6 +235,25 @@ const OperStatsGrid = () => {
           </span>
           <div className='flex items-center'>
             <strong className='text-xl text-gray-700 font-semibold'>{data3.length}</strong>
+          </div>
+        </div>
+      </BoxWrapper>
+      <BoxWrapper>
+        <div className='rounded-full h-10 w-10 flex items-center justify-center bg-indigo-400 cursor-pointer'>
+          <IoPeople
+            className='text-2xl text-black'
+            style={{ color: 'white' }}
+          />
+        </div>
+        <div className='pl-4 cursor-pointer'>
+          <span className='text-sm text-gray-500 font-medium'>
+            Total Passengers
+          </span>
+          <div className='flex items-center'>
+            
+            <strong className='text-xl text-gray-700 font-semibold'>
+              {data6}
+            </strong>
           </div>
         </div>
       </BoxWrapper>

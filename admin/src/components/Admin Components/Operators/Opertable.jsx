@@ -3,17 +3,17 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaAngleDoubleLeft, FaAngleDoubleRight } from 'react-icons/fa';
 import moment from 'moment';
-import Sidebar from './Sidebar';
-import './pagination.css';
+import Sidebar from '../Admin/Sidebar';
+import '../../pagination.css';
 
-const Users = () => {
+const Opertable = () => {
 	const [data, setData] = useState('');
 	const [currentPage, setCurrentPage] = useState(1);
 	const [itemsPerPage, setItemsPerPage] = useState(10);
 	const history = useNavigate();
 
-	const getUsersData = async () => {
-		const res = await axios.get('http://localhost:8004/admin/users');
+	const getApproOpersData = async () => {
+		const res = await axios.get('http://localhost:8004/admin/inactiveopers');
 		if (res.data.status === 201) {
 			setData(res.data.data);
 		} else {
@@ -53,7 +53,7 @@ const Users = () => {
 		if (!Token) {
 			history('/');
 		} else {
-			getUsersData();
+			getApproOpersData();
 		}
 	}, []);
 
@@ -62,22 +62,22 @@ const Users = () => {
 			<div>
 				<div className='flex flex-row gap-10'>
 					<Sidebar />
-					<div className='flex-col mt-10 ml-5'>
-						<div className='bg-white pl-1 pt-1 justify-center items-center rounded-md sm:w-[100%] lg:w-[120%] xl:w-[150%] 2xl:w-[180%] flex-1'>
+					<div className='flex-col mr-8'>
+						<div className='bg-white pl-10 pt-1 mt-10 mr-10 ml-8 items-center rounded-md w-[160%] flex-1'>
 							<h1 className='text-pink-500 text-3xl text-center font-semibold pb-1'>
-								Users Table
+								Inactive Operators
 							</h1>
 							<div className=' rounded-sm mt-2'>
 								<table className='w-full text-gray-700 justify-between mx-1 border border-gray-800 h-auto'>
 									<thead>
 										<tr className='border border-gray-800'>
-											<th className='p-1 ml-1'>Sl No</th>
-											<th className='p-1 ml-1'>Name</th>
-											<th className='p-1 ml-1'>Gender</th>
-											<th className='p-1 ml-1'>Mobile</th>
-											<th className='p-1 ml-1'>Date of Birth</th>
-											<th className='p-1 ml-1'>Status</th>
-											<th className='p-2 ml-1'>View</th>
+											<th>Sl No</th>
+											<th>Name</th>
+											<th>Mobile</th>
+											<th>Email</th>
+											<th>City</th>
+											<th>Status</th>
+											<th>View</th>
 										</tr>
 									</thead>
 									<tbody className='justify-between  text-center'>
@@ -86,19 +86,15 @@ const Users = () => {
 													return (
 														<>
 															<tr>
-																<td className='p-1 ml-1'>
-																	{indexOfFirstItem + i + 1}
-																</td>
-																<td className='p-1 ml-1'>{el.Uname}</td>
-																<td className='p-1 ml-1'>{el.Ugender}</td>
-																<td className='p-1 ml-1'>{el.Umobile}</td>
-																<td className='p-1 ml-1'>
-																	{moment(el.UDoB).format('DD-MM-YYYY')}
-																</td>
-																<td className='p-1 ml-1'>{el.UStatus}</td>
-																<td className='p-1 ml-1'>
-																	<Link to={`/admin/usersview/${el.UserId}`}>
-																		<button className='hover:bg-pink-300  px-4 py-2 rounded-lg w-max'>
+																<td>{indexOfFirstItem + i + 1}</td>
+																<td>{el.OperShortName}</td>
+																<td>{el.OperPhone}</td>
+																<td>{el.OperEmail}</td>
+																<td>{el.OperCity}</td>
+																<td>{el.OperStatus}</td>
+																<td>
+																	<Link to={`/admin/approveoper/${el.OperId}`}>
+																		<button className='hover:bg-pink-300  px-2 py-2 rounded-lg w-max'>
 																			View
 																		</button>
 																	</Link>
@@ -120,7 +116,7 @@ const Users = () => {
 												} page-item`}
 											>
 												<button
-													className='page-link  rounded-r-md focus:outline-none rounded-l-md mr-6 mt-1'
+													className='page-link rounded-r-md focus:outline-none rounded-l-md mr-6 mt-1'
 													onClick={() =>
 														setCurrentPage((prev) =>
 															prev === 1 ? prev : prev - 1
@@ -137,7 +133,7 @@ const Users = () => {
 												} page-item`}
 											>
 												<button
-													className='page-link  rounded-r-md focus:outline-none rounded-l-md ml-6 mt-1'
+													className='page-link rounded-r-md focus:outline-none rounded-l-md ml-6 mt-1'
 													onClick={() =>
 														setCurrentPage((prev) =>
 															prev === pageNumber.length ? prev : prev + 1
@@ -159,4 +155,4 @@ const Users = () => {
 	);
 };
 
-export default Users;
+export default Opertable;

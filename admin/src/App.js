@@ -1,8 +1,8 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import Dashboard from './components/Dashboard';
-import Opertable from './components/Opertable';
-import Operview from './components/Operview';
+import Dashboard from './components/Admin Components/Admin/Dashboard';
+import Opertable from './components/Admin Components/Operators/Opertable';
+import Operview from './components/Admin Components/Operators/Operview';
 import SignIn from './components/SignIn';
 import Register from './components/Operator/Register';
 import Operdashboard from './components/Operator/Operdashboard';
@@ -23,20 +23,21 @@ import Stageregister from './components/Operator/OperStage/Stageregister';
 import Stgedit from './components/Operator/OperStage/Stgedit';
 import Stgtable from './components/Operator/OperStage/Stgtable';
 import Stgview from './components/Operator/OperStage/Stgview';
-import Assets from './components/Assets';
-import Employees from './components/Employees';
-import Operators from './components/Operators';
-import Users from './components/Users';
-import Admins from './components/Admins';
-import ViewAdmin from './components/ViewAdmin';
-import ViewUser from './components/ViewUser';
-import ViewOperator from './components/ViewOperator';
-import ViewEmployee from './components/ViewEmployee';
-import ViewAsset from './components/ViewAsset';
-import AdmiCreate from './components/AdmiCreate';
-import TicketType from './components/TicketType';
-import TicketTypes from './components/TicketTypes';
-import ViewTicketType from './components/ViewTicketType';
+import Assets from './components/Admin Components/Assets/Assets';
+import Employees from './components/Admin Components/Employees/Employees';
+import Operators from './components/Admin Components/Operators/Operators';
+import Users from './components/Admin Components/Users/Users';
+import Admins from './components/Admin Components/Admin/Admins';
+import ViewAdmin from './components/Admin Components/Admin/ViewAdmin';
+import ViewUser from './components/Admin Components/Users/ViewUser';
+import ViewOperator from './components/Admin Components/Operators/ViewOperator';
+import ViewEmployee from './components/Admin Components/Employees/ViewEmployee';
+import ViewAsset from './components/Admin Components/Assets/ViewAsset';
+import AdmiCreate from './components/Admin Components/Admin/AdmiCreate';
+import TicketType from './components/Admin Components/Ticket Type/TicketType';
+import TicketTypes from './components/Admin Components/Ticket Type/TicketTypes';
+import ViewTicketType from './components/Admin Components/Ticket Type/ViewTicketType';
+import IndividualOperatorCard from './components/Admin Components/AdminLayout/IndividualStats/SingleOperDashboard';
 
 function App() {
 	return (
@@ -82,6 +83,10 @@ function App() {
 				<Route path='/admin/ticket-type/add' element={<TicketType />} />
 				<Route path='/admin/ticket-types' element={<TicketTypes />} />
 				<Route path='/admin/ticket-types/:TTid' element={<ViewTicketType />} />
+				<Route
+					path='/admin/singleoperstats'
+					element={<IndividualOperatorCard />}
+				/>
 			</Routes>
 		</BrowserRouter>
 	);

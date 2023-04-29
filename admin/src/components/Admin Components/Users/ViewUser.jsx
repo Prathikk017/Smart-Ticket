@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import moment from 'moment';
-import Sidebar from './Sidebar';
+import Sidebar from '../Admin/Sidebar';
 
 const ViewUser = () => {
 	const [data, setData] = useState([]);

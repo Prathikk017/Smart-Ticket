@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Link, useParams } from 'react-router-dom';
 import moment from 'moment';
-import Sidebar from './Sidebar';
+import Sidebar from '../Admin/Sidebar';
 
 const Operview = () => {
 	const history = useNavigate();

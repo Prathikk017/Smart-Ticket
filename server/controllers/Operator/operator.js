@@ -276,11 +276,22 @@ exports.readAsset = (req,res) =>{
 }
 //read asset by operator id
 exports.readAssetActive = (req,res) =>{
-  let tblAsset = req.body;
-  let operID = tblAsset.operId;
-  let query = `SELECT AstId FROM tblAsset WHERE  AstId LIKE '%${operID}%' AND AStatus = 'A'`;
+  let tblAssetRouteMap = req.body;
+  let operID = tblAssetRouteMap.operId;
+  let query = `SELECT AstId FROM tblAssetRouteMap WHERE  AstId LIKE '%${operID}%' AND Status = 'A'`;
   db.query(query, (err, result) =>{
     if(!err){
+      let initalAsset = '';
+      let currentAsset = '';
+      let Asset = [];
+      for(let i = 1; i< result.length; i++){ 
+        initalAsset = result[i]      
+        currentAsset = result[i];
+        if(currentAsset !== initalAsset){
+          Asset.push(currentAsset);
+        }
+      }
+     Asset.push(initalAsset);
       res.status(200).json({status: 201, data: result});
       return;
     }else{
@@ -749,3 +760,24 @@ exports.readRouteTicType = (req, res)=>{
     }
   })
 }
+
+//get total transanction data
+exports.readTransactionData = (req, res) =>{
+  let tblTransaction = req.body;
+  const OperId = tblTransaction.operId;
+  let query = `SELECT Fare,Passengers FROM tblTransaction WHERE RouteName LIKE '%${OperId}%'`;
+  db.query(query,(err,result)=>{
+    if(!err){
+      let totalTransaction = 0;
+      let totalPassengers = 0;
+      for(let i = 0; i < result.length ; i++){
+          totalTransaction += JSON.parse(result[i].Fare);
+          totalPassengers += JSON.parse(result[i].Passengers);
+      }
+      res.status(200).json({status:201 , data:totalTransaction , Passengers:totalPassengers});
+    }else{
+      console.log(err);
+    }
+  })
+}
+

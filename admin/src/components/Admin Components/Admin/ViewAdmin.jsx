@@ -4,13 +4,13 @@ import { useNavigate, useParams } from 'react-router-dom';
 import moment from 'moment';
 import Sidebar from './Sidebar';
 
-const ViewAsset = () => {
+const ViewAdmin = () => {
 	const [data, setData] = useState([]);
-	const { AstId } = useParams();
+	const { AdminId } = useParams();
 	const history = useNavigate();
 
-	const getSingleAssetData = async () => {
-		const res = await axios.get(`http://localhost:8004/admin/assets/${AstId}`);
+	const getSingleAdminData = async () => {
+		const res = await axios.get(`http://localhost:8004/admin/${AdminId}`);
 
 		if (res.data.status === 201) {
 			console.log(res.data.data);
@@ -26,7 +26,7 @@ const ViewAsset = () => {
 		if (!Token) {
 			history('/');
 		} else {
-			getSingleAssetData();
+			getSingleAdminData();
 		}
 	}, []);
 
@@ -36,7 +36,7 @@ const ViewAsset = () => {
 				<Sidebar />
 				<div className='container  my-8 h-full w-[40%] p-4 mx-auto pr-6 border'>
 					<h1 className='text-center text-4xl text-pink-500  py-6'>
-						Asset Detail
+						Admin Detail
 					</h1>
 					{data.length > 0
 						? data.map((el, i) => {
@@ -44,33 +44,38 @@ const ViewAsset = () => {
 									<>
 										<div className='flex flex-col ml-4' key={i + 1}>
 											<label className='p-1 my-1 text-start'>
-												Asset Registration No:{' '}
-												<span className='ml-2'>{el.AstRegNo}</span>
+												Name: <span className='ml-2'>{el.Aname}</span>
 											</label>
 											<label className='p-1 my-1 text-start'>
-												Asset Model: <span className='ml-2'>{el.AstName}</span>
+												Email: <span className='ml-2'>{el.Aemail}</span>
 											</label>
 											<label className='p-1 my-1 text-start'>
-												Manufacturing Year:{' '}
-												<span className='ml-2'>{el.AstModel}</span>
+												Mobile No: <span className='ml-2'>{el.Amobile}</span>
 											</label>
 											<label className='p-1 my-1 text-start'>
-												Chasis No: <span className='ml-2'>{el.AstChasNo}</span>
-											</label>
-											<label className='p-1 my-1 text-start'>
-												Engine No:<span className='ml-2'>{el.AstEngNo}</span>
-											</label>
-											<label className='p-1 my-1 text-start'>
-												Permit No:<span className='ml-2'>{el.AstPermitNo}</span>
-											</label>
-											<label className='p-1 my-1 text-start'>
-												Insurance Expire Date:
+												Date of Birth:{' '}
 												<span className='ml-2'>
-													{moment(el.AstInsurExp).format('DD-MM-YYYY')}
+													{moment(el.ADoB).format('DD-MM-YYYY')}
 												</span>
 											</label>
 											<label className='p-1 my-1 text-start'>
-												Status:<span className='ml-2'>{el.AStatus}</span>
+												Gender:
+												<span className='ml-2'>{el.Agender}</span>
+											</label>
+											<label className='p-1 my-1 text-start'>
+												Created Date:
+												<span className='ml-2'>
+													{moment(el.ACreatedDate).format('DD-MM-YYYY')}
+												</span>
+											</label>
+											<label className='p-1 my-1 text-start'>
+												Modified Date:
+												<span className='ml-2'>
+													{moment(el.AModifiedDate).format('DD-MM-YYYY')}
+												</span>
+											</label>
+											<label className='p-1 my-1 text-start'>
+												Status:<span className='ml-2'>{el.Status}</span>
 											</label>
 										</div>
 									</>
@@ -83,4 +88,4 @@ const ViewAsset = () => {
 	);
 };
 
-export default ViewAsset;
+export default ViewAdmin;
