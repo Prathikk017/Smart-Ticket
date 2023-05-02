@@ -31,7 +31,6 @@ const Stageregister = () => {
           operId
         }
       );
-
       if (res.data.status === 201) {
         alert(res.data.data);
         var form1 = document.getElementsByName('contact-form')[0];
@@ -53,7 +52,7 @@ const Stageregister = () => {
           form.reset();
           return;
         } else {
-          alert('User unable to Register');
+          alert('Stage unable to Register');
           return;
         }
       }

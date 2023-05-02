@@ -157,13 +157,13 @@ const Routeregister = () => {
                 onChange={startStage}
               >
                 <option>Select</option>
-                {stageData.map((el, i) => {
+                {stageData > 0 ? stageData.map((el, i) => {
                   return (
                     <option key={i} value={`${el.StageName}`}>
                       {el.StageName}
                     </option>
                   );
-                })}
+                }): ' '}
               </select>
             </div>
             <div className='flex flex-col py-2'>
@@ -173,13 +173,13 @@ const Routeregister = () => {
                 onChange={endStage}
               >
                 <option>Select</option>
-                {stageData.map((el, i) => {
+                {stageData.length > 0 ? stageData.map((el, i) => {
                   return (
                     <option key={i} value={`${el.StageName}`}>
                       {el.StageName}
                     </option>
                   );
-                })}
+                }): ' '}
               </select>
             </div>
             <div className='flex flex-col py-2'>

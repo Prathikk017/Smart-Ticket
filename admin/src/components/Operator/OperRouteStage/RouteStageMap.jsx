@@ -230,13 +230,13 @@ const RouteStageMap = () => {
                 onChange={setData1}
               >
                 <option>Select</option>
-                {routeData.map((el, i) => {
+                {routeData.length > 0 ? routeData.map((el, i) => {
                   return (
                     <option key={i} value={`${el.RouteID}`}>
                       {el.RouteName}
                     </option>
                   );
-                })}
+                }): ' '}
               </select>
             </div>
             <div className='flex flex-col py-2'>
@@ -255,13 +255,13 @@ const RouteStageMap = () => {
                 onChange={startStage}
               >
                 <option>Select</option>
-                {stageData.map((el, i) => {
+                {stageData.length > 0 ?stageData.map((el, i) => {
                   return (
                     <option key={i} value={`${el.StageID}`}>
                       {el.StageName}
                     </option>
                   );
-                })}
+                }): ' '}
               </select>
             </div>
             <label className='pt-2'>Fare:</label>
@@ -306,13 +306,13 @@ const RouteStageMap = () => {
                       }
                     >
                       <option>Select</option>
-                      {stageData.map((el, k) => {
+                      {stageData.length > 0 ? stageData.map((el, k) => {
                         return (
                           <option key={k} value={`${el.StageID}`}>
                             {el.StageName}
                           </option>
                         );
-                      })}
+                      }): ' '}
                     </select>
                     <button
                       type='button'
@@ -363,13 +363,13 @@ const RouteStageMap = () => {
                 onChange={endStage}
               >
                 <option>Select</option>
-                {stageData.map((el, i) => {
+                {stageData.length > 0 ? stageData.map((el, i) => {
                   return (
                     <option key={i} value={`${el.StageID}`}>
                       {el.StageName}
                     </option>
                   );
-                })}
+                }): ' '}
               </select>
               <label className='pt-2'>Fare:</label>
               <div className='grid grid-cols-3 gap-2'>

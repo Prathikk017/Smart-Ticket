@@ -109,7 +109,8 @@ const OperStatsGrid = () => {
   useEffect(() => {
     getTransactionsData();
     getAstActiveData();
-  })
+    
+  },[operId]);
 
   useEffect(() => {
     const token = window.localStorage.getItem('Lekpay');

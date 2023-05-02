@@ -270,7 +270,7 @@ exports.readAsset = (req,res) =>{
       res.status(200).json({status: 201, data: result});
       return;
     }else{
-      res.status(500).json({message:"asset not found to operator"});
+      res.status(500).json({message:result});
     }
   })
 }
@@ -281,23 +281,27 @@ exports.readAssetActive = (req,res) =>{
   let query = `SELECT AstId FROM tblAssetRouteMap WHERE  AstId LIKE '%${operID}%' AND Status = 'A'`;
   db.query(query, (err, result) =>{
     if(!err){
-      let initalAsset ='';
-      let currentAsset = '';
-      let previousAsset='';
-      let Asset = [];
-      for(let i = 1; i< result.length-1; i++){
-        initalAsset = result[0].AstId;
-        previousAsset = result[i].AstId;     
-        currentAsset = result[i+1].AstId;
-        if(currentAsset !== previousAsset){
-          Asset.push(currentAsset);
+      if(result.length> 0){
+        let initalAsset ='';
+        let currentAsset = '';
+        let previousAsset='';
+        let Asset = [];
+        for(let i = 1; i< result.length-1; i++){
+          initalAsset = result[0].AstId;
+          previousAsset = result[i].AstId;     
+          currentAsset = result[i+1].AstId;
+          if(currentAsset !== previousAsset){
+            Asset.push(currentAsset);
+          }
         }
+        Asset.push(initalAsset);
+        res.status(200).json({status: 201, data: Asset});
+        return;
+      }else{
+        res.status(200).json({message:"asset not found to operator", data:result});
       }
-      Asset.push(initalAsset);
-      res.status(200).json({status: 201, data: Asset});
-      return;
     }else{
-      res.status(500).json({message:"asset not found to operator"});
+      console.log(err)
     }
   })
 }
@@ -410,7 +414,7 @@ exports.createStage = (req, res) => {
 exports.validateStage = (req, res) => {
   const tblStageMaster = req.body;
   const operID = tblStageMaster.operId;
-  var query = `SELECT * FROM tblStageMaster WHERE StageName = ? AND StageID LIKE '%${operID}%`;
+  var query = `SELECT * FROM tblStageMaster WHERE StageName = ? AND StageID LIKE '%${operID}%'`;
   db.query(query, [tblStageMaster.StageName], (err, results) => {
     if (!err) {
       if (results.length > 0) {
@@ -418,7 +422,7 @@ exports.validateStage = (req, res) => {
           status: 201,
           data: `${tblStageMaster.StageName} already exist`,
         });
-      } else {
+      } else if(results.length === 0){
         res.send({ data: 'User doesnt exist' });
       }
     } else {
@@ -438,7 +442,7 @@ exports.readStage = (req, res) => {
         res.status(200).json({ status: 201, data: result });
         return;
       } else {
-        res.status(200).json({ status: 201, data: 'Stage Not Found' });
+        res.status(200).json({ status: 201, data: result });
       }
     } else {
       console.log(err);
@@ -456,7 +460,7 @@ exports.readStageTbl = (req, res) => {
         res.status(200).json({ status: 201, data: result });
         return;
       } else {
-        res.status(200).json({ status: 201, data: 'Stage Not Found' });
+        res.status(200).json({ status: 201, data: result });
       }
     } else {
       console.log(err);
@@ -595,7 +599,7 @@ exports.readRoute = (req, res) => {
         res.status(200).json({ status: 201, data: result });
         return;
       } else {
-        res.status(200).json({ status: 201, data: 'Route Not Found' });
+        res.status(200).json({ status: 201, data:result});
       }
     } else {
       console.log(err);

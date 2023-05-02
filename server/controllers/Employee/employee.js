@@ -111,7 +111,7 @@ exports.createEmployee = (req, res) => {
 		res.status(200).json({status: 201, data: result});
 		return;
 	  }else{
-		res.status(500).json({message:"asset not found to operator"});
+		res.status(500).json({message:result});
 	  }
 	})
   }
