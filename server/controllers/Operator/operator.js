@@ -281,18 +281,20 @@ exports.readAssetActive = (req,res) =>{
   let query = `SELECT AstId FROM tblAssetRouteMap WHERE  AstId LIKE '%${operID}%' AND Status = 'A'`;
   db.query(query, (err, result) =>{
     if(!err){
-      let initalAsset = '';
+      let initalAsset ='';
       let currentAsset = '';
+      let previousAsset='';
       let Asset = [];
-      for(let i = 1; i< result.length; i++){ 
-        initalAsset = result[i]      
-        currentAsset = result[i];
-        if(currentAsset !== initalAsset){
+      for(let i = 1; i< result.length-1; i++){
+        initalAsset = result[0].AstId;
+        previousAsset = result[i].AstId;     
+        currentAsset = result[i+1].AstId;
+        if(currentAsset !== previousAsset){
           Asset.push(currentAsset);
         }
       }
-     Asset.push(initalAsset);
-      res.status(200).json({status: 201, data: result});
+      Asset.push(initalAsset);
+      res.status(200).json({status: 201, data: Asset});
       return;
     }else{
       res.status(500).json({message:"asset not found to operator"});
