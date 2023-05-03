@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Link, useParams } from 'react-router-dom';
 import moment from 'moment';
 import Sidebar from '../Admin/Sidebar';
-import useIdleTimeout from '../../useIdleTimeout';
+import useIdleTimeout from '../../../useIdleTimeout';
 
 const Operview = () => {
 	const history = useNavigate();

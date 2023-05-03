@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import moment from 'moment';
 import Sidebar from './Sidebar';
-import useIdleTimeout from '../../useIdleTimeout';
+import useIdleTimeout from '../../../useIdleTimeout';
 const ViewAdmin = () => {
 	const [data, setData] = useState([]);
 	const { AdminId } = useParams();

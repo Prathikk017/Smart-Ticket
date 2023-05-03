@@ -5,7 +5,7 @@ import { FaAngleDoubleLeft, FaAngleDoubleRight } from 'react-icons/fa';
 import moment from 'moment';
 import Sidebar from './Sidebar';
 import '../../pagination.css';
-import useIdleTimeout from '../../useIdleTimeout';
+import useIdleTimeout from '../../../useIdleTimeout';
 const Admins = () => {
 	const [data, setData] = useState('');
 	const [currentPage, setCurrentPage] = useState(1);

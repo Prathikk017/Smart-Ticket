@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 // import Opertable from './Opertable';
 import axios from 'axios';
-import useIdleTimeout from '../../useIdleTimeout';
+import useIdleTimeout from '../../../useIdleTimeout';
 // import Dheader from './Dheader';
 import Sidebar from './Sidebar';
 import { useNavigate } from 'react-router-dom';

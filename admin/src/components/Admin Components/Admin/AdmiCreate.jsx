@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useFormik } from 'formik';
-import useIdleTimeout from '../../useIdleTimeout';
+import useIdleTimeout from '../../../useIdleTimeout';
 import Sidebar from './Sidebar';
 import { adminRegisterSchema } from '../../../schemas';
 
