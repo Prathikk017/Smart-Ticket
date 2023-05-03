@@ -18,11 +18,26 @@ const OperStatsGrid = () => {
   //total route data
   const [data3, setData3] = useState('');
   //total asset active data
-  const[data4, setData4] = useState('');
+  const [data4, setData4] = useState('');
   //total transaction data
   const [data5, setData5] = useState('');
   //total Passengers data
   const [data6, setData6] = useState('');
+  //total employee active data
+  const [data7, setData7] = useState('');
+  //total route active data
+  const [data8, setData8] = useState('');
+
+  //get date value
+  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+
+  const setdata = (e) => {
+    const selectedDate = e.target.value;
+    setDate(selectedDate);
+    getAstActiveData(selectedDate);
+    getEmpActiveData(selectedDate);
+    getRutActiveData(selectedDate);
+  };
 
   const ID = window.localStorage.getItem('OperID');
   var operId = JSON.parse(ID);
@@ -37,12 +52,46 @@ const OperStatsGrid = () => {
       console.log('error');
     }
   };
-  const getAstActiveData = async () => {
-    const res = await axios.post('http://localhost:8004/operator/readastactive', {
-      operId,
-    });
+  const getAstActiveData = async (selectedDate) => {
+    const res = await axios.post(
+      'http://localhost:8004/operator/readastactive',
+      {
+        operId,
+        date:selectedDate,
+      }
+    );
     if (res.data.status === 201) {
       setData4(res.data.data);
+    } else {
+      console.log('error');
+    }
+  };
+
+  const getEmpActiveData = async (selectedDate) => {
+    const res = await axios.post(
+      'http://localhost:8004/employee/readempactive',
+      {
+        operId,
+        date: selectedDate,
+      }
+    );
+    if (res.data.status === 201) {
+      setData7(res.data.data);
+    } else {
+      console.log('error');
+    }
+  };
+
+  const getRutActiveData = async (selectedDate) => {
+    const res = await axios.post(
+      'http://localhost:8004/operator/readrutactive',
+      {
+        operId,
+        date: selectedDate,
+      }
+    );
+    if (res.data.status === 201) {
+      setData8(res.data.data);
     } else {
       console.log('error');
     }
@@ -81,17 +130,20 @@ const OperStatsGrid = () => {
     }
   };
 
-  const getTransactionsData = async () =>{
-      const res = await axios.post('http://localhost:8004/operator/readtransaction', {
+  const getTransactionsData = async () => {
+    const res = await axios.post(
+      'http://localhost:8004/operator/readtransaction',
+      {
         operId,
-      });
-     if(res.data.status === 201){
+      }
+    );
+    if (res.data.status === 201) {
       setData5(res.data.data);
       setData6(res.data.Passengers);
-     }else{
-      console.log('error')
-     }
-  }
+    } else {
+      console.log('error');
+    }
+  };
   //Navigate to particular table
   const handleClick = () => {
     history('/astview');
@@ -107,157 +159,234 @@ const OperStatsGrid = () => {
   };
 
   useEffect(() => {
-    getTransactionsData();
-    getAstActiveData();
-    
-  },[operId]);
+    getAstActiveData(date);
+    getEmpActiveData(date);
+    getRutActiveData(date);
+  }, []);
+  // useEffect(() => {
+  //   // run function every 1 minute
+  //   const intervalId = setInterval(() => {
+  //     getTransactionsData();
+  //     getAstActiveData();
+  //     getEmpActiveData();
+  //     getRutActiveData();
+  //   }, 10000);
+
+  //   // clear the interval when the component unmounts
+  //   return () => clearInterval(intervalId);
+  // }, [operId, date]);
 
   useEffect(() => {
     const token = window.localStorage.getItem('Lekpay');
     const Token = JSON.parse(token);
     if (!Token) {
       history('/');
-    }else{
+    } else {
+      // run function every 1 minute
+      const intervalId = setInterval(() => {
         getAstData();
         getEmpData();
         getStgData();
         getRutData();
-      }
+        getTransactionsData();
+      }, [token]);
+
+      // clear the interval when the component unmounts
+      return () => clearInterval(intervalId);
+    }
   }, []);
+
   return (
-    <div className='grid lg:grid-cols-4 md:grid-cols-3 gap-6 md:w-[98%] w-[20rem] mt-4 ml-0 '>
-      <BoxWrapper>
-        <div
-          className='rounded-full h-10 w-10 flex items-center justify-center bg-sky-400 cursor-pointer'
-          onClick={handleClick}
-        >
-          <MdOutlineDirectionsBusFilled
-            className='text-2xl text-white '
-            style={{ color: 'white' }}
-          />
-        </div>
-        <div className='pl-4 cursor-pointer' onClick={handleClick}>
-          <span className='text-sm text-gray-500 font-medium'>
-            Total Assets
-          </span>
-          <div className='flex items-center'>
-            <strong className='text-xl text-gray-700 font-semibold'>{data.length}</strong>
+    <div className='flex flex-col'>
+      <div className='flex-row my-4 h-4 w-max  justify-center items-center'>
+        <label className='mr-2'>Date:</label>
+        <input
+          type='date'
+          value={date}
+          onChange={setdata}
+          className='border-gray-200 shadow-md shadow-gray-200 rounded-md p-1 outline-none'
+          max={new Date().toISOString().split("T")[0]}
+        />
+      </div>
+      <div className='grid lg:grid-cols-4 md:grid-cols-3 gap-6 md:w-[98%] w-[20rem] mt-4 ml-0 '>
+        <BoxWrapper>
+          <div
+            className='rounded-full h-10 w-10 flex items-center justify-center bg-sky-400 cursor-pointer'
+            onClick={handleClick}
+          >
+            <MdOutlineDirectionsBusFilled
+              className='text-2xl text-white '
+              style={{ color: 'white' }}
+            />
           </div>
-        </div>
-      </BoxWrapper>
-      <BoxWrapper>
-        <div
-          className='rounded-full h-10 w-10 flex items-center justify-center bg-yellow-400 cursor-pointer'
-          onClick={handleClick1}
-        >
-          <IoPeople
-            className='text-2xl text-black'
-            style={{ color: 'white' }}
-          />
-        </div>
-        <div className='pl-4 cursor-pointer' onClick={handleClick1}>
-          <span className='text-sm text-gray-500 font-medium'>
-            Total Employee
-          </span>
-          <div className='flex items-center'>
-            <strong className='text-xl text-gray-700 font-semibold'>{data1.length}</strong>
-          </div>
-        </div>
-      </BoxWrapper>
-      <BoxWrapper>
-        <div className='rounded-full h-10 w-10 flex items-center justify-center bg-orange-600 cursor-pointer'>
-          <IoPieChart
-            className='text-2xl text-black'
-            style={{ color: 'white' }}
-          />
-        </div>
-        <div className='pl-4 cursor-pointer'>
-          <span className='text-sm text-gray-500 font-medium'>
-            Total Transactions
-          </span>
-          <div className='flex items-center'>
-            <span>
-              <BiRupee size={19} className='mt-1' />
+          <div className='pl-4 cursor-pointer' onClick={handleClick}>
+            <span className='text-sm text-gray-500 font-medium'>
+              Total Assets
             </span>
-            <strong className='text-xl text-gray-700 font-semibold'>
-              {data5}
-            </strong>
+            <div className='flex items-center'>
+              <strong className='text-xl text-gray-700 font-semibold'>
+                {data.length}
+              </strong>
+            </div>
           </div>
-        </div>
-      </BoxWrapper>
-      <BoxWrapper>
-        <div className='rounded-full h-10 w-10 flex items-center justify-center bg-green-600 cursor-pointer'>
-          <MdOutlineDirectionsBusFilled
-            className='text-2xl text-black'
-            style={{ color: 'white' }}
-          />
-        </div>
-        <div className='pl-4 cursor-pointer'>
-          <span className='text-sm text-gray-500 font-medium'>
-            Active Asset
-          </span>
-          <div className='flex items-center'>
-            <strong className='text-xl text-gray-700 font-semibold'>{data4.length}</strong>
+        </BoxWrapper>
+        <BoxWrapper>
+          <div
+            className='rounded-full h-10 w-10 flex items-center justify-center bg-yellow-400 cursor-pointer'
+            onClick={handleClick1}
+          >
+            <IoPeople
+              className='text-2xl text-black'
+              style={{ color: 'white' }}
+            />
           </div>
-        </div>
-      </BoxWrapper>
-      <BoxWrapper>
-        <div
-          className='rounded-full h-10 w-10 flex items-center justify-center bg-teal-500 cursor-pointer'
-          onClick={handleClick2}
-        >
-          <BsFillXDiamondFill
-            className='text-2xl text-white '
-            style={{ color: 'white' }}
-          />
-        </div>
-        <div className='pl-4 cursor-pointer' onClick={handleClick2}>
-          <span className='text-sm text-gray-500 font-medium'>
-            Total Stages
-          </span>
-          <div className='flex items-center'>
-            <strong className='text-xl text-gray-700 font-semibold'>{data2.length}</strong>
+          <div className='pl-4 cursor-pointer' onClick={handleClick1}>
+            <span className='text-sm text-gray-500 font-medium'>
+              Total Employee
+            </span>
+            <div className='flex items-center'>
+              <strong className='text-xl text-gray-700 font-semibold'>
+                {data1.length}
+              </strong>
+            </div>
           </div>
-        </div>
-      </BoxWrapper>
-      <BoxWrapper>
-        <div
-          className='rounded-full h-10 w-10 flex items-center justify-center bg-blue-600 cursor-pointer'
-          onClick={handleClick3}
-        >
-          <TbRoute
-            className='text-2xl text-white '
-            style={{ color: 'white' }}
-          />
-        </div>
-        <div className='pl-4 cursor-pointer' onClick={handleClick3}>
-          <span className='text-sm text-gray-500 font-medium'>
-            Total Routes
-          </span>
-          <div className='flex items-center'>
-            <strong className='text-xl text-gray-700 font-semibold'>{data3.length}</strong>
+        </BoxWrapper>
+        <BoxWrapper>
+          <div className='rounded-full h-10 w-10 flex items-center justify-center bg-orange-600 cursor-pointer'>
+            <IoPieChart
+              className='text-2xl text-black'
+              style={{ color: 'white' }}
+            />
           </div>
-        </div>
-      </BoxWrapper>
-      <BoxWrapper>
-        <div className='rounded-full h-10 w-10 flex items-center justify-center bg-indigo-400 cursor-pointer'>
-          <IoPeople
-            className='text-2xl text-black'
-            style={{ color: 'white' }}
-          />
-        </div>
-        <div className='pl-4 cursor-pointer'>
-          <span className='text-sm text-gray-500 font-medium'>
-            Total Passengers
-          </span>
-          <div className='flex items-center'>
-            
-            <strong className='text-xl text-gray-700 font-semibold'>
-              {data6}
-            </strong>
+          <div className='pl-4 cursor-pointer'>
+            <span className='text-sm text-gray-500 font-medium'>
+              Total Transactions
+            </span>
+            <div className='flex items-center'>
+              <span>
+                <BiRupee size={19} className='mt-1' />
+              </span>
+              <strong className='text-xl text-gray-700 font-semibold'>
+                {data5}
+              </strong>
+            </div>
           </div>
-        </div>
-      </BoxWrapper>
+        </BoxWrapper>
+        <BoxWrapper>
+          <div
+            className='rounded-full h-10 w-10 flex items-center justify-center bg-teal-500 cursor-pointer'
+            onClick={handleClick2}
+          >
+            <BsFillXDiamondFill
+              className='text-2xl text-white '
+              style={{ color: 'white' }}
+            />
+          </div>
+          <div className='pl-4 cursor-pointer' onClick={handleClick2}>
+            <span className='text-sm text-gray-500 font-medium'>
+              Total Stages
+            </span>
+            <div className='flex items-center'>
+              <strong className='text-xl text-gray-700 font-semibold'>
+                {data2.length}
+              </strong>
+            </div>
+          </div>
+        </BoxWrapper>
+        <BoxWrapper>
+          <div
+            className='rounded-full h-10 w-10 flex items-center justify-center bg-blue-600 cursor-pointer'
+            onClick={handleClick3}
+          >
+            <TbRoute
+              className='text-2xl text-white '
+              style={{ color: 'white' }}
+            />
+          </div>
+          <div className='pl-4 cursor-pointer' onClick={handleClick3}>
+            <span className='text-sm text-gray-500 font-medium'>
+              Total Routes
+            </span>
+            <div className='flex items-center'>
+              <strong className='text-xl text-gray-700 font-semibold'>
+                {data3.length}
+              </strong>
+            </div>
+          </div>
+        </BoxWrapper>
+        <BoxWrapper>
+          <div className='rounded-full h-10 w-10 flex items-center justify-center bg-indigo-400 cursor-pointer'>
+            <IoPeople
+              className='text-2xl text-black'
+              style={{ color: 'white' }}
+            />
+          </div>
+          <div className='pl-4 cursor-pointer'>
+            <span className='text-sm text-gray-500 font-medium'>
+              Total Passengers
+            </span>
+            <div className='flex items-center'>
+              <strong className='text-xl text-gray-700 font-semibold'>
+                {data6}
+              </strong>
+            </div>
+          </div>
+        </BoxWrapper>
+        <BoxWrapper>
+          <div className='rounded-full h-10 w-10 flex items-center justify-center bg-green-600 cursor-pointer'>
+            <MdOutlineDirectionsBusFilled
+              className='text-2xl text-black'
+              style={{ color: 'white' }}
+            />
+          </div>
+          <div className='pl-4 cursor-pointer'>
+            <span className='text-sm text-gray-500 font-medium'>
+              Active Asset
+            </span>
+            <div className='flex items-center'>
+              <strong className='text-xl text-gray-700 font-semibold'>
+                {data4.length}
+              </strong>
+            </div>
+          </div>
+        </BoxWrapper>
+        <BoxWrapper>
+          <div className='rounded-full h-10 w-10 flex items-center justify-center bg-green-600 cursor-pointer'>
+            <MdOutlineDirectionsBusFilled
+              className='text-2xl text-black'
+              style={{ color: 'white' }}
+            />
+          </div>
+          <div className='pl-4 cursor-pointer'>
+            <span className='text-sm text-gray-500 font-medium'>
+              Active Employee
+            </span>
+            <div className='flex items-center'>
+              <strong className='text-xl text-gray-700 font-semibold'>
+                {data7.length}
+              </strong>
+            </div>
+          </div>
+        </BoxWrapper>
+        <BoxWrapper>
+          <div className='rounded-full h-10 w-10 flex items-center justify-center bg-green-600 cursor-pointer'>
+            <MdOutlineDirectionsBusFilled
+              className='text-2xl text-black'
+              style={{ color: 'white' }}
+            />
+          </div>
+          <div className='pl-4 cursor-pointer'>
+            <span className='text-sm text-gray-500 font-medium'>
+              Active Route
+            </span>
+            <div className='flex items-center'>
+              <strong className='text-xl text-gray-700 font-semibold'>
+                {data8.length}
+              </strong>
+            </div>
+          </div>
+        </BoxWrapper>
+      </div>
     </div>
   );
 };

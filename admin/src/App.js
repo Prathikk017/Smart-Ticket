@@ -40,6 +40,8 @@ import ViewTicketType from './components/Admin Components/Ticket Type/ViewTicket
 import IndividualOperatorCard from './components/Admin Components/AdminLayout/IndividualStats/SingleOperDashboard';
 
 function App() {
+
+
 	return (
 		<BrowserRouter>
 			<Routes>

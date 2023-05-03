@@ -10,6 +10,7 @@ const {
 	getRouteId,
 	astroid,
 	tripAmounnt,
+	readEmpActive,
 } = require('../../controllers/Employee/employee');
 
 router.route('/create').post(createEmployee);
@@ -21,5 +22,6 @@ router.route('/delete/:EmpId').patch(deleteEmployee);
 router.route('/routeid').post(getRouteId);
 router.route('/astroid').post(astroid);
 router.route('/tripamount').post(tripAmounnt);
+router.route('/readempactive').post(readEmpActive);
 
 module.exports = router;

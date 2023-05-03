@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Link, useParams } from 'react-router-dom';
 import moment from 'moment';
 import Opersidebar from '../Opersidebar';
+import useIdleTimeout from '../../../useIdleTimeout';
 
 const Stgview = () => {
     const history = useNavigate();
@@ -32,6 +33,48 @@ const Stgview = () => {
       }
     };
   
+     // Call useIdleTimeout and pass in the time to consider the user as idle
+  const isIdle = useIdleTimeout(60000); // set to 1 minute
+
+  const verify = async() => {
+    const token = window.localStorage.getItem('Lekpay');
+    const Token = JSON.parse(token);
+    const authorization = `Bearer ${Token}`;
+    const res = await axios.post('http://localhost:8004/admin/verify',{
+      authorization
+    });
+    if(res.data.status === 201){
+      console.log(res.data.data);
+    }else{
+      if(res.data.data === 'Token is not valid'){
+        window.localStorage.removeItem('Lekpay');
+        history('/');
+      }
+    }
+  }
+
+  
+  useEffect(() => {
+    verify();
+    // Run verify() every 1 minute if the user is not idle
+    const intervalId = setInterval(() => {
+      if (!isIdle) {
+        verify();
+      }
+    }, 60000);
+
+    // Clear the interval when the component unmounts
+    return () => clearInterval(intervalId);
+  }, [isIdle]);
+
+  useEffect(() => {
+    // Redirect to sign-in page if the user is idle
+    if (isIdle) {
+      window.localStorage.removeItem('Lekpay');
+      history('/');
+    }
+  }, [isIdle, history]);
+
     useEffect(() => {
       const token = window.localStorage.getItem('Lekpay');
     const Token = JSON.parse(token);

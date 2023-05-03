@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { getOperator, createOperator, getAllOperators, getOperators, validateOperator, createAsset, createQrcodeAsset, readAsset, readAssetActive, deleteAsset, updateAsset, createStage,  validateStage, readRoute, readStage, readStageTbl, getStageById, deleteStage, updateStage, createRoute, createRoutemap, getAssetById, readTicket , createRouteTicType, readRouteTicType, getOperatorShortName, getRouteById, deleteRoute, updateRoute, readTransactionData} = require('../../controllers/Operator/operator');
+const { getOperator, createOperator, getAllOperators, getOperators, validateOperator, createAsset, createQrcodeAsset, readAsset, readAssetActive, deleteAsset, updateAsset, createStage,  validateStage, readRoute, readStage, readStageTbl, getStageById, deleteStage, updateStage, createRoute, createRoutemap, getAssetById, readTicket , createRouteTicType, readRouteTicType, getOperatorShortName, getRouteById, deleteRoute, updateRoute, readTransactionData, readRouteActive} = require('../../controllers/Operator/operator');
 
 router.route('/readId').get(getOperator);
 router.route('/create').post(createOperator);
@@ -37,6 +37,7 @@ router.route('/readticket').post(readTicket);
 router.route('/routettypecreate').post(createRouteTicType);
 router.route('/readroutetictype').post(readRouteTicType);
 router.route('/readtransaction').post(readTransactionData);
+router.route('/readrutactive').post(readRouteActive);
 // router.route('/generate-qr-code').post(createQrcodeAsset);
 
 

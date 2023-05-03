@@ -236,3 +236,37 @@ exports.tripAmounnt = async (req, res) => {
 		}
 	});
 };
+
+//read employee by operator id
+exports.readEmpActive = (req,res) =>{
+	let tblAssetRouteMap = req.body;
+	const Time = tblAssetRouteMap.date;
+	let operID = tblAssetRouteMap.operId;
+	let query = `SELECT EmpId FROM tblAssetRouteMap WHERE  EmpId LIKE '%${operID}%' AND Status = 'A' AND Time LIKE '%${Time}%'`;
+	db.query(query,(err, result) =>{
+	  if(!err){
+		if(result.length> 0){
+		  let initalemployee =result[0].EmpId;
+		  let currentemployee = '';
+		  let previousemployee='';
+		  let employee = [];
+		  for(let i = 1; i< result.length-1; i++){
+			previousemployee = result[i].EmpId;     
+			currentemployee = result[i+1].EmpId;
+			
+			
+			if(currentemployee !== previousemployee){
+			  employee.push(currentemployee);
+			}
+		  }
+		  employee.push(initalemployee);
+		  res.status(200).json({status: 201, data: employee});
+		  return;
+		}else{
+		  res.status(200).json({status:201,message:"employee not found to operator", data:result});
+		}
+	  }else{
+		console.log(err)
+	  }
+	})
+  }

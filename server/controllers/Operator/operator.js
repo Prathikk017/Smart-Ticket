@@ -277,19 +277,21 @@ exports.readAsset = (req,res) =>{
 //read asset by operator id
 exports.readAssetActive = (req,res) =>{
   let tblAssetRouteMap = req.body;
+  const Time = tblAssetRouteMap.date;
   let operID = tblAssetRouteMap.operId;
-  let query = `SELECT AstId FROM tblAssetRouteMap WHERE  AstId LIKE '%${operID}%' AND Status = 'A'`;
-  db.query(query, (err, result) =>{
+  let query = `SELECT AstId FROM tblAssetRouteMap WHERE  AstId LIKE '%${operID}%' AND Status = 'A' AND Time LIKE '%${Time}%'`;
+  db.query(query,(err, result) =>{
     if(!err){
       if(result.length> 0){
-        let initalAsset ='';
+        let initalAsset =result[0].AstId;
         let currentAsset = '';
         let previousAsset='';
         let Asset = [];
         for(let i = 1; i< result.length-1; i++){
-          initalAsset = result[0].AstId;
           previousAsset = result[i].AstId;     
           currentAsset = result[i+1].AstId;
+          
+          
           if(currentAsset !== previousAsset){
             Asset.push(currentAsset);
           }
@@ -298,7 +300,7 @@ exports.readAssetActive = (req,res) =>{
         res.status(200).json({status: 201, data: Asset});
         return;
       }else{
-        res.status(200).json({message:"asset not found to operator", data:result});
+        res.status(200).json({status: 201, message:"asset not found to operator", data:result});
       }
     }else{
       console.log(err)
@@ -606,6 +608,40 @@ exports.readRoute = (req, res) => {
     }
   });
 };
+
+//read asset by operator id
+exports.readRouteActive = (req,res) =>{
+  let tblAssetRouteMap = req.body;
+  const Time = tblAssetRouteMap.date;
+  let operID = tblAssetRouteMap.operId;
+  let query = `SELECT RouteID FROM tblAssetRouteMap WHERE  RouteID LIKE '%${operID}%' AND Status = 'A' AND Time LIKE '%${Time}%'`;
+  db.query(query,(err, result) =>{
+    if(!err){
+      if(result.length> 0){
+        let initalRoute =result[0].RouteID;
+        let currentRoute = '';
+        let previousRoute='';
+        let Route = [];
+        for(let i = 1; i< result.length-1; i++){
+          previousRoute = result[i].RouteID;     
+          currentRoute = result[i+1].RouteID;
+          
+          
+          if(currentRoute !== previousRoute){
+            Route.push(currentRoute);
+          }
+        }
+        Route.push(initalRoute);
+        res.status(200).json({status: 201, data: Route});
+        return;
+      }else{
+        res.status(200).json({status:201, message:"Route not found to operator", data:result});
+      }
+    }else{
+      console.log(err)
+    }
+  })
+}
 
 //get route by id
 exports.getRouteById = (req, res) => {

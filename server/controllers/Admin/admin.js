@@ -23,7 +23,7 @@ exports.login = (req, res) => {
 								flag: results[0].Flag,
 							};
 							// Generate a JWT token with the user object and the secret key
-							const token = jwt.sign(user, config.secret);
+							const token = jwt.sign(user, config.secret,{ expiresIn: '10m' });
 							res
 								.status(201)
 								.json({ status: 201, token: `${token}`, data: results[0] });
@@ -41,15 +41,17 @@ exports.login = (req, res) => {
 	});
 };
 
-exports.verify = (res, req, next) => {
-	const authHeader = req.headers.authorization;
+exports.verify = (req, res) => {
+	const authHeader = req.body.authorization;
 	if (authHeader) {
 		const token = authHeader.split(' ')[1];
 
-		jwt.verify(token, 'config.secret', (err, result) => {
+		jwt.verify(token, config.secret, (err, result) => {
 			if (err) {
-				return res.status(401).json({ data: 'Token is not valid' });
-			} else {
+				return res.status(200).json({ data: 'Token is not valid' });
+			}  else {
+				// Token is valid, send a response
+				res.status(200).json({ status:201, data: 'Token is valid' });
 			}
 		});
 	} else {
