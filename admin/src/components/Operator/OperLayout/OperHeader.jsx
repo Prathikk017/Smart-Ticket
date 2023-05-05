@@ -20,8 +20,8 @@ const OperHeader = () => {
           className='text-sm focus:outline-none active:outline-none h-10 md:w-[24rem] w-[19rem] border border-gray-300 rounded-sm  pl-11 px-4 shadow-md shadow-gray-200 '
         />
       </div>
-      <div className='flex items-center gap-2 mr-2'>
-        <Popover className='relative'>
+       <div className='flex items-center gap-2 mr-2'>
+        {/* <Popover className='relative'>
           {({ open }) => (
             <>
               <Popover.Button
@@ -52,7 +52,7 @@ const OperHeader = () => {
               </Transition>
             </>
           )}
-        </Popover>
+        </Popover> */}
         <Popover className='relative'>
           {({ open }) => (
             <>

@@ -21,7 +21,7 @@ const Header = () => {
         />
       </div>
       <div className='flex items-center gap-2 mr-2'>
-        <Popover className='relative'>
+        {/* <Popover className='relative'>
           {({ open }) => (
             <>
               <Popover.Button
@@ -52,7 +52,7 @@ const Header = () => {
               </Transition>
             </>
           )}
-        </Popover>
+        </Popover> */}
         <Popover className='relative'>
           {({ open }) => (
             <>

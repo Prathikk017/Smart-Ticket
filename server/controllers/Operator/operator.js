@@ -635,7 +635,7 @@ exports.readRouteActive = (req,res) =>{
         res.status(200).json({status: 201, data: Route});
         return;
       }else{
-        res.status(200).json({status:201, message:"Route not found to operator", data:result});
+        res.status(200).json({status: 201, message:"route not found to operator", data:result});
       }
     }else{
       console.log(err)
@@ -823,3 +823,21 @@ exports.readTransactionData = (req, res) =>{
   })
 }
 
+//get passengers data 
+exports.readPassengersData = (req, res) =>{
+  let tblTransaction = req.body;
+  const OperId = tblTransaction.operId;
+  const CreatedDate = tblTransaction.date;
+  let query = `SELECT Passengers FROM tblTransaction WHERE RouteName LIKE '%${OperId}%' AND TransactionTimeStamp LIKE '%${CreatedDate}%'`;
+  db.query(query,(err,result)=>{
+    if(!err){
+      let totalPassengers = 0;
+      for(let i = 0; i < result.length ; i++){
+          totalPassengers += JSON.parse(result[i].Passengers);
+      }
+      res.status(200).json({status:201 , Passengers:totalPassengers});
+    }else{
+      console.log(err);
+    }
+  })
+}

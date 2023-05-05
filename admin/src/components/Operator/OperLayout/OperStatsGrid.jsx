@@ -34,6 +34,7 @@ const OperStatsGrid = () => {
   const setdata = (e) => {
     const selectedDate = e.target.value;
     setDate(selectedDate);
+    getPassengersData(selectedDate);
     getAstActiveData(selectedDate);
     getEmpActiveData(selectedDate);
     getRutActiveData(selectedDate);
@@ -82,6 +83,21 @@ const OperStatsGrid = () => {
     }
   };
 
+  const getPassengersData = async (selectedDate) => {
+    const res = await axios.post(
+      'http://localhost:8004/operator/readpassengers',
+      {
+        operId,
+        date: selectedDate,
+      }
+    );
+    if (res.data.status === 201) {
+      setData6(res.data.Passengers);
+    } else {
+      console.log('error');
+    }
+  };
+
   const getRutActiveData = async (selectedDate) => {
     const res = await axios.post(
       'http://localhost:8004/operator/readrutactive',
@@ -96,6 +112,8 @@ const OperStatsGrid = () => {
       console.log('error');
     }
   };
+
+  
 
   const getEmpData = async () => {
     const res = await axios.post('http://localhost:8004/employee/reademp', {
@@ -139,7 +157,6 @@ const OperStatsGrid = () => {
     );
     if (res.data.status === 201) {
       setData5(res.data.data);
-      setData6(res.data.Passengers);
     } else {
       console.log('error');
     }
@@ -159,8 +176,10 @@ const OperStatsGrid = () => {
   };
 
   useEffect(() => {
+    
     getAstActiveData(date);
     getEmpActiveData(date);
+    getPassengersData(date);
     getRutActiveData(date);
   }, []);
   // useEffect(() => {
@@ -182,20 +201,15 @@ const OperStatsGrid = () => {
     if (!Token) {
       history('/');
     } else {
-      // run function every 1 minute
-      const intervalId = setInterval(() => {
         getAstData();
         getEmpData();
         getStgData();
         getRutData();
-        getTransactionsData();
-      }, [token]);
-
-      // clear the interval when the component unmounts
-      return () => clearInterval(intervalId);
+        getTransactionsData();      
     }
   }, []);
 
+ 
   return (
     <div className='flex flex-col'>
       <div className='flex-row my-4 h-4 w-max  justify-center items-center'>
@@ -352,7 +366,7 @@ const OperStatsGrid = () => {
         </BoxWrapper>
         <BoxWrapper>
           <div className='rounded-full h-10 w-10 flex items-center justify-center bg-green-600 cursor-pointer'>
-            <MdOutlineDirectionsBusFilled
+            <IoPeople
               className='text-2xl text-black'
               style={{ color: 'white' }}
             />
@@ -370,7 +384,7 @@ const OperStatsGrid = () => {
         </BoxWrapper>
         <BoxWrapper>
           <div className='rounded-full h-10 w-10 flex items-center justify-center bg-green-600 cursor-pointer'>
-            <MdOutlineDirectionsBusFilled
+            <TbRoute
               className='text-2xl text-black'
               style={{ color: 'white' }}
             />

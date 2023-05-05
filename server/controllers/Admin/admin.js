@@ -23,7 +23,7 @@ exports.login = (req, res) => {
 								flag: results[0].Flag,
 							};
 							// Generate a JWT token with the user object and the secret key
-							const token = jwt.sign(user, config.secret,{ expiresIn: '10m' });
+							const token = jwt.sign(user, config.secret);
 							res
 								.status(201)
 								.json({ status: 201, token: `${token}`, data: results[0] });
