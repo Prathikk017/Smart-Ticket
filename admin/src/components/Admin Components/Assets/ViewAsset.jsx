@@ -14,7 +14,6 @@ const ViewAsset = () => {
 		const res = await axios.get(`http://localhost:8004/admin/assets/${AstId}`);
 
 		if (res.data.status === 201) {
-			console.log(res.data.data);
 			setData(res.data.data);
 		} else {
 			console.log('error');

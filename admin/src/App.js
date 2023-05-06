@@ -39,6 +39,13 @@ import TicketTypes from './components/Admin Components/Ticket Type/TicketTypes';
 import ViewTicketType from './components/Admin Components/Ticket Type/ViewTicketType';
 import IndividualOperatorCard from './components/Admin Components/AdminLayout/IndividualStats/SingleOperDashboard';
 
+import SingleAssetDashboard from './components/Admin Components/AdminLayout/IndividualStats/SingleAssets';
+import IndiviualOperAsset from './components/Admin Components/AdminLayout/IndividualStats/SingleOperAsset/IndiviualOperAsset';
+import AssetTable from './components/Admin Components/AdminLayout/IndividualStats/SingleOperAsset/AssetTable';
+import IndiviualOperEmployee from './components/Admin Components/AdminLayout/IndividualStats/SingleOperEmployee/IndiviualOperEmployee';
+import EmployeeTable from './components/Admin Components/AdminLayout/IndividualStats/SingleOperEmployee/EmployeeTable';
+import SingleEmployeeDashboard from './components/Admin Components/AdminLayout/IndividualStats/SingleEmployees';
+
 function App() {
 
 
@@ -85,10 +92,13 @@ function App() {
 				<Route path='/admin/ticket-type/add' element={<TicketType />} />
 				<Route path='/admin/ticket-types' element={<TicketTypes />} />
 				<Route path='/admin/ticket-types/:TTid' element={<ViewTicketType />} />
-				<Route
-					path='/admin/singleoperstats'
-					element={<IndividualOperatorCard />}
-				/>
+				<Route path='/admin/singleoperstats' element={<IndividualOperatorCard />} />
+				<Route path='/admin/singleassets' element={<SingleAssetDashboard/>}/>
+				<Route path='/admin/singleemployee' element={<SingleEmployeeDashboard/>}/>
+				<Route path='/admin/operator/asset/:OperId' element={<IndiviualOperAsset/>}/>
+				<Route path='/admin/operator/employee/:OperId' element={<IndiviualOperEmployee/>}/>
+				<Route path='/admin/asset/:OperId' element={<AssetTable/>}/>
+				<Route path='/admin/employee/:OperId' element={<EmployeeTable/>}/>
 			</Routes>
 		</BrowserRouter>
 	);

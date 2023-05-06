@@ -56,10 +56,10 @@ const StatsGrid = () => {
 		history('/admin/singleoperstats');
 	};
 	const handleClick1 = () => {
-		history('/admin/employeesview');
+		history('/admin/singleemployee');
 	};
 	const handleClick2 = () => {
-		history('/admin/assetsview');
+		history('/admin/singleassets');
 	};
 	const handleClick3 = () => {
 		history('/admin/usersview');

@@ -18,6 +18,10 @@ const {
 	activateTicketType,
 	deactivateTicketType,
 	verify,
+	getAllAssetOperator,
+	getAllEmployeeOperator,
+	getAssetsByOperatorId,
+	getEmployeesByOperatorId,
 } = require('../../controllers/Admin/admin');
 
 router.route('/login').post(login);
@@ -36,5 +40,9 @@ router.route('/transactions').get(getAllTransactions);
 router.route('/ticket-types').get(getAllTicketTypes);
 router.route('/ticket-types/enable/:TTid').patch(activateTicketType);
 router.route('/ticket-types/disable/:TTid').patch(deactivateTicketType);
+router.route('/operator/assets').post(getAllAssetOperator);
+router.route('/operator/employees').post(getAllEmployeeOperator);
+router.route('/asset').post(getAssetsByOperatorId);
+router.route('/employee').post(getEmployeesByOperatorId);
 
 module.exports = router;

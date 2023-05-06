@@ -807,16 +807,14 @@ exports.readRouteTicType = (req, res)=>{
 exports.readTransactionData = (req, res) =>{
   let tblTransaction = req.body;
   const OperId = tblTransaction.operId;
-  let query = `SELECT Fare,Passengers FROM tblTransaction WHERE RouteName LIKE '%${OperId}%'`;
+  let query = `SELECT Fare FROM tblTransaction WHERE RouteName LIKE '%${OperId}%' AND Status = 'PAID'`;
   db.query(query,(err,result)=>{
     if(!err){
       let totalTransaction = 0;
-      let totalPassengers = 0;
       for(let i = 0; i < result.length ; i++){
           totalTransaction += JSON.parse(result[i].Fare);
-          totalPassengers += JSON.parse(result[i].Passengers);
       }
-      res.status(200).json({status:201 , data:totalTransaction , Passengers:totalPassengers});
+      res.status(200).json({status:201 , data:totalTransaction});
     }else{
       console.log(err);
     }
@@ -831,11 +829,16 @@ exports.readPassengersData = (req, res) =>{
   let query = `SELECT Passengers FROM tblTransaction WHERE RouteName LIKE '%${OperId}%' AND TransactionTimeStamp LIKE '%${CreatedDate}%'`;
   db.query(query,(err,result)=>{
     if(!err){
-      let totalPassengers = 0;
-      for(let i = 0; i < result.length ; i++){
-          totalPassengers += JSON.parse(result[i].Passengers);
-      }
-      res.status(200).json({status:201 , Passengers:totalPassengers});
+      if(result.length > 0){
+        let totalPassengers = 0;
+         for(let i = 0; i < result.length ; i++){
+            totalPassengers += JSON.parse(result[i].Passengers);
+          }
+           res.status(200).json({status:201 , Passengers:totalPassengers});
+       }else{
+           let totalPassengers = 0;
+           res.status(200).json({status:201 , Passengers:totalPassengers});
+       }
     }else{
       console.log(err);
     }

@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { MdOutlineDirectionsBusFilled } from 'react-icons/md';
-import { BiRupee } from 'react-icons/bi';
-import { IoPeople, IoPieChart } from 'react-icons/io5';
-import { BsFillXDiamondFill } from 'react-icons/bs';
+import { IoPeople} from 'react-icons/io5';
 import axios from 'axios';
-const StatsGrid = () => {
-	const history = useNavigate();
+
+const AssetCard = () => {
+    const history = useNavigate();
 
 	// total operators data
 	const [data, setData] = useState('');
+
+	//total assets for operator
+	const [data1, setData1] = useState('');
 
 	const getOperatorsData = async () => {
 		const res = await axios.get('http://localhost:8004/admin/operators');
@@ -20,8 +21,15 @@ const StatsGrid = () => {
 		}
 	};
 
-	const handleClick = () => {
-		history('/admin/operatorsview');
+	const handleClick = async(OperId) => {
+
+		history(`/admin/operator/asset/${OperId}`);
+	//    const res = await axios.post('http://localhost:8004/admin/operator/assets',{
+	// 	OperId
+	//    })
+	//    if(res.data.status === 201){
+	// 	setData1(res.data.data);
+	//    }
 	};
 
 	useEffect(() => {
@@ -42,7 +50,6 @@ const StatsGrid = () => {
 								<BoxWrapper>
 									<div
 										className='rounded-full h-12 w-12 flex items-center justify-center bg-pink-400 cursor-pointer'
-										onClick={handleClick}
 										key={i}
 									>
 										<IoPeople
@@ -50,9 +57,9 @@ const StatsGrid = () => {
 											style={{ color: 'white' }}
 										/>
 									</div>
-									<div className='pl-4 cursor-pointer' onClick={handleClick}>
+									<div className='pl-4 cursor-pointer' onClick={() =>handleClick(el.OperId)}>
 										<span className='text-sm text-gray-500 font-medium'>
-											OP {el.Num}
+											{el.OperId}
 										</span>
 										<div className='flex items-center'>
 											<strong className='text-xl text-gray-700 font-semibold'>
@@ -69,7 +76,7 @@ const StatsGrid = () => {
 	);
 };
 
-export default StatsGrid;
+export default AssetCard
 
 function BoxWrapper({ children }) {
 	return (

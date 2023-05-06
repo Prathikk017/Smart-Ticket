@@ -281,3 +281,59 @@ exports.deactivateTicketType = (req, res) => {
 		}
 	});
 };
+
+//get all assets for operator
+exports.getAllAssetOperator = (req, res) => {
+	const tblAsset = req.body;
+	const OperId = tblAsset.OperId;
+	
+	let query = `SELECT AstId FROM tblAsset WHERE AstId LIKE '%${OperId}%'`;
+	db.query(query, (err, results) => {
+		if (!err) {
+			return res.status(200).json({ status: 201, data: results });
+		} else {
+			return res.status(500).json({ status: 500, data: err });
+		}
+	});
+};
+
+//get all employee for operator
+exports.getAllEmployeeOperator = (req, res) => {
+	const tblEmployee = req.body;
+	const OperId = tblEmployee.OperId;
+	
+	var query = `SELECT EmpId FROM tblEmployee WHERE EmpId LIKE '%${OperId}%'`;
+	db.query(query, (err, results) => {
+		if (!err) {
+			return res.status(200).json({ status: 201, data: results });
+		} else {
+			return res.status(500).json({ status: 500, data: err });
+		}
+	});
+};
+
+exports.getEmployeesByOperatorId = (req, res) => {
+	const tblEmployee = req.body;
+	const OperID = tblEmployee.OperId;
+	var query = `SELECT * FROM tblEmployee WHERE EmpId LIKE '%${OperID}%'`;
+	db.query(query, (err, results) => {
+		if (!err) {
+			return res.status(200).json({ status: 201, data: results });
+		} else {
+			return res.status(500).json({ status: 500, data: err });
+		}
+	});
+};
+
+exports.getAssetsByOperatorId = (req, res) => {
+	const tblAsset = req.body.OperId;
+	const OperID = tblAsset.OperId;
+	let query = `SELECT * FROM tblAsset WHERE AstId LIKE '%${OperID}%'`;
+	db.query(query, (err, results) => {
+		if (!err) {
+			return res.status(200).json({ status: 201, data: results });
+		} else {
+			return res.status(500).json({ status: 500, data: err });
+		}
+	});
+};
