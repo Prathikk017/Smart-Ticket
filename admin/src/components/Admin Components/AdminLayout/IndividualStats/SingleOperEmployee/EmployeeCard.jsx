@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { IoPeople} from 'react-icons/io5';
 import axios from 'axios';
+import useIdleTimeout from '../../../../../useIdleTimeout';
 
 const EmployeeCard = () => {
     const history = useNavigate();
@@ -13,7 +14,7 @@ const EmployeeCard = () => {
 	const [data1, setData1] = useState('');
 
 	const getOperatorsData = async () => {
-		const res = await axios.get('http://localhost:8004/admin/operators');
+		const res = await axios.get('https://amsweets.in/admin/operators');
 		if (res.data.status === 201) {
 			setData(res.data.data);
 		} else {
@@ -24,13 +25,55 @@ const EmployeeCard = () => {
 	const handleClick = async(OperId) => {
 
 		history(`/admin/operator/employee/${OperId}`);
-	//    const res = await axios.post('http://localhost:8004/admin/operator/assets',{
+	//    const res = await axios.post('https://amsweets.in/admin/operator/assets',{
 	// 	OperId
 	//    })
 	//    if(res.data.status === 201){
 	// 	setData1(res.data.data);
 	//    }
 	};
+
+	// Call useIdleTimeout and pass in the time to consider the user as idle
+	const isIdle = useIdleTimeout(300000); // set to 5 minute
+
+	//  const verify = async() => {
+	//    const token = window.localStorage.getItem('Lekpay');
+	//    const Token = JSON.parse(token);
+	//    const authorization = `Bearer ${Token}`;
+	//    const res = await axios.post('https://amsweets.in/admin/verify',{
+	// 	 authorization
+	//    });
+	//    if(res.data.status === 201){
+	// 	 console.log(res.data.data);
+	//    }else{
+	// 	 if(res.data.data === 'Token is not valid'){
+	// 	   window.localStorage.removeItem('Lekpay');
+	// 	   history('/');
+	// 	 }
+	//    }
+	//  }
+   
+	 
+	//  useEffect(() => {
+	//    verify();
+	//    // Run verify() every 10 minute if the user is not idle
+	//    const intervalId = setInterval(() => {
+	// 	 if (!isIdle) {
+	// 	   verify();
+	// 	 }
+	//    }, 600000);
+   
+	//    // Clear the interval when the component unmounts
+	//    return () => clearInterval(intervalId);
+	//  }, [!isIdle]);
+   
+	 useEffect(() => {
+	   // Redirect to sign-in page if the user is idle
+	   if (isIdle) {
+		 window.localStorage.removeItem('Lekpay');
+		 history('/');
+	   }
+	 }, [isIdle, history]);
 
 	useEffect(() => {
 		const token = window.localStorage.getItem('Lekpay');

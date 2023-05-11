@@ -73,7 +73,7 @@ const RouteStageMap = () => {
   var operId = JSON.parse(ID);
 
   const getRoute = async () => {
-    const res = await axios.post('http://localhost:8004/operator/readroute', {
+    const res = await axios.post('https://amsweets.in/operator/readroute', {
       operId,
     });
     if (res.data.status === 201) {
@@ -85,7 +85,7 @@ const RouteStageMap = () => {
   };
 
   const getStage = async () => {
-    const res1 = await axios.post('http://localhost:8004/operator/readstage', {
+    const res1 = await axios.post('https://amsweets.in/operator/readstage', {
       operId,
     });
     if (res1.data.status === 201) {
@@ -161,7 +161,7 @@ const RouteStageMap = () => {
       alert('Fill the details');
     } else {
       const res1 = await axios.post(
-        'http://localhost:8004/operator/createroutemap',
+        'https://amsweets.in/operator/createroutemap',
         {
           route,
           arr,
@@ -188,7 +188,7 @@ const RouteStageMap = () => {
   const getTicketType = async () => {
     if (RouteTicket) {
       const res = await axios.post(
-        'http://localhost:8004/operator/readroutetictype',
+        'https://amsweets.in/operator/readroutetictype',
         {
           RouteTicket,
         }
@@ -207,7 +207,7 @@ const RouteStageMap = () => {
   //    const token = window.localStorage.getItem('Lekpay');
   //    const Token = JSON.parse(token);
   //    const authorization = `Bearer ${Token}`;
-  //    const res = await axios.post('http://localhost:8004/admin/verify',{
+  //    const res = await axios.post('https://amsweets.in/admin/verify',{
   //      authorization
   //    });
   //    if(res.data.status === 201){

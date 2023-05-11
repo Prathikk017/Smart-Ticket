@@ -49,7 +49,7 @@ const Rutedit = () => {
   };
   const getData = async () => {
     const res1 = await axios.get(
-      `http://localhost:8004/operator/rutread/${RouteID}`
+      `https://amsweets.in/operator/rutread/${RouteID}`
     );
 
     if (res1.data.status === 201) {
@@ -65,7 +65,7 @@ const Rutedit = () => {
   };
 
   const getStage = async () => {
-    const res1 = await axios.post('http://localhost:8004/operator/readstage', {
+    const res1 = await axios.post('https://amsweets.in/operator/readstage', {
       operId,
     });
     if (res1.data.status === 201) {
@@ -91,7 +91,7 @@ const Rutedit = () => {
       return;
     } else {
       const res = await axios.patch(
-        `http://localhost:8004/operator/route/update/${RouteID}`,
+        `https://amsweets.in/operator/route/update/${RouteID}`,
         {
           RouteName,
           RouteEffDate,
@@ -118,7 +118,7 @@ const Rutedit = () => {
   //    const token = window.localStorage.getItem('Lekpay');
   //    const Token = JSON.parse(token);
   //    const authorization = `Bearer ${Token}`;
-  //    const res = await axios.post('http://localhost:8004/admin/verify',{
+  //    const res = await axios.post('https://amsweets.in/admin/verify',{
   //      authorization
   //    });
   //    if(res.data.status === 201){

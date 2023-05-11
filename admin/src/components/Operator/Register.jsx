@@ -53,7 +53,7 @@ const Register = () => {
   }
 
   const getOperator = async () =>{
-    const res = await axios.get("http://localhost:8004/operator/readid");
+    const res = await axios.get("https://amsweets.in/operator/readid");
     if(res.data.status === 201){
       if(res.data.data === 0){
         setOperid("0");
@@ -89,7 +89,7 @@ const Register = () => {
       alert('Fill the details');
       return;
     } else {
-      const res = await axios.post('http://localhost:8004/operator/operatorvalidate', {
+      const res = await axios.post('https://amsweets.in/operator/operatorvalidate', {
         OperEmail,
         OperContactEmail,
       });
@@ -98,7 +98,7 @@ const Register = () => {
         alert('User already Exist');
         return;
       } else {
-        const res1 = await axios.post('http://localhost:8004/operator/create', {
+        const res1 = await axios.post('https://amsweets.in/operator/create', {
           OperId,
           OperName,
           OperShortName,

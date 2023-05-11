@@ -14,7 +14,7 @@ const TicketTypes = () => {
 	const history = useNavigate();
 
 	const getTransactionsData = async () => {
-		const res = await axios.get('http://localhost:8004/admin/ticket-types');
+		const res = await axios.get('https://amsweets.in/admin/ticket-types');
 		if (res.data.status === 201) {
 			setData(res.data.data);
 		} else {
@@ -55,7 +55,7 @@ const TicketTypes = () => {
 	//    const token = window.localStorage.getItem('Lekpay');
 	//    const Token = JSON.parse(token);
 	//    const authorization = `Bearer ${Token}`;
-	//    const res = await axios.post('http://localhost:8004/admin/verify',{
+	//    const res = await axios.post('https://amsweets.in/admin/verify',{
 	// 	 authorization
 	//    });
 	//    if(res.data.status === 201){

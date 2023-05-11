@@ -12,7 +12,7 @@ const ViewEmployee = () => {
 
 	const getSingleEmployeeData = async () => {
 		const res = await axios.get(
-			`http://localhost:8004/admin/employees/${EmpId}`
+			`https://amsweets.in/admin/employees/${EmpId}`
 		);
 
 		if (res.data.status === 201) {
@@ -29,7 +29,7 @@ const ViewEmployee = () => {
 	//    const token = window.localStorage.getItem('Lekpay');
 	//    const Token = JSON.parse(token);
 	//    const authorization = `Bearer ${Token}`;
-	//    const res = await axios.post('http://localhost:8004/admin/verify',{
+	//    const res = await axios.post('https://amsweets.in/admin/verify',{
 	// 	 authorization
 	//    });
 	//    if(res.data.status === 201){

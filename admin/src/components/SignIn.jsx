@@ -35,7 +35,7 @@ const SignIn = () => {
 		if (!Aname || !Apassword) {
 			alert('Fill the details');
 		} else {
-			const res = await axios.post('http://localhost:8004/admin/login', {
+			const res = await axios.post('https://amsweets.in/admin/login', {
 				Aname,
 				Apassword,
 			});

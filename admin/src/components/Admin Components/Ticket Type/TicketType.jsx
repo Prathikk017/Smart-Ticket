@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useFormik } from 'formik';
-import useIdleTimeout from '../../../useIdleTimeout';
+
 import Sidebar from '../Admin/Sidebar';
 import { adminRegisterSchema } from '../../../schemas/index';
 
@@ -13,6 +13,7 @@ const initialValues = {
 
 const TicketType = () => {
 	const history = useNavigate();
+	const [ttDuration, setTtDuration] = useState([]);
 
 	const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
 		useFormik({
@@ -30,13 +31,14 @@ const TicketType = () => {
 	const handleSub = async (e) => {
 		e.preventDefault();
 
-		if (!TTname || !TTshortname) {
+		if (!TTname || !TTshortname || !ttDuration) {
 			alert('Fill the details');
 			return;
 		} else {
-			const res = await axios.post('http://localhost:8004/admin/tickettype', {
+			const res = await axios.post('https://amsweets.in/admin/tickettype', {
 				TTname,
 				TTshortname,
+				ttDuration,
 			});
 			if (res.data.status === 201) {
 				alert('Ticket Type added successfully');
@@ -48,55 +50,18 @@ const TicketType = () => {
 			}
 		}
 	};
- // Call useIdleTimeout and pass in the time to consider the user as idle
- const isIdle = useIdleTimeout(300000); // set to 5 minute
 
-//  const verify = async() => {
-//    const token = window.localStorage.getItem('Lekpay');
-//    const Token = JSON.parse(token);
-//    const authorization = `Bearer ${Token}`;
-//    const res = await axios.post('http://localhost:8004/admin/verify',{
-// 	 authorization
-//    });
-//    if(res.data.status === 201){
-// 	 console.log(res.data.data);
-//    }else{
-// 	 if(res.data.data === 'Token is not valid'){
-// 	   window.localStorage.removeItem('Lekpay');
-// 	   history('/');
-// 	 }
-//    }
-//  }
+	const handleCheckboxChange = (e) => {
+		const ticketValue = e.target.value;
+		const isChecked = e.target.checked;
+		if (isChecked) {
+			setTtDuration([...ttDuration, ticketValue]);
+			// console.log(ticketValue);
+		} else {
+			setTtDuration(ttDuration.filter((t) => t !== ticketValue));
+		}
+	};
 
- 
-//  useEffect(() => {
-//    verify();
-//    // Run verify() every 10 minute if the user is not idle
-//    const intervalId = setInterval(() => {
-// 	 if (!isIdle) {
-// 	   verify();
-// 	 }
-//    }, 600000);
-
-//    // Clear the interval when the component unmounts
-//    return () => clearInterval(intervalId);
-//  }, [!isIdle]);
-
- useEffect(() => {
-   // Redirect to sign-in page if the user is idle
-   if (isIdle) {
-	 window.localStorage.removeItem('Lekpay');
-	 history('/');
-   }
- }, [isIdle, history]);
-
- useEffect(() => {
-    const token = window.localStorage.getItem('Lekpay');
-    const Token = JSON.parse(token);
-    if (!Token) {
-      history('/');
-    }
-});
 	return (
 		<div className='flex flex-row gap-4'>
 			<Sidebar />
@@ -119,9 +84,10 @@ const TicketType = () => {
 								value={values.TTname}
 								className='border p-1 rounded w-full hover:border-pink-500 duration-200'
 							/>
-							{errors.Aname && touched.Aname ? (
-								<p className='text-red-500 text-xs '>{errors.Aname}</p>
+							{errors.TTname && touched.TTname ? (
+								<p className='text-red-500 text-xs '>{errors.TTname}</p>
 							) : null}
+							TTname
 						</div>
 						<div className='flex flex-col py-1'>
 							<label>Short Name</label>
@@ -136,6 +102,65 @@ const TicketType = () => {
 							{errors.TTshortname && touched.TTshortname ? (
 								<p className='text-red-500 text-xs '>{errors.TTshortname}</p>
 							) : null}
+						</div>
+						<div className='flex flex-col py-2'>
+							<label>TT Duration:</label>
+							<div className='grid grid-cols-3 gap-3 m-2'>
+								<div className='flex items-center p-1'>
+									<input
+										type='checkbox'
+										value='D2D'
+										onChange={handleCheckboxChange}
+										className='mr-1'
+									/>
+									<label>Date-to-Date</label>
+								</div>
+								<div className='flex items-center p-1'>
+									<input
+										type='checkbox'
+										value='TW'
+										onChange={handleCheckboxChange}
+										className='mr-1'
+									/>
+									<label>This Week</label>
+								</div>
+								<div className='flex items-center p-1'>
+									<input
+										type='checkbox'
+										value='TM'
+										onChange={handleCheckboxChange}
+										className='mr-1'
+									/>
+									<label>This Month</label>
+								</div>
+								<div className='flex items-center p-1'>
+									<input
+										type='checkbox'
+										value='QY'
+										onChange={handleCheckboxChange}
+										className='mr-1'
+									/>
+									<label>Quarter Year</label>
+								</div>
+								<div className='flex items-center p-1'>
+									<input
+										type='checkbox'
+										value='HY'
+										onChange={handleCheckboxChange}
+										className='mr-1'
+									/>
+									<label>Half Year</label>
+								</div>
+								<div className='flex items-center p-1'>
+									<input
+										type='checkbox'
+										value='TY'
+										onChange={handleCheckboxChange}
+										className='mr-1'
+									/>
+									<label>This Year</label>
+								</div>
+							</div>
 						</div>
 						<button
 							className='border  w-full my-2 py-2 text-white bg-pink-500 rounded text-lg hover:bg-pink-400 duration-200'

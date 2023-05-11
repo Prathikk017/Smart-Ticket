@@ -5,6 +5,7 @@ import { IoPeople } from 'react-icons/io5';
 import axios from 'axios';
 import Header from '../../Header';
 import Sidebar from '../../../Admin/Sidebar';
+import useIdleTimeout from '../../../../../useIdleTimeout';
 const IndiviualOperAsset = () => {
   const { OperId } = useParams();
 
@@ -14,7 +15,7 @@ const IndiviualOperAsset = () => {
 
   const getAssetByOperatorId = async () => {
     const res = await axios.post(
-      'http://localhost:8004/admin/operator/assets',
+      'https://amsweets.in/admin/operator/assets',
       {
         OperId,
       }
@@ -29,9 +30,57 @@ const IndiviualOperAsset = () => {
   const handleClick = () => {
     history(`/admin/asset/${OperId}`);
   };
-  useEffect(() => {
-    getAssetByOperatorId();
-  }, []);
+   // Call useIdleTimeout and pass in the time to consider the user as idle
+	 const isIdle = useIdleTimeout(300000); // set to 5 minute
+
+	//  const verify = async() => {
+	//    const token = window.localStorage.getItem('Lekpay');
+	//    const Token = JSON.parse(token);
+	//    const authorization = `Bearer ${Token}`;
+	//    const res = await axios.post('https://amsweets.in/admin/verify',{
+	// 	 authorization
+	//    });
+	//    if(res.data.status === 201){
+	// 	 console.log(res.data.data);
+	//    }else{
+	// 	 if(res.data.data === 'Token is not valid'){
+	// 	   window.localStorage.removeItem('Lekpay');
+	// 	   history('/');
+	// 	 }
+	//    }
+	//  }
+   
+	 
+	//  useEffect(() => {
+	//    verify();
+	//    // Run verify() every 10 minute if the user is not idle
+	//    const intervalId = setInterval(() => {
+	// 	 if (!isIdle) {
+	// 	   verify();
+	// 	 }
+	//    }, 600000);
+   
+	//    // Clear the interval when the component unmounts
+	//    return () => clearInterval(intervalId);
+	//  }, [!isIdle]);
+   
+	 useEffect(() => {
+	   // Redirect to sign-in page if the user is idle
+	   if (isIdle) {
+		 window.localStorage.removeItem('Lekpay');
+		 history('/');
+	   }
+	 }, [isIdle, history]);
+
+	useEffect(() => {
+		const token = window.localStorage.getItem('Lekpay');
+		const Token = JSON.parse(token);
+		if (!Token) {
+			history('/');
+		} else {
+      getAssetByOperatorId();
+		}
+	}, []);
   return (
     <div className='flex gap-4 bg-gray-50'>
       <Sidebar />

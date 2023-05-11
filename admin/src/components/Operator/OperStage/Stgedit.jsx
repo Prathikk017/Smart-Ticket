@@ -23,7 +23,7 @@ const Stgedit = () => {
 
   const getData = async () => {
     const res1 = await axios.get(
-      `http://localhost:8004/operator/stgread/${StageID}`
+      `https://amsweets.in/operator/stgread/${StageID}`
     );
 
     if (res1.data.status === 201) {
@@ -46,7 +46,7 @@ const Stgedit = () => {
       return;
     } else {
       const res = await axios.patch(
-        `http://localhost:8004/operator/stage/update/${StageID}`,
+        `https://amsweets.in/operator/stage/update/${StageID}`,
         {
           StageName,
           stgstatus
@@ -70,7 +70,7 @@ const Stgedit = () => {
   //    const token = window.localStorage.getItem('Lekpay');
   //    const Token = JSON.parse(token);
   //    const authorization = `Bearer ${Token}`;
-  //    const res = await axios.post('http://localhost:8004/admin/verify',{
+  //    const res = await axios.post('https://amsweets.in/admin/verify',{
   //      authorization
   //    });
   //    if(res.data.status === 201){

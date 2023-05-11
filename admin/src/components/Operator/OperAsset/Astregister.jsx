@@ -24,7 +24,7 @@ const Astregister = () => {
 
   const getOperator = async () => {
     const res = await axios.post(
-      'http://localhost:8004/operator/readoperatorshortname',
+      'https://amsweets.in/operator/readoperatorshortname',
       { operId }
     );
 
@@ -78,7 +78,7 @@ const Astregister = () => {
     ) {
       alert('Fill the details');
     } else {
-      const res = await axios.post('http://localhost:8004/operator/astcreate', {
+      const res = await axios.post('https://amsweets.in/operator/astcreate', {
         astRegNo,
         astName,
         astModel,
@@ -92,7 +92,7 @@ const Astregister = () => {
       if (res.data.status === 201) {
         alert('Asset created successfully');
         await axios
-          .post('http://localhost:8004/operator/createqrcode', {
+          .post('https://amsweets.in/operator/createqrcode', {
             data: data,
           })
           .then((response) => {
@@ -105,7 +105,7 @@ const Astregister = () => {
           });
         var form = document.getElementsByName('contact-form')[0];
         form.reset();
-        //   const res1= await axios.post('http://localhost:8004/operator/generate-qr-code', {
+        //   const res1= await axios.post('https://amsweets.in/operator/generate-qr-code', {
         //     data: data
         // })
         // if(res1.data.status === 201){
@@ -208,7 +208,7 @@ const Astregister = () => {
   //     const token = window.localStorage.getItem('Lekpay');
   //     const Token = JSON.parse(token);
   //     const authorization = `Bearer ${Token}`;
-  //     const res = await axios.post('http://localhost:8004/admin/verify',{
+  //     const res = await axios.post('https://amsweets.in/admin/verify',{
   //       authorization
   //     });
   //     if(res.data.status === 201){

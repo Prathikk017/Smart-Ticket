@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { getOperator, createOperator, getAllOperators, getOperators, validateOperator, createAsset, createQrcodeAsset, readAsset, readAssetActive, deleteAsset, updateAsset, createStage,  validateStage, readRoute, readStage, readStageTbl, getStageById, deleteStage, updateStage, createRoute, createRoutemap, getAssetById, readTicket , createRouteTicType, readRouteTicType, getOperatorShortName, getRouteById, deleteRoute, updateRoute, readTransactionData, readRouteActive, readPassengersData} = require('../../controllers/Operator/operator');
+const { getOperator, createOperator, getAllOperators, getOperators, validateOperator, createAsset, createQrcodeAsset, readAsset, readAssetActive, deleteAsset, updateAsset, createStage,  validateStage, readRoute, readStage, readStageTbl, getStageById, deleteStage, updateStage, createRoute, createRoutemap, getAssetById, readTicket , createRouteTicType, readRouteTicType, getOperatorShortName, getRouteById, deleteRoute, updateRoute, readTransactionData, readRouteActive, readPassengersData, readTransactionDataByAsset, readRouteByAssetID} = require('../../controllers/Operator/operator');
 
 router.route('/readId').get(getOperator);
 router.route('/create').post(createOperator);
@@ -39,6 +39,8 @@ router.route('/readroutetictype').post(readRouteTicType);
 router.route('/readtransaction').post(readTransactionData);
 router.route('/readpassengers').post(readPassengersData);
 router.route('/readrutactive').post(readRouteActive);
+router.route('/readtransactionasset').post(readTransactionDataByAsset);
+router.route('/readrouteasset').post(readRouteByAssetID);
 // router.route('/generate-qr-code').post(createQrcodeAsset);
 
 

@@ -10,7 +10,7 @@ const ViewAdmin = () => {
 	const history = useNavigate();
 
 	const getSingleAdminData = async () => {
-		const res = await axios.get(`http://localhost:8004/admin/${AdminId}`);
+		const res = await axios.get(`https://amsweets.in/admin/${AdminId}`);
 
 		if (res.data.status === 201) {
 			console.log(res.data.data);
@@ -27,7 +27,7 @@ const ViewAdmin = () => {
 	//    const token = window.localStorage.getItem('Lekpay');
 	//    const Token = JSON.parse(token);
 	//    const authorization = `Bearer ${Token}`;
-	//    const res = await axios.post('http://localhost:8004/admin/verify',{
+	//    const res = await axios.post('https://amsweets.in/admin/verify',{
 	// 	 authorization
 	//    });
 	//    if(res.data.status === 201){

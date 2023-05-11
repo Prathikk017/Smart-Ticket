@@ -47,7 +47,7 @@ const Astedit = () => {
   };
   const getData = async () => {
     const res1 = await axios.get(
-      `http://localhost:8004/operator/astread/${AstId}`
+      `https://amsweets.in/operator/astread/${AstId}`
     );
 
     if (res1.data.status === 201) {
@@ -83,7 +83,7 @@ const Astedit = () => {
       return;
     } else {
       const res = await axios.patch(
-        `http://localhost:8004/operator/asset/update/${AstId}`,
+        `https://amsweets.in/operator/asset/update/${AstId}`,
         {
         
           astName,
@@ -114,7 +114,7 @@ const Astedit = () => {
   //   const token = window.localStorage.getItem('Lekpay');
   //   const Token = JSON.parse(token);
   //   const authorization = `Bearer ${Token}`;
-  //   const res = await axios.post('http://localhost:8004/admin/verify',{
+  //   const res = await axios.post('https://amsweets.in/admin/verify',{
   //     authorization
   //   });
   //   if(res.data.status === 201){

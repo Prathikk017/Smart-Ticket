@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
+import { IoPeople } from 'react-icons/io5';
+import useIdleTimeout from '../../../../useIdleTimeout';
 import { useNavigate } from 'react-router-dom';
-import { IoPeople} from 'react-icons/io5';
 import axios from 'axios';
-import useIdleTimeout from '../../../../../useIdleTimeout';
 
-const AssetCard = () => {
+const OperAssetCard = () => {
     const history = useNavigate();
 
 	// total operators data
@@ -24,7 +24,7 @@ const AssetCard = () => {
 
 	const handleClick = async(OperId) => {
 
-		history(`/admin/operator/asset/${OperId}`);
+		history(`/admin/operator/assetdata/${OperId}`);
 	//    const res = await axios.post('https://amsweets.in/admin/operator/assets',{
 	// 	OperId
 	//    })
@@ -120,7 +120,7 @@ const AssetCard = () => {
 	);
 };
 
-export default AssetCard
+export default OperAssetCard;
 
 function BoxWrapper({ children }) {
 	return (

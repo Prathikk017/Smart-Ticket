@@ -337,3 +337,225 @@ exports.getAssetsByOperatorId = (req, res) => {
 		}
 	});
 };
+
+//get total transanction data
+exports.readTransactionData = (req, res) =>{
+	let query = `SELECT Fare FROM tblTransaction WHERE Status = 'PAID'`;
+	db.query(query,(err,result)=>{
+	  if(!err){
+		let totalTransaction = 0;
+		for(let i = 0; i < result.length ; i++){
+			totalTransaction += JSON.parse(result[i].Fare);
+		}
+		res.status(200).json({status:201 , data:totalTransaction});
+	  }else{
+		console.log(err);
+	  }
+	})
+  }
+
+exports.readTransactionDataByAsset = (req, res) => {
+	let tblTransaction = req.body;
+	const OperId = tblTransaction.OperId;
+	let query = `SELECT Trip FROM tblTransaction WHERE RouteName LIKE '%${OperId}%' AND Status = 'PAID'`;
+	db.query(query, (err, result) => {
+	  if (!err) {
+		if (result.length > 0) {
+		  let initalAsset = result[0].Trip.match(/^(.*?)T/)[1];
+		  let previousAsset = '';
+		  let currentAsset = '';
+		  let totalAsset = [];
+		  for (let i = 1; i < result.length - 1; i++) {
+			previousAsset = result[i].Trip.match(/^(.*?)T/)[1];
+			currentAsset = result[i + 1].Trip.match(/^(.*?)T/)[1];
+  
+			if (previousAsset !== currentAsset) {
+			  if (currentAsset !== initalAsset) {
+				totalAsset.push(currentAsset);
+			  }
+			}
+		  }
+		  totalAsset.push(initalAsset);
+  
+		  Promise.all([
+			assetRegNo(totalAsset),
+			assetRegNoFare(totalAsset)
+		  ])
+			.then(([Asset, Fare]) => {
+			  res.status(200).json({ status: 201, data: { Asset, Fare, totalAsset} });
+			})
+			.catch((err) => {
+			  console.log(err);
+			  res.status(500).json({ status: 500, message: 'Internal Server Error' });
+			});
+		}
+	  } else {
+		console.log(err);
+		res.status(500).json({ status: 500, message: 'Internal Server Error' });
+	  }
+	});
+  };
+  
+  const assetRegNo = (totalAsset) => {
+	return new Promise((resolve, reject) => {
+	  let Asset = [];
+	  const queries = totalAsset.map((asset) => {
+		return new Promise((resolve, reject) => {
+		  let query = 'SELECT AstRegNo FROM tblAsset WHERE AstId = ?';
+		  db.query(query, [asset], (err, result) => {
+			if (!err) {
+			  if (result.length > 0) {
+				Asset.push(result[0].AstRegNo);
+			  }
+			  resolve();
+			} else {
+			  reject(err);
+			}
+		  });
+		});
+	  });
+  
+	  Promise.all(queries)
+		.then(() => {
+		  resolve(Asset);
+		})
+		.catch((err) => {
+		  reject(err);
+		});
+	});
+  };
+  
+  const assetRegNoFare = (totalAsset) => {
+	return new Promise((resolve, reject) => {
+	  const Fare = [];
+  
+	  const queries = totalAsset.map((asset) => {
+		return new Promise((resolve, reject) => {
+		  let query = `SELECT Fare FROM tblTransaction WHERE Trip LIKE '%${asset}%' AND Status = 'PAID'`;
+		  db.query(query, (err, result) => {
+			if (!err) {
+			  let totalTransaction = 0;
+			  for (let i = 0; i < result.length; i++) {
+				totalTransaction += JSON.parse(result[i].Fare);
+			  }
+			  Fare.push(totalTransaction);
+			  resolve();
+			} else {
+			  reject(err);
+			}
+		  });
+		});
+	  });
+  
+	  Promise.all(queries)
+		.then(() => {
+		  resolve(Fare);
+		})
+		.catch((err) => {
+		  reject(err);
+		});
+	});
+  };
+  
+  //get route data by asset id
+exports.readRouteByAssetID = (req, res) =>{
+	const tblTransaction = req.body;
+	const AstId = tblTransaction.AstId;
+	let query = `SELECT RouteName FROM tblTransaction WHERE Trip LIKE '%${AstId}%' AND Status = 'PAID'`;
+	db.query(query,(err, result)=>{
+	  if(!err){
+		if(result.length > 0){
+		  let initalRoute = result[0].RouteName;
+		  let previousRoute = '';
+		  let currentRoute = '';
+		  let totalRoute = [];
+		  for (let i = 1; i < result.length - 1; i++) {
+			previousRoute = result[i].RouteName;
+			currentRoute = result[i + 1].RouteName;
+  
+			if (previousRoute !== currentRoute) {
+			  if (currentRoute !== initalRoute) {
+				totalRoute.push(currentRoute);
+			  }
+			}
+		  }
+		  totalRoute.push(initalRoute);
+		  Promise.all([
+			getrouteName(totalRoute),
+			routeFare(totalRoute)
+		  ])
+			.then(([Route, Fare]) => {
+			  res.status(200).json({ status: 201, data: { Route, Fare, totalRoute} });
+			})
+			.catch((err) => {
+			  console.log(err);
+			  res.status(500).json({ status: 500, message: 'Internal Server Error' });
+			});
+		}
+	  } else {
+		console.log(err);
+		res.status(500).json({ status: 500, message: 'Internal Server Error' });
+	  }
+	});
+  };
+  
+  const getrouteName = (totalRoute) => {
+	return new Promise((resolve, reject) => {
+	  let Route = [];
+	  const queries = totalRoute.map((route) => {
+		return new Promise((resolve, reject) => {
+		  let query = 'SELECT RouteName FROM tblRouteMaster WHERE RouteID = ?';
+		  db.query(query, [route], (err, result) => {
+			if (!err) {
+			  if (result.length > 0) {
+				Route.push(result[0].RouteName);
+			  }
+			  resolve();
+			} else {
+			  reject(err);
+			}
+		  });
+		});
+	  });
+  
+	  Promise.all(queries)
+		.then(() => {
+		  resolve(Route);
+		})
+		.catch((err) => {
+		  reject(err);
+		});
+	});
+  };
+  
+  const routeFare = (totalRoute) => {
+	return new Promise((resolve, reject) => {
+	  const Fare = [];
+  
+	  const queries = totalRoute.map((route) => {
+		return new Promise((resolve, reject) => {
+		  let query = `SELECT Fare FROM tblTransaction WHERE RouteName LIKE '%${route}%' AND Status = 'PAID'`;
+		  db.query(query, (err, result) => {
+			if (!err) {
+			  let totalTransaction = 0;
+			  for (let i = 0; i < result.length; i++) {
+				totalTransaction += JSON.parse(result[i].Fare);
+			  }
+			  Fare.push(totalTransaction);
+			  resolve();
+			} else {
+			  reject(err);
+			}
+		  });
+		});
+	  });
+  
+	  Promise.all(queries)
+		.then(() => {
+		  resolve(Fare);
+		})
+		.catch((err) => {
+		  reject(err);
+		});
+	});
+  };

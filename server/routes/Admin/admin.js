@@ -22,6 +22,9 @@ const {
 	getAllEmployeeOperator,
 	getAssetsByOperatorId,
 	getEmployeesByOperatorId,
+	readTransactionDataByAsset,
+	readRouteByAssetID,
+	readTransactionData,
 } = require('../../controllers/Admin/admin');
 
 router.route('/login').post(login);
@@ -44,5 +47,8 @@ router.route('/operator/assets').post(getAllAssetOperator);
 router.route('/operator/employees').post(getAllEmployeeOperator);
 router.route('/asset').post(getAssetsByOperatorId);
 router.route('/employee').post(getEmployeesByOperatorId);
+router.route('/readtransactionasset').post(readTransactionDataByAsset);
+router.route('/readrouteasset').post(readRouteByAssetID);
+router.route('/readalltransaction').get(readTransactionData);
 
 module.exports = router;

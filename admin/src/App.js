@@ -45,6 +45,11 @@ import AssetTable from './components/Admin Components/AdminLayout/IndividualStat
 import IndiviualOperEmployee from './components/Admin Components/AdminLayout/IndividualStats/SingleOperEmployee/IndiviualOperEmployee';
 import EmployeeTable from './components/Admin Components/AdminLayout/IndividualStats/SingleOperEmployee/EmployeeTable';
 import SingleEmployeeDashboard from './components/Admin Components/AdminLayout/IndividualStats/SingleEmployees';
+import IndividualTransAssetData from './components/Operator/OperLayout/IndividualTransactiondata/IndividualTransAssetData';
+import IndividualTransAssetRouteData from './components/Operator/OperLayout/IndividualTransactiondata/IndividualTransAssetRouteData';
+import SingleOperator from './components/Admin Components/AdminLayout/individualTransStats/SingleOperator';
+import IndiviualTransAsset from './components/Admin Components/AdminLayout/individualTransStats/IndiviualTransAsset';
+import IndiviualTransRoute from './components/Admin Components/AdminLayout/individualTransStats/IndiviualTransRoute';
 
 function App() {
 
@@ -79,6 +84,9 @@ function App() {
 				<Route path='/operator/route/:RouteID' element={<Rutview />} />
 				<Route path='/rutupdate/:RouteID' element={<Rutedit />} />
 				<Route path='/routemap' element={<RouteStageMap />} />
+				<Route path='/transactionasset' element={<IndividualTransAssetData/>}/>
+                <Route path='/transactionassetroute/:AstId' element={<IndividualTransAssetRouteData/>}/> 
+
 				<Route path='/admin/assetsview' element={<Assets />} />
 				<Route path='/admin/assetsview/:AstId' element={<ViewAsset />} />
 				<Route path='/admin/employeesview' element={<Employees />} />
@@ -99,6 +107,9 @@ function App() {
 				<Route path='/admin/operator/employee/:OperId' element={<IndiviualOperEmployee/>}/>
 				<Route path='/admin/asset/:OperId' element={<AssetTable/>}/>
 				<Route path='/admin/employee/:OperId' element={<EmployeeTable/>}/>
+				<Route path='/admin/singleoperator' element={<SingleOperator/>}/>
+				<Route path='/admin/operator/assetdata/:OperId' element={<IndiviualTransAsset/>}/>
+				<Route path='/admin/transactionassetroute/:AstId' element={<IndiviualTransRoute/>}/>
 			</Routes>
 		</BrowserRouter>
 	);

@@ -16,7 +16,7 @@ const Ruttable = () => {
   var operId = JSON.parse(ID);
 
   const getRutData = async () => {
-    const res = await axios.post('http://localhost:8004/operator/readrut', {
+    const res = await axios.post('https://amsweets.in/operator/readrut', {
       operId,
     });
     if (res.data.status === 201) {
@@ -59,7 +59,7 @@ const Ruttable = () => {
   //    const token = window.localStorage.getItem('Lekpay');
   //    const Token = JSON.parse(token);
   //    const authorization = `Bearer ${Token}`;
-  //    const res = await axios.post('http://localhost:8004/admin/verify',{
+  //    const res = await axios.post('https://amsweets.in/admin/verify',{
   //      authorization
   //    });
   //    if(res.data.status === 201){

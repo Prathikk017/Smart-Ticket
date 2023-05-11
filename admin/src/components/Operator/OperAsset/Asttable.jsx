@@ -16,7 +16,7 @@ const Asttable = () => {
   var operId = JSON.parse(ID);
 
   const getAstData = async () => {
-    const res = await axios.post('http://localhost:8004/operator/readast', {
+    const res = await axios.post('https://amsweets.in/operator/readast', {
       operId,
     });
     if (res.data.status === 201) {
@@ -59,7 +59,7 @@ const Asttable = () => {
   //   const token = window.localStorage.getItem('Lekpay');
   //   const Token = JSON.parse(token);
   //   const authorization = `Bearer ${Token}`;
-  //   const res = await axios.post('http://localhost:8004/admin/verify',{
+  //   const res = await axios.post('https://amsweets.in/admin/verify',{
   //     authorization
   //   });
   //   if(res.data.status === 201){

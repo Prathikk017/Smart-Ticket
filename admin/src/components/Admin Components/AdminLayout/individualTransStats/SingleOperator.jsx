@@ -1,15 +1,12 @@
-import React, { useEffect } from 'react';
-// import Opertable from './Opertable';
-// import Dheader from './Dheader';
-import axios from 'axios';
-import useIdleTimeout from '../../../../useIdleTimeout';
+import React, { useEffect } from 'react'
 import Sidebar from '../../Admin/Sidebar';
+import Header from '../Header';
+import OperAssetCard from './OperAssetCard';
+import useIdleTimeout from '../../../../useIdleTimeout';
 import { useNavigate } from 'react-router-dom';
-import Header from '../../AdminLayout/Header';
-import StatsGrid from '../../AdminLayout/IndividualStats/SingleOperCard/IndividualOperatorCard';
 
-const SingleOperDashboard = () => {
-	const history = useNavigate();
+const SingleOperator = () => {
+  const history = useNavigate();
   // Call useIdleTimeout and pass in the time to consider the user as idle
   const isIdle = useIdleTimeout(300000); // set to 5 minute
 
@@ -66,7 +63,7 @@ const SingleOperDashboard = () => {
 			<div className='flex flex-col flex-1'>
 				<Header />
 				<div className='flex flex-col gap-4'>
-					<StatsGrid />
+					<OperAssetCard />
 					{/* <TransactionChart /> */}
 				</div>
 			</div>
@@ -74,4 +71,4 @@ const SingleOperDashboard = () => {
 	);
 };
 
-export default SingleOperDashboard;
+export default SingleOperator

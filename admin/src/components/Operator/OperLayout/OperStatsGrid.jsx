@@ -44,7 +44,7 @@ const OperStatsGrid = () => {
   var operId = JSON.parse(ID);
 
   const getAstData = async () => {
-    const res = await axios.post('http://localhost:8004/operator/readast', {
+    const res = await axios.post('https://amsweets.in/operator/readast', {
       operId,
     });
     if (res.data.status === 201) {
@@ -55,7 +55,7 @@ const OperStatsGrid = () => {
   };
   const getAstActiveData = async (selectedDate) => {
     const res = await axios.post(
-      'http://localhost:8004/operator/readastactive',
+      'https://amsweets.in/operator/readastactive',
       {
         operId,
         date:selectedDate,
@@ -70,7 +70,7 @@ const OperStatsGrid = () => {
 
   const getEmpActiveData = async (selectedDate) => {
     const res = await axios.post(
-      'http://localhost:8004/employee/readempactive',
+      'https://amsweets.in/employee/readempactive',
       {
         operId,
         date: selectedDate,
@@ -85,7 +85,7 @@ const OperStatsGrid = () => {
 
   const getPassengersData = async (selectedDate) => {
     const res = await axios.post(
-      'http://localhost:8004/operator/readpassengers',
+      'https://amsweets.in/operator/readpassengers',
       {
         operId,
         date: selectedDate,
@@ -100,7 +100,7 @@ const OperStatsGrid = () => {
 
   const getRutActiveData = async (selectedDate) => {
     const res = await axios.post(
-      'http://localhost:8004/operator/readrutactive',
+      'https://amsweets.in/operator/readrutactive',
       {
         operId,
         date: selectedDate,
@@ -116,7 +116,7 @@ const OperStatsGrid = () => {
   
 
   const getEmpData = async () => {
-    const res = await axios.post('http://localhost:8004/employee/reademp', {
+    const res = await axios.post('https://amsweets.in/employee/reademp', {
       operId,
     });
     if (res.data.status === 201) {
@@ -127,7 +127,7 @@ const OperStatsGrid = () => {
   };
 
   const getStgData = async () => {
-    const res = await axios.post('http://localhost:8004/operator/readstg', {
+    const res = await axios.post('https://amsweets.in/operator/readstg', {
       operId,
     });
     if (res.data.status === 201) {
@@ -138,7 +138,7 @@ const OperStatsGrid = () => {
   };
 
   const getRutData = async () => {
-    const res = await axios.post('http://localhost:8004/operator/readrut', {
+    const res = await axios.post('https://amsweets.in/operator/readrut', {
       operId,
     });
     if (res.data.status === 201) {
@@ -150,7 +150,7 @@ const OperStatsGrid = () => {
 
   const getTransactionsData = async () => {
     const res = await axios.post(
-      'http://localhost:8004/operator/readtransaction',
+      'https://amsweets.in/operator/readtransaction',
       {
         operId,
       }
@@ -174,6 +174,9 @@ const OperStatsGrid = () => {
   const handleClick3 = () => {
     history('/rutview');
   };
+  const handleClick4 = () =>{
+    history('/transactionasset');
+  }
 
   useEffect(() => {
     
@@ -272,7 +275,7 @@ const OperStatsGrid = () => {
               style={{ color: 'white' }}
             />
           </div>
-          <div className='pl-4 cursor-pointer'>
+          <div className='pl-4 cursor-pointer' onClick={handleClick4}>
             <span className='text-sm text-gray-500 font-medium'>
               Total Transactions
             </span>

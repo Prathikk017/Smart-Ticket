@@ -11,7 +11,7 @@ const Rutview = () => {
   const [data, setData] = useState([]);
   const { RouteID } = useParams();
   const getRouteData = async () => {
-    const res = await axios.get(`http://localhost:8004/operator/route/${RouteID}`);
+    const res = await axios.get(`https://amsweets.in/operator/route/${RouteID}`);
 
     if (res.data.status === 201) {
       setData(res.data.data);
@@ -22,7 +22,7 @@ const Rutview = () => {
 
   const handleSub = async () => {
     const res = await axios.patch(
-      `http://localhost:8004/operator/route/delete/${RouteID}`
+      `https://amsweets.in/operator/route/delete/${RouteID}`
     );
     if (res.data.status === 201) {
       alert(res.data.data);
@@ -40,7 +40,7 @@ const Rutview = () => {
   //    const token = window.localStorage.getItem('Lekpay');
   //    const Token = JSON.parse(token);
   //    const authorization = `Bearer ${Token}`;
-  //    const res = await axios.post('http://localhost:8004/admin/verify',{
+  //    const res = await axios.post('https://amsweets.in/admin/verify',{
   //      authorization
   //    });
   //    if(res.data.status === 201){
