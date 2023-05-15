@@ -82,6 +82,7 @@ const OperStatsGrid = () => {
       console.log('error');
     }
   };
+  
 
   const getPassengersData = async (selectedDate) => {
     const res = await axios.post(

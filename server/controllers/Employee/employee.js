@@ -246,21 +246,24 @@ exports.readEmpActive = (req,res) =>{
 	db.query(query,(err, result) =>{
 	  if(!err){
 		if(result.length> 0){
-		  let initalemployee =result[0].EmpId;
-		  let currentemployee = '';
-		  let previousemployee='';
-		  let employee = [];
-		  for(let i = 1; i< result.length-1; i++){
-			previousemployee = result[i].EmpId;     
-			currentemployee = result[i+1].EmpId;
-			
-			
-			if(currentemployee !== previousemployee){
-			  employee.push(currentemployee);
+			let initialemployee = result[0].EmpId;
+			let currentemployee = '';
+			let previousemployee = '';
+			let employeeSet = new Set();
+			employeeSet.add(initialemployee); // Add the initial asset directly to the set
+	
+			for (let i = 1; i < result.length; i++) {
+			  previousemployee = result[i - 1].EmpId;
+			  currentemployee = result[i].EmpId;
+	
+			  if (previousemployee !== currentemployee) {
+				employeeSet.add(currentemployee); // Add the current asset if it is different from the previous one
+			  }
 			}
-		  }
-		  employee.push(initalemployee);
-		  res.status(200).json({status: 201, data: employee});
+	
+			// Convert the set to an array
+			let EmployeeArray = Array.from(employeeSet);
+		  res.status(200).json({status: 201, data: EmployeeArray});
 		  return;
 		}else{
 		  res.status(200).json({status:201,message:"employee not found to operator", data:result});

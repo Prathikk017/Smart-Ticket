@@ -283,21 +283,24 @@ exports.readAssetActive = (req,res) =>{
   db.query(query,(err, result) =>{
     if(!err){
       if(result.length> 0){
-        let initalAsset =result[0].AstId;
+        let initialAsset = result[0].AstId;
         let currentAsset = '';
-        let previousAsset='';
-        let Asset = [];
-        for(let i = 1; i< result.length-1; i++){
-          previousAsset = result[i].AstId;     
-          currentAsset = result[i+1].AstId;
-          
-          
-          if(currentAsset !== previousAsset){
-            Asset.push(currentAsset);
+        let previousAsset = '';
+        let assetSet = new Set();
+        assetSet.add(initialAsset); // Add the initial asset directly to the set
+
+        for (let i = 1; i < result.length; i++) {
+          previousAsset = result[i - 1].AstId;
+          currentAsset = result[i].AstId;
+
+          if (previousAsset !== currentAsset) {
+            assetSet.add(currentAsset); // Add the current asset if it is different from the previous one
           }
         }
-        Asset.push(initalAsset);
-        res.status(200).json({status: 201, data: Asset});
+
+        // Convert the set to an array
+        let AssetArray = Array.from(assetSet);
+        res.status(200).json({status: 201, data: AssetArray, result:result});
         return;
       }else{
         res.status(200).json({status: 201, message:"asset not found to operator", data:result});
@@ -618,24 +621,24 @@ exports.readRouteActive = (req,res) =>{
   db.query(query,(err, result) =>{
     if(!err){
       if(result.length> 0){
-        let initalRoute =result[0].RouteID;
+        let initialRoute = result[0].RouteID;
         let currentRoute = '';
-        let previousRoute='';
-        let Route = [];
-        for(let i = 1; i< result.length-1; i++){
-          previousRoute = result[i].RouteID;     
-          currentRoute = result[i+1].RouteID;
-          
-          
-          if(currentRoute !== previousRoute){
-            Route.push(currentRoute);
-          }
-          if(currentRoute === ''){
-            Route.push(previousRoute);
+        let previousRoute = '';
+        let RouteSet = new Set();
+        RouteSet.add(initialRoute); // Add the initial asset directly to the set
+
+        for (let i = 1; i < result.length; i++) {
+          previousRoute = result[i - 1].RouteID;
+          currentRoute = result[i].RouteID;
+
+          if (previousRoute !== currentRoute) {
+            RouteSet.add(currentRoute); // Add the current asset if it is different from the previous one
           }
         }
-        Route.push(initalRoute);
-        res.status(200).json({status: 201, data: Route});
+
+        // Convert the set to an array
+        let RouteArray = Array.from(RouteSet);
+        res.status(200).json({status: 201, data: RouteArray});
         return;
       }else{
         res.status(200).json({status: 201, message:"route not found to operator", data:result});
@@ -757,14 +760,33 @@ exports.readTicket = (req, res) => {
   });
 };
 
+//get ticket duration using ticket id
+exports.readTicketDuration = (req, res) => {
+  let tblTicketType = req.body;
+  let TTID = tblTicketType.TTID;
+  let query = `SELECT TTid, TTduration FROM tblTicketType WHERE TTid = '${TTID}'`;
+  db.query(query,(err,result)=>{
+    if(!err){
+      if(result.length>0){
+        let TTduration = JSON.parse(result[0].TTduration);
+        let TTid = result[0].TTid;
+        res.status(201).json({status: 201, data: {TTduration,TTid}});
+      }
+    }else{
+      console.log(err);
+    }
+  })
+}
+
 //create route with ticket type in tblRouteTicketType
 exports.createRouteTicType = (req, res) =>{
   let tblRouteTicketType = req.body;
   let RouteID = tblRouteTicketType.RouteID;
   let CreatedDate = moment(new Date()).format('YYYY-MM-DD');
   const TicketType = JSON.stringify(tblRouteTicketType.ApplicableTickets);
-  let query = 'INSERT INTO tblRouteTicketType (RouteID , TicketType, CreatedDate) VALUES (?, ?, ?)';
-  db.query(query,[RouteID, TicketType, CreatedDate],(err,result)=>{
+  const TicketDuration = JSON.stringify(tblRouteTicketType.ticketDuration);
+  let query = 'INSERT INTO tblRouteTicketType (RouteID , TicketType, TicketDuration, CreatedDate) VALUES (?, ?, ?, ?)';
+  db.query(query,[RouteID, TicketType, TicketDuration, CreatedDate],(err,result)=>{
     if(!err){
       res.status(200).json({status:201});
       return;
@@ -829,15 +851,16 @@ exports.readPassengersData = (req, res) =>{
   let tblTransaction = req.body;
   const OperId = tblTransaction.operId;
   const CreatedDate = tblTransaction.date;
-  let query = `SELECT Passengers FROM tblTransaction WHERE RouteName LIKE '%${OperId}%' AND TransactionTimeStamp LIKE '%${CreatedDate}%'`;
+  let query = `SELECT Passengers FROM tblTransaction WHERE RouteName LIKE '%${OperId}%' AND OrderTimeStamp LIKE '%${CreatedDate}%' AND Status = 'PAID'`;
   db.query(query,(err,result)=>{
     if(!err){
       if(result.length > 0){
+
         let totalPassengers = 0;
          for(let i = 0; i < result.length ; i++){
             totalPassengers += JSON.parse(result[i].Passengers);
           }
-           res.status(200).json({status:201 , Passengers:totalPassengers});
+           res.status(200).json({status:201 , Passengers:totalPassengers, result:result});
        }else{
            let totalPassengers = 0;
            res.status(200).json({status:201 , Passengers:totalPassengers});
@@ -855,21 +878,23 @@ exports.readTransactionDataByAsset = (req, res) => {
   db.query(query, (err, result) => {
     if (!err) {
       if (result.length > 0) {
-        let initalAsset = result[0].Trip.match(/^(.*?)T/)[1];
+        let initialAsset = result[0].Trip.match(/^(.*?)T/)[1];
         let previousAsset = '';
         let currentAsset = '';
-        let totalAsset = [];
-        for (let i = 1; i < result.length - 1; i++) {
-          previousAsset = result[i].Trip.match(/^(.*?)T/)[1];
-          currentAsset = result[i + 1].Trip.match(/^(.*?)T/)[1];
+        let totalAssetSet = new Set();
+        totalAssetSet.add(initialAsset); // Add the initial asset directly to the set
+
+        for (let i = 1; i < result.length; i++) {
+          previousAsset = result[i - 1].Trip.match(/^(.*?)T/)[1];
+          currentAsset = result[i].Trip.match(/^(.*?)T/)[1];
 
           if (previousAsset !== currentAsset) {
-            if (currentAsset !== initalAsset) {
-              totalAsset.push(currentAsset);
-            }
+            totalAssetSet.add(currentAsset); // Add the current asset if it is different from the previous one
           }
         }
-        totalAsset.push(initalAsset);
+        
+        // Convert the set to an array
+        let totalAsset = Array.from(totalAssetSet);
 
         Promise.all([
           assetRegNo(totalAsset),
@@ -976,7 +1001,7 @@ exports.readRouteByAssetID = (req, res) =>{
         totalRoute.push(initalRoute);
         Promise.all([
           getrouteName(totalRoute),
-          routeFare(totalRoute)
+          routeFare(totalRoute, AstId)
         ])
           .then(([Route, Fare]) => {
             res.status(200).json({ status: 201, data: { Route, Fare, totalRoute} });
@@ -1022,13 +1047,13 @@ const getrouteName = (totalRoute) => {
   });
 };
 
-const routeFare = (totalRoute) => {
+const routeFare = (totalRoute, AstId) => {
   return new Promise((resolve, reject) => {
     const Fare = [];
-
+    let AstID = AstId;
     const queries = totalRoute.map((route) => {
       return new Promise((resolve, reject) => {
-        let query = `SELECT Fare FROM tblTransaction WHERE RouteName LIKE '%${route}%' AND Status = 'PAID'`;
+        let query = `SELECT Fare FROM tblTransaction WHERE RouteName LIKE '%${route}%' AND Trip LIKE '%${AstId}%' AND Status = 'PAID'`;
         db.query(query, (err, result) => {
           if (!err) {
             let totalTransaction = 0;

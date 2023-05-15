@@ -87,7 +87,6 @@ const TicketType = () => {
 							{errors.TTname && touched.TTname ? (
 								<p className='text-red-500 text-xs '>{errors.TTname}</p>
 							) : null}
-							TTname
 						</div>
 						<div className='flex flex-col py-1'>
 							<label>Short Name</label>

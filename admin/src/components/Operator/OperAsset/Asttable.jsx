@@ -116,15 +116,15 @@ const Asttable = () => {
               </h1>
               <div className=' rounded-sm mt-2'>
                 <table className='w-full text-gray-700 justify-between mx-1 border border-gray-800'>
-                  <thead>
+                  <thead className='bg-gray-50'>
                     <tr className='border border-gray-800'>
-                      <th className='p-1 ml-1'>Sl No</th>
-                      <th className='p-1 ml-1 w-[15%] text-start'>Asset Reg No</th>
-                      <th className='p-1 ml-1 w-[15%] text-start'>Asset Model</th>
-                      <th className='p-1 ml-1 w-[15%] text-end'>Insurance Exp</th>
-                      <th className='p-1 ml-1 w-[15%] text-end'>Permit Exp</th>
-                      <th className='p-1 ml-1 w-[10%] text-center'>Status</th>
-                      <th className='p-2 ml-1'>View</th>
+                      <th className='p-1 ml-1 text-gray-500'>Sl No</th>
+                      <th className='p-1 ml-1 w-[15%] text-start text-gray-500 '>Asset Reg No</th>
+                      <th className='p-1 ml-1 w-[15%] text-start text-gray-500 '>Asset Model</th>
+                      <th className='p-1 ml-1 w-[15%] text-end text-gray-500 '>Insurance Exp</th>
+                      <th className='p-1 ml-1 w-[15%] text-end text-gray-500 '>Permit Exp</th>
+                      <th className='p-1 ml-1 w-[10%] text-center text-gray-500 '>Status</th>
+                      <th className='p-2 ml-1 text-gray-500 uppercase'>View</th>
                     </tr>
                   </thead>
                   <tbody className='justify-between  text-center'>
