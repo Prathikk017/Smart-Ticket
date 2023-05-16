@@ -61,7 +61,7 @@ const Astview = () => {
     printWindow.document.write(`
         <html>
           <head>
-            <title>Print QR Code</title>
+            <title>${OperShortName}-${e}</title>
             <style>
               @media print {
                 /* Set page size to A4 */

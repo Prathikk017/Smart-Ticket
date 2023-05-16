@@ -1,12 +1,35 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import {
   HiOutlineBell,
   HiOutlineChatAlt,
   HiOutlineSearch,
 } from 'react-icons/hi';
+import axios from 'axios';
 import { Popover, Transition } from '@headlessui/react';
 import classNames from 'classnames';
 const OperHeader = () => {
+  const [operFullName, setOperFullName] = useState('');
+  const ID = window.localStorage.getItem('OperID');
+  var operId = JSON.parse(ID);
+
+  const getOperator = async () => {
+    
+    const res = await axios.post(
+      'https://amsweets.in/operator/readoperatorshortname',
+      { operId }
+    );
+
+    if (res.data.status === 201) {
+      setOperFullName(res.data.data[0].OperName);
+    } else {
+      console.log('error');
+    }
+  };
+
+  useEffect(()=>{
+    getOperator();
+  },[]);
+  
   return (
     <div className='bg-white h-16 px-4 flex justify-between items-center border-b border-gray-200 shadow-md shadow-gray-200 '>
       <div className='relative'>
@@ -53,6 +76,7 @@ const OperHeader = () => {
             </>
           )}
         </Popover> */}
+        <strong>{operFullName}</strong>
         <Popover className='relative'>
           {({ open }) => (
             <>

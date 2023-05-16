@@ -12,11 +12,12 @@ const Routeregister = () => {
   const [ApplicableTickets, setApplicableTickets] = useState([]);
   const [checkboxOptions, setCheckBoxOptions] = useState([]);
   const [stageData, setStageData] = useState([]);
+  const [ticketDurations, setTicketDurations] = useState([]);
+  const [ticketDuration, setTicketDuration] = useState([]);
 
   const history = useNavigate();
   const ID = window.localStorage.getItem('OperID');
   var operId = JSON.parse(ID);
-
 
   const getStage = async () => {
     const res1 = await axios.post('https://amsweets.in/operator/readstage', {
@@ -35,8 +36,17 @@ const Routeregister = () => {
     setRouteName(e.target.value);
   };
 
+ 
   const setData1 = (e) => {
-    setRouteEffDate(e.target.value);
+    const selectedDate = new Date(e.target.value);
+    const currentDate = new Date();
+  
+    if (selectedDate > currentDate) {
+      setRouteEffDate(e.target.value);
+    } else {
+      const currentDateISO = currentDate.toISOString().split('T')[0];
+      setRouteEffDate(currentDateISO);
+    }
   };
 
   const startStage = (e) => {
@@ -54,7 +64,7 @@ const Routeregister = () => {
       setRouteEStage('');
     }
   };
- 
+
   const handleCheckboxChange = (e) => {
     const ticketValue = e.target.value;
     const isChecked = e.target.checked;
@@ -62,46 +72,99 @@ const Routeregister = () => {
       setApplicableTickets([...ApplicableTickets, ticketValue]);
     } else {
       setApplicableTickets(ApplicableTickets.filter((t) => t !== ticketValue));
+      setTicketDurations( ticketDurations.filter((duration) => !duration.includes(ticketValue))
+      );
     }
   };
 
-  const getTicketData = async() => {
-    let ttstatus = 'A';
-     const res1 = await axios.post('https://amsweets.in/operator/readticket',{ttstatus});
+  const handleCheckboxChange1 = (e) => {
+    const ticketDurationValue = e.target.value;
+    const isChecked = e.target.checked;
+    if (isChecked) {
+      setTicketDuration([...ticketDuration, ticketDurationValue]);
+    } else {
+      setTicketDuration(ticketDuration.filter((t) => t !== ticketDurationValue));
+    }
+  };
+  var TTID = [];
+  const handleClick = async (TTid, e) => {
+    const isChecked = e.target.checked;
+  
+    if (isChecked) {
+      if (TTid !== 'TT1' && TTid !== 'TT2' && TTid !== 'TT3') {
+        TTID.push(TTid);
+        const res = await axios.post(
+          'https://amsweets.in/operator/readticketduration',
+          {
+            TTID,
+          }
+        );
+  
+        if (res.data.status === 201) {
+          const newDurations = res.data.data.TTduration.map((duration) => ({
+            TTid,
+            duration,
+          }));
+  
+          setTicketDurations((prevDurations) => [
+            ...prevDurations,
+            ...newDurations,
+          ]);
+        } else {
+          console.log('error');
+        }
+      }
+    } else {
+      const updatedDurations = ticketDurations.filter(
+        (duration) => !(duration.TTid === TTid && duration.duration === ticketDuration[TTid])
+      );
+  
+      setTicketDurations(updatedDurations);
+    }
+  };
 
-     if(res1.data.status === 201){
+  const getTicketData = async () => {
+    let ttstatus = 'A';
+    const res1 = await axios.post('https://amsweets.in/operator/readticket', {
+      ttstatus,
+    });
+
+    if (res1.data.status === 201) {
       setCheckBoxOptions(res1.data.data);
-     }else{
-      console.log("err");
-     }
-  }
-// console.log(ApplicableTickets)
+    } else {
+      console.log('err');
+    }
+  };
+  // console.log(ApplicableTickets)
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!RouteName || !RouteEffDate || !RouteSStage || !RouteEStage) {
       alert('Fill the details');
     } else {
-      const res = await axios.post(
-        'https://amsweets.in/operator/routecreate',
-        {
-          RouteName,
-          RouteEffDate,
-          RouteSStage,
-          RouteEStage,
-          operId,
-        }
-      );
+      const res = await axios.post('https://amsweets.in/operator/routecreate', {
+        RouteName,
+        RouteEffDate,
+        RouteSStage,
+        RouteEStage,
+        operId,
+      });
       if (res.data.status === 201) {
         const RouteID = res.data.routeId;
-        const  res2 = await axios.post('https://amsweets.in/operator/routettypecreate',{
-          RouteID,
-          ApplicableTickets
-        })
-        if(res2.data.status === 201){
+        const res2 = await axios.post(
+          'https://amsweets.in/operator/routettypecreate',
+          {
+            RouteID,
+            ApplicableTickets,
+            ticketDuration
+          }
+        );
+        if (res2.data.status === 201) {
           alert('Route created successfully');
           alert('Route Ticket Type added');
-        }else{
+          setTicketDuration([]);
+          setTicketDurations([]);
+        } else {
           console.log('error');
         }
         var form = document.getElementsByName('contact-form')[0];
@@ -114,8 +177,8 @@ const Routeregister = () => {
     }
   };
 
-   // Call useIdleTimeout and pass in the time to consider the user as idle
-   const isIdle = useIdleTimeout(300000); // set to 5 minute
+  // Call useIdleTimeout and pass in the time to consider the user as idle
+  const isIdle = useIdleTimeout(300000); // set to 5 minute
 
   //  const verify = async() => {
   //    const token = window.localStorage.getItem('Lekpay');
@@ -133,8 +196,7 @@ const Routeregister = () => {
   //      }
   //    }
   //  }
- 
-   
+
   //  useEffect(() => {
   //    verify();
   //    // Run verify() every 10 minute if the user is not idle
@@ -143,27 +205,27 @@ const Routeregister = () => {
   //        verify();
   //      }
   //    }, 600000);
- 
+
   //    // Clear the interval when the component unmounts
   //    return () => clearInterval(intervalId);
   //  }, [!isIdle]);
- 
-   useEffect(() => {
-     // Redirect to sign-in page if the user is idle
-     if (isIdle) {
-       window.localStorage.removeItem('Lekpay');
-       history('/');
-     }
-   }, [isIdle, history]);
+
+  useEffect(() => {
+    // Redirect to sign-in page if the user is idle
+    if (isIdle) {
+      window.localStorage.removeItem('Lekpay');
+      history('/');
+    }
+  }, [isIdle, history]);
 
   useEffect(() => {
     const token = window.localStorage.getItem('Lekpay');
     const Token = JSON.parse(token);
     if (!Token) {
       history('/');
-    }else{
-     getTicketData();
-     getStage();
+    } else {
+      getTicketData();
+      getStage();
     }
   }, []);
 
@@ -189,8 +251,9 @@ const Routeregister = () => {
               <input
                 type='date'
                 onChange={setData1}
+                value={RouteEffDate}
                 className='border rounded w-full hover:border-pink-500 duration-200 p-1'
-                min={(new Date(Date.now() + 86400000)).toISOString().split('T')[0]}
+                min={new Date().toISOString().split('T')[0]}
               />
             </div>
             <div className='flex flex-col py-2'>
@@ -200,13 +263,15 @@ const Routeregister = () => {
                 onChange={startStage}
               >
                 <option>Select</option>
-                {stageData > 0 ? stageData.map((el, i) => {
-                  return (
-                    <option key={i} value={`${el.StageName}`}>
-                      {el.StageName}
-                    </option>
-                  );
-                }): ' '}
+                {stageData.length > 0
+                  ? stageData.map((el, i) => {
+                      return (
+                        <option key={i} value={`${el.StageName}`}>
+                          {el.StageName}
+                        </option>
+                      );
+                    })
+                  : ' '}
               </select>
             </div>
             <div className='flex flex-col py-2'>
@@ -216,33 +281,50 @@ const Routeregister = () => {
                 onChange={endStage}
               >
                 <option>Select</option>
-                {stageData.length > 0 ? stageData.map((el, i) => {
-                  return (
-                    <option key={i} value={`${el.StageName}`}>
-                      {el.StageName}
-                    </option>
-                  );
-                }): ' '}
+                {stageData.length > 0
+                  ? stageData.map((el, i) => {
+                      return (
+                        <option key={i} value={`${el.StageName}`}>
+                          {el.StageName}
+                        </option>
+                      );
+                    })
+                  : ' '}
               </select>
             </div>
             <div className='flex flex-col py-2'>
               <label>Applicable Ticket:</label>
               <div className='grid grid-cols-3 gap-3 m-2'>
-              { checkboxOptions.map((el, i) => {
+                {checkboxOptions.map((el, i) => {
                   return (
-              <div className='flex items-center p-1' key={i}>
-                <input
-                  type='checkbox'
-                  value={el.TTid}
-                  onChange={handleCheckboxChange}
-                  className='mr-1'
-                />
-                <label>{el.TTname}</label>
+                    <div className='flex items-center p-1' key={i}>
+                      <input
+                        type='checkbox'
+                        value={el.TTid}
+                        onChange={handleCheckboxChange}
+                        className='mr-1'
+                        onClick={(e) => handleClick(el.TTid, e)}
+                      />
+                      <label>{el.TTname}</label>
+                    </div>
+                  );
+                })}
               </div>
-                );
-              })}
-          </div>
             </div>
+            {/* <div className='flex flex-col py-2'>
+              <label>Ticket Duration: </label>
+              {ticketDurations.map((duration, i) => (
+                <div key={i}>
+                  <input
+                    type='checkbox'
+                    value={duration.duration}
+                    onChange={handleCheckboxChange1}
+                    className='mr-1'
+                  />
+                  <label>{duration.duration}</label>
+                </div>
+              ))}
+            </div> */}
             <button
               className='border w-full my-2 py-2 text-white bg-pink-500 rounded text-lg hover:bg-pink-400 duration-200'
               onClick={handleSubmit}

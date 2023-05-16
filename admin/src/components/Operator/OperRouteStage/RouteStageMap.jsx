@@ -66,7 +66,15 @@ const RouteStageMap = () => {
   };
 
   const setData5 = (e) => {
-    setEffDate(e.target.value);
+    const selectedDate = new Date(e.target.value);
+    const currentDate = new Date();
+  
+    if (selectedDate > currentDate) {
+      setEffDate(e.target.value);
+    } else {
+      const currentDateISO = currentDate.toISOString().split('T')[0];
+      setEffDate(currentDateISO);
+    }
   };
 
   const ID = window.localStorage.getItem('OperID');
@@ -287,8 +295,9 @@ const RouteStageMap = () => {
               <input
                 type='date'
                 onChange={setData5}
+                value={effDate}
                 className='border rounded w-full hover:border-pink-500 duration-200 p-1'
-                min={(new Date(Date.now() + 86400000)).toISOString().split('T')[0]}
+                min={new Date().toISOString().split('T')[0]}
               />
             </div>
             <div className='flex flex-col py-1'>

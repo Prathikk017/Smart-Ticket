@@ -119,7 +119,7 @@ exports.validateOperator = (req, res) => {
 exports.getOperatorShortName = (req,res) =>{
   let tblOperator = req.body;
   let OperId = tblOperator.operId;
-  let query = 'SELECT OperShortName FROM tblOperator WHERE OperId = ?';
+  let query = 'SELECT OperShortName,OperName FROM tblOperator WHERE OperId = ?';
   db.query(query,[OperId],(err, result)=>{
     if(!err){
       res.status(200).json({status:201, data: result});
