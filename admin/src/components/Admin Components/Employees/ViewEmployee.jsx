@@ -11,9 +11,7 @@ const ViewEmployee = () => {
 	const history = useNavigate();
 
 	const getSingleEmployeeData = async () => {
-		const res = await axios.get(
-			`https://amsweets.in/admin/employees/${EmpId}`
-		);
+		const res = await axios.get(`https://amsweets.in/admin/employees/${EmpId}`);
 
 		if (res.data.status === 201) {
 			setData(res.data.data);
@@ -22,8 +20,8 @@ const ViewEmployee = () => {
 		}
 	};
 
-	 // Call useIdleTimeout and pass in the time to consider the user as idle
-	 const isIdle = useIdleTimeout(300000); // set to 5 minute
+	// Call useIdleTimeout and pass in the time to consider the user as idle
+	const isIdle = useIdleTimeout(300000); // set to 5 minute
 
 	//  const verify = async() => {
 	//    const token = window.localStorage.getItem('Lekpay');
@@ -41,8 +39,7 @@ const ViewEmployee = () => {
 	// 	 }
 	//    }
 	//  }
-   
-	 
+
 	//  useEffect(() => {
 	//    verify();
 	//    // Run verify() every 10 minute if the user is not idle
@@ -51,18 +48,18 @@ const ViewEmployee = () => {
 	// 	   verify();
 	// 	 }
 	//    }, 600000);
-   
+
 	//    // Clear the interval when the component unmounts
 	//    return () => clearInterval(intervalId);
 	//  }, [!isIdle]);
-   
-	 useEffect(() => {
-	   // Redirect to sign-in page if the user is idle
-	   if (isIdle) {
-		 window.localStorage.removeItem('Lekpay');
-		 history('/');
-	   }
-	 }, [isIdle, history]);
+
+	useEffect(() => {
+		// Redirect to sign-in page if the user is idle
+		if (isIdle) {
+			window.localStorage.removeItem('Lekpay');
+			history('/');
+		}
+	}, [isIdle, history]);
 
 	useEffect(() => {
 		const token = window.localStorage.getItem('Lekpay');
@@ -78,7 +75,7 @@ const ViewEmployee = () => {
 		<>
 			<div className='flex flex-row gap-4'>
 				<Sidebar />
-				<div className='container  my-8 h-full w-[40%] p-4 mx-auto pr-6 border'>
+				<div className='container  my-8 h-full w-[450px] p-4 mx-auto pr-6 border'>
 					<h1 className='text-center text-4xl text-pink-500  py-6'>
 						Employee Detail
 					</h1>
@@ -86,50 +83,94 @@ const ViewEmployee = () => {
 						? data.map((el, i) => {
 								return (
 									<>
-										<div className='flex flex-col ml-4' key={i + 1}>
-											<label className='p-1 my-1 text-start'>
-												Employee Name:{' '}
-												<span className='ml-2'>{el.EmpName}</span>
-											</label>
-											<label className='p-1 my-1 text-start'>
-												Employee ID: <span className='ml-2'>{el.EmpIntId}</span>
-											</label>
-											<label className='p-1 my-1 text-start'>
-												Date Of Birth:{' '}
-												<span className='ml-2'>
-													{moment(el.EmpDOB).format('DD-MM-YYYY')}
-												</span>
-											</label>
-											<label className='p-1 my-1 text-start'>
-												Employee Type:{' '}
-												<span className='ml-2'>{el.EmpType}</span>
-											</label>
-											<label className='p-1 my-1 text-start'>
-												Mobile No:<span className='ml-2'>{el.EmpMobile}</span>
-											</label>
-											<label className='p-1 my-1 text-start'>
-												Aadhar No:<span className='ml-2'>{el.EmpAadhar}</span>
-											</label>
-											<label className='p-1 my-1 text-start'>
-												Address 1:
-												<span className='ml-2'>{el.EmpAddr1}</span>
-											</label>
-											<label className='p-1 my-1 text-start'>
-												Address 2:
-												<span className='ml-2'>{el.EmpAddr2}</span>
-											</label>
-											<label className='p-1 my-1 text-start'>
-												City:
-												<span className='ml-2'>{el.EmpCity}</span>
-											</label>
-											<label className='p-1 my-1 text-start'>
-												Pincode:
-												<span className='ml-2'>{el.EmpPincode}</span>
-											</label>
-											<label className='p-1 my-1 text-start'>
-												Status:
-												<span className='ml-2'>{el.EStatus}</span>
-											</label>
+										<div className='justify-center ml-[50px]'>
+											<table className='w-full'>
+												<tbody>
+													<tr>
+														<td className='p-1 my-1 text-start'>
+															Employee Name
+														</td>
+														<td className='p-1 my-1 text-start'>:</td>
+														<td className='p-1 my-1 text-start'>
+															{el.EmpName}
+														</td>
+													</tr>
+													<tr>
+														<td className='p-1 my-1 text-start'>Employee ID</td>
+														<td className='p-1 my-1 text-start'>:</td>
+														<td className='p-1 my-1 text-start'>
+															{el.EmpIntId}
+														</td>
+													</tr>
+													<tr>
+														<td className='p-1 my-1 text-start'>
+															Date Of Birth
+														</td>
+														<td className='p-1 my-1 text-start'>:</td>
+														<td className='p-1 my-1 text-start'>
+															{moment(el.EmpDOB).format('DD-MM-YYYY')}
+														</td>
+													</tr>
+													<tr>
+														<td className='p-1 my-1 text-start'>
+															Employee Type
+														</td>
+														<td className='p-1 my-1 text-start'>:</td>
+														<td className='p-1 my-1 text-start'>
+															{el.EmpType}
+														</td>
+													</tr>
+													<tr>
+														<td className='p-1 my-1 text-start'>Mobile No</td>
+														<td className='p-1 my-1 text-start'>:</td>
+														<td className='p-1 my-1 text-start'>
+															{el.EmpMobile}
+														</td>
+													</tr>
+													<tr>
+														<td className='p-1 my-1 text-start'>Aadhar No</td>
+														<td className='p-1 my-1 text-start'>:</td>
+														<td className='p-1 my-1 text-start'>
+															{el.EmpAadhar}
+														</td>
+													</tr>
+													<tr>
+														<td className='p-1 my-1 text-start'>Address 1</td>
+														<td className='p-1 my-1 text-start'>:</td>
+														<td className='p-1 my-1 text-start'>
+															{el.EmpAddr1}
+														</td>
+													</tr>
+													<tr>
+														<td className='p-1 my-1 text-start'>Address 2</td>
+														<td className='p-1 my-1 text-start'>:</td>
+														<td className='p-1 my-1 text-start'>
+															{el.EmpAddr2}
+														</td>
+													</tr>
+													<tr>
+														<td className='p-1 my-1 text-start'>City</td>
+														<td className='p-1 my-1 text-start'>:</td>
+														<td className='p-1 my-1 text-start'>
+															{el.EmpCity}
+														</td>
+													</tr>
+													<tr>
+														<td className='p-1 my-1 text-start'>Pincode</td>
+														<td className='p-1 my-1 text-start'>:</td>
+														<td className='p-1 my-1 text-start'>
+															{el.EmpPincode}
+														</td>
+													</tr>
+													<tr>
+														<td className='p-1 my-1 text-start'>Status</td>
+														<td className='p-1 my-1 text-start'>:</td>
+														<td className='p-1 my-1 text-start'>
+															{el.EStatus}
+														</td>
+													</tr>
+												</tbody>
+											</table>
 										</div>
 									</>
 								);

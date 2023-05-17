@@ -173,7 +173,7 @@ const ViewAsset = () => {
 		<>
 			<div className='flex flex-row gap-4'>
 				<Sidebar />
-				<div className='container  my-8 h-full w-[40%] p-4 mx-auto pr-6 border'>
+				<div className='container  my-8 h-full w-[700px] p-4 mx-auto pr-6 border'>
 					<h1 className='text-center text-4xl text-pink-500  py-6'>
 						Asset Detail
 					</h1>
@@ -182,62 +182,91 @@ const ViewAsset = () => {
 								var qr1 = 'data:image/png;base64,' + el.QR;
 								return (
 									<>
-										<div className='flex flex-col ml-4' key={i + 1}>
-											<div className='grid grid-cols-2 justify-end'>
-												<div className='flex flex-col mt-5'>
-													<label className='p-1 my-1  text-start'>
-														Asset Registration No:{' '}
-														<span className='ml-2'>{el.AstRegNo}</span>
-													</label>
-
-													<label className='p-1 my-1 text-start'>
-														Asset Model:{' '}
-														<span className='ml-2'>{el.AstName}</span>
-													</label>
+										<div className='justify-center ml-[50px]' key={el.OperId}>
+											<div className='flex'>
+												<table className='w-full'>
+													<tbody>
+														<tr>
+															<td className='p-1 my-1 text-start'>
+																Asset Registration No
+															</td>
+															<td className='p-1 my-1 text-start'>:</td>
+															<td className='p-1 my-1 text-start'>
+																{el.AstRegNo}
+															</td>
+														</tr>
+														<tr>
+															<td className='p-1 my-1 text-start'>
+																Asset Model
+															</td>
+															<td className='p-1 my-1 text-start'>:</td>
+															<td className='p-1 my-1 text-start'>
+																{el.AstName}
+															</td>
+														</tr>
+														<tr>
+															<td className='p-1 my-1 text-start'>
+																Manufacturing Year
+															</td>
+															<td className='p-1 my-1 text-start'>:</td>
+															<td className='p-1 my-1 text-start'>
+																{el.AstModel}
+															</td>
+														</tr>
+														<tr>
+															<td className='p-1 my-1 text-start'>Chasis No</td>
+															<td className='p-1 my-1 text-start'>:</td>
+															<td className='p-1 my-1 text-start'>
+																{el.AstChasNo}
+															</td>
+														</tr>
+														<tr>
+															<td className='p-1 my-1 text-start'>Engine No</td>
+															<td className='p-1 my-1 text-start'>:</td>
+															<td className='p-1 my-1 text-start'>
+																{el.AstEngNo}
+															</td>
+														</tr>
+														<tr>
+															<td className='p-1 my-1 text-start'>Permit No</td>
+															<td className='p-1 my-1 text-start'>:</td>
+															<td className='p-1 my-1 text-start'>
+																{el.AstPermitNo}
+															</td>
+														</tr>
+														<tr>
+															<td className='p-1 my-1 text-start'>
+																Insurance Expire Date
+															</td>
+															<td className='p-1 my-1 text-start'>:</td>
+															<td className='p-1 my-1 text-start'>
+																{moment(el.AstInsurExp).format('DD-MM-YYYY')}
+															</td>
+														</tr>
+														<tr>
+															<td className='p-1 my-1 text-start'>Status</td>
+															<td className='p-1 my-1 text-start'>:</td>
+															<td className='p-1 my-1 text-start'>
+																{el.AStatus}
+															</td>
+														</tr>
+													</tbody>
+												</table>
+												<div className='flex flex-col justify-center top-0'>
+													<img
+														src={qr1}
+														className='w-[150px] border'
+														alt='QR Code'
+														id='qr-img'
+													/>
+													<button
+														className='bg-gray-200 hover:bg-pink-300 rounded-lg w-28 h-10 mt-2 ml-2'
+														onClick={() => handleDownload(el.AstRegNo)}
+													>
+														Print QR
+													</button>
 												</div>
-												<img
-													src={qr1}
-													className='w-[100px] border ml-[50%] '
-													alt='QR Code'
-													id='qr-img'
-												/>
 											</div>
-
-											<div className='grid grid-cols-2 justify-end'>
-												<div className='flex flex-col'>
-													<label className='p-1 my-1 text-start'>
-														Manufacturing Year:{' '}
-														<span className='ml-2'>{el.AstModel}</span>
-													</label>
-													<label className='p-1 my-1 text-start'>
-														Chasis No:{' '}
-														<span className='ml-2'>{el.AstChasNo}</span>
-													</label>
-												</div>
-												<button
-													className='hover:bg-pink-300 rounded-lg w-28 h-10 mt-4 ml-[48%]'
-													onClick={() => handleDownload(el.AstRegNo)}
-												>
-													Print QR
-												</button>
-											</div>
-
-											<label className='p-1 my-1 text-start'>
-												Engine No:<span className='ml-2'>{el.AstEngNo}</span>
-											</label>
-											<label className='p-1 my-1 text-start'>
-												Permit No:
-												<span className='ml-2'>{el.AstPermitNo}</span>
-											</label>
-											<label className='p-1 my-1 text-start'>
-												Insurance Expire Date:
-												<span className='ml-2'>
-													{moment(el.AstInsurExp).format('DD-MM-YYYY')}
-												</span>
-											</label>
-											<label className='p-1 my-1 text-start'>
-												Status:<span className='ml-2'>{el.AStatus}</span>
-											</label>
 										</div>
 									</>
 								);

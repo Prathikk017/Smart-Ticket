@@ -7,58 +7,56 @@ import Opersidebar from '../Opersidebar';
 import useIdleTimeout from '../../../useIdleTimeout';
 
 const Astview = () => {
-  const history = useNavigate();
-  const [data, setData] = useState([]);
-  const [OperShortName, setOperShortName] = useState('');
-  const { AstId } = useParams();
-  const ID = window.localStorage.getItem('OperID');
-  var operId = JSON.parse(ID);
+	const history = useNavigate();
+	const [data, setData] = useState([]);
+	const [OperShortName, setOperShortName] = useState('');
+	const { AstId } = useParams();
+	const ID = window.localStorage.getItem('OperID');
+	var operId = JSON.parse(ID);
 
-  const getOperator = async () => {
-    const res = await axios.post(
-      'https://amsweets.in/operator/readoperatorshortname',
-      { operId }
-    );
+	const getOperator = async () => {
+		const res = await axios.post(
+			'https://amsweets.in/operator/readoperatorshortname',
+			{ operId }
+		);
 
-    if (res.data.status === 201) {
-      setOperShortName(res.data.data[0].OperShortName);
-    } else {
-      console.log('error');
-    }
-  };
-  const getAssetData = async () => {
-    const res = await axios.get(
-      `https://amsweets.in/operator/asset/${AstId}`
-    );
+		if (res.data.status === 201) {
+			setOperShortName(res.data.data[0].OperShortName);
+		} else {
+			console.log('error');
+		}
+	};
+	const getAssetData = async () => {
+		const res = await axios.get(`https://amsweets.in/operator/asset/${AstId}`);
 
-    if (res.data.status === 201) {
-      setData(res.data.data);
-    } else {
-      console.log('error');
-    }
-  };
+		if (res.data.status === 201) {
+			setData(res.data.data);
+		} else {
+			console.log('error');
+		}
+	};
 
-  const handleSub = async () => {
-    const res = await axios.patch(
-      `https://amsweets.in/operator/asset/delete/${AstId}`
-    );
-    if (res.data.status === 201) {
-      alert(res.data.data);
-      history('/astview');
-      return;
-    } else {
-      console.log('error');
-    }
-  };
- 
-  const handleDownload = (e) => {
-    const qrImage = document.getElementById('qr-img');
-    const printWindow = window.open(
-      '',
-      '_blank',
-      'left=0,top=0,width=800,height=600,toolbar=0,scrollbars=0,status=0'
-    );
-    printWindow.document.write(`
+	const handleSub = async () => {
+		const res = await axios.patch(
+			`https://amsweets.in/operator/asset/delete/${AstId}`
+		);
+		if (res.data.status === 201) {
+			alert(res.data.data);
+			history('/astview');
+			return;
+		} else {
+			console.log('error');
+		}
+	};
+
+	const handleDownload = (e) => {
+		const qrImage = document.getElementById('qr-img');
+		const printWindow = window.open(
+			'',
+			'_blank',
+			'left=0,top=0,width=800,height=600,toolbar=0,scrollbars=0,status=0'
+		);
+		printWindow.document.write(`
         <html>
           <head>
             <title>${OperShortName}-${e}</title>
@@ -127,165 +125,194 @@ const Astview = () => {
           </body>
         </html>
       `);
-    printWindow.document.close();
-    printWindow.focus();
-    printWindow.print();
-    printWindow.close();
-  };
+		printWindow.document.close();
+		printWindow.focus();
+		printWindow.print();
+		printWindow.close();
+	};
 
-  // Call useIdleTimeout and pass in the time to consider the user as idle
-  const isIdle = useIdleTimeout(300000); // set to 5 minute
+	// Call useIdleTimeout and pass in the time to consider the user as idle
+	const isIdle = useIdleTimeout(300000); // set to 5 minute
 
-  // const verify = async() => {
-  //   const token = window.localStorage.getItem('Lekpay');
-  //   const Token = JSON.parse(token);
-  //   const authorization = `Bearer ${Token}`;
-  //   const res = await axios.post('https://amsweets.in/admin/verify',{
-  //     authorization
-  //   });
-  //   if(res.data.status === 201){
-  //     console.log(res.data.data);
-  //   }else{
-  //     if(res.data.data === 'Token is not valid'){
-  //       window.localStorage.removeItem('Lekpay');
-  //       history('/');
-  //     }
-  //   }
-  // }
+	// const verify = async() => {
+	//   const token = window.localStorage.getItem('Lekpay');
+	//   const Token = JSON.parse(token);
+	//   const authorization = `Bearer ${Token}`;
+	//   const res = await axios.post('https://amsweets.in/admin/verify',{
+	//     authorization
+	//   });
+	//   if(res.data.status === 201){
+	//     console.log(res.data.data);
+	//   }else{
+	//     if(res.data.data === 'Token is not valid'){
+	//       window.localStorage.removeItem('Lekpay');
+	//       history('/');
+	//     }
+	//   }
+	// }
 
-  
-  // useEffect(() => {
-  //   verify();
-  //   // Run verify() every 10 minute if the user is not idle
-  //   const intervalId = setInterval(() => {
-  //     if (!isIdle) {
-  //       verify();
-  //     }
-  //   }, 600000);
+	// useEffect(() => {
+	//   verify();
+	//   // Run verify() every 10 minute if the user is not idle
+	//   const intervalId = setInterval(() => {
+	//     if (!isIdle) {
+	//       verify();
+	//     }
+	//   }, 600000);
 
-  //   // Clear the interval when the component unmounts
-  //   return () => clearInterval(intervalId);
-  // }, [!isIdle]);
+	//   // Clear the interval when the component unmounts
+	//   return () => clearInterval(intervalId);
+	// }, [!isIdle]);
 
-  useEffect(() => {
-    // Redirect to sign-in page if the user is idle
-    if (isIdle) {
-      window.localStorage.removeItem('Lekpay');
-      history('/');
-    }
-  }, [isIdle, history]);
-  
-  useEffect(() => {
-    getOperator();
-  }, [operId]);
+	useEffect(() => {
+		// Redirect to sign-in page if the user is idle
+		if (isIdle) {
+			window.localStorage.removeItem('Lekpay');
+			history('/');
+		}
+	}, [isIdle, history]);
 
-  useEffect(() => {
-    const token = window.localStorage.getItem('Lekpay');
-    const Token = JSON.parse(token);
-    if (!Token) {
-      history('/');
-    } else {
-      getAssetData();
-    }
-  }, []);
-  return (
-    <>
-      <div className='flex flex-row gap-4'>
-        <Opersidebar />
-        <div className='container  my-8 h-full w-[40%] p-4 mx-auto pr-6 border'>
-          <h1 className='text-center text-4xl text-pink-500  py-6'>
-            Asset Detail
-          </h1>
+	useEffect(() => {
+		getOperator();
+	}, [operId]);
 
-          {data.length > 0
-            ? data.map((el, i) => {
-                var qr1 = 'data:image/png;base64,' + el.QR;
-                return (
-                  <>
-                    <div className='flex flex-col ml-4' key={i + 1}>
-                      <div className='grid grid-cols-2 justify-end'>
-                        <div className='flex flex-col mt-5'>
-                          <label className='p-1 my-1  text-start'>
-                            Asset Registration No:{' '}
-                            <span className='ml-2'>{el.AstRegNo}</span>
-                          </label>
+	useEffect(() => {
+		const token = window.localStorage.getItem('Lekpay');
+		const Token = JSON.parse(token);
+		if (!Token) {
+			history('/');
+		} else {
+			getAssetData();
+		}
+	}, []);
+	return (
+		<>
+			<div className='flex flex-row gap-4'>
+				<Opersidebar />
+				<div className='container  my-8 h-full w-[40%] p-4 mx-auto pr-6 border'>
+					<h1 className='text-center text-4xl text-pink-500  py-6'>
+						Asset Detail
+					</h1>
 
-                          <label className='p-1 my-1 text-start'>
-                            Asset Model:{' '}
-                            <span className='ml-2'>{el.AstName}</span>
-                          </label>
-                        </div>
-                        <img
-                          src={qr1}
-                          className='w-[100px] border ml-[50%] '
-                          alt='QR Code'
-                          id='qr-img'
-                        />
-                      </div>
+					{data.length > 0
+						? data.map((el, i) => {
+								var qr1 = 'data:image/png;base64,' + el.QR;
+								return (
+									<>
+										<div className='flex flex-col ml-4' key={i + 1}>
+											<div className='flex'>
+												<table className='w-full'>
+													<tbody>
+														<tr>
+															<td className='p-1 my-1 text-start'>
+																Asset Registration No
+															</td>
+															<td className='p-1 my-1 text-start'>:</td>
+															<td className='p-1 my-1 text-start'>
+																{el.AstRegNo}
+															</td>
+														</tr>
+														<tr>
+															<td className='p-1 my-1 text-start'>
+																Asset Model
+															</td>
+															<td className='p-1 my-1 text-start'>:</td>
+															<td className='p-1 my-1 text-start'>
+																{el.AstName}
+															</td>
+														</tr>
+														<tr>
+															<td className='p-1 my-1 text-start'>
+																Manufacturing Year
+															</td>
+															<td className='p-1 my-1 text-start'>:</td>
+															<td className='p-1 my-1 text-start'>
+																{el.AstModel}
+															</td>
+														</tr>
+														<tr>
+															<td className='p-1 my-1 text-start'>Chasis No</td>
+															<td className='p-1 my-1 text-start'>:</td>
+															<td className='p-1 my-1 text-start'>
+																{el.AstChasNo}
+															</td>
+														</tr>
+														<tr>
+															<td className='p-1 my-1 text-start'>Engine No</td>
+															<td className='p-1 my-1 text-start'>:</td>
+															<td className='p-1 my-1 text-start'>
+																{el.AstEngNo}
+															</td>
+														</tr>
+														<tr>
+															<td className='p-1 my-1 text-start'>Permit No</td>
+															<td className='p-1 my-1 text-start'>:</td>
+															<td className='p-1 my-1 text-start'>
+																{el.AstPermitNo}
+															</td>
+														</tr>
+														<tr>
+															<td className='p-1 my-1 text-start'>
+																Insurance Expire Date
+															</td>
+															<td className='p-1 my-1 text-start'>:</td>
+															<td className='p-1 my-1 text-start'>
+																{moment(el.AstInsurExp).format('DD-MM-YYYY')}
+															</td>
+														</tr>
+														<tr>
+															<td className='p-1 my-1 text-start'>Status</td>
+															<td className='p-1 my-1 text-start'>:</td>
+															<td className='p-1 my-1 text-start'>
+																{el.AStatus}
+															</td>
+														</tr>
+													</tbody>
+												</table>
+												<div className='flex flex-col justify-center top-0'>
+													<img
+														src={qr1}
+														className='w-[150px] border'
+														alt='QR Code'
+														id='qr-img'
+													/>
+													<button
+														className='bg-gray-200 hover:bg-pink-300 rounded-lg w-24 h-9 mt-2 ml-3'
+														onClick={() => handleDownload(el.AstRegNo)}
+													>
+														Print QR
+													</button>
+												</div>
+											</div>
 
-                      <div className='grid grid-cols-2 justify-end'>
-                        <div className='flex flex-col'>
-                          <label className='p-1 my-1 text-start'>
-                            Manufacturing Year:{' '}
-                            <span className='ml-2'>{el.AstModel}</span>
-                          </label>
-                          <label className='p-1 my-1 text-start'>
-                            Chasis No:{' '}
-                            <span className='ml-2'>{el.AstChasNo}</span>
-                          </label>
-                        </div>
-                        <button
-                          className='hover:bg-pink-300 rounded-lg w-28 h-10 mt-4 ml-[48%]'
-                          onClick={() => handleDownload(el.AstRegNo)}
-                        >
-                          Print QR
-                        </button>
-                      </div>
+											<div className='flex flex-row justify-evenly mt-8'>
+												<Link to={'/astview'}>
+													<button className='bg-gray-200 hover:bg-pink-300  px-4 py-1 rounded-lg w-max'>
+														Cancel
+													</button>
+												</Link>
+												<Link to={`/astupdate/${el.AstId}`}>
+													<button className='bg-gray-200 hover:bg-pink-300  px-4 py-1 rounded-lg w-max'>
+														Edit
+													</button>
+												</Link>
 
-                      <label className='p-1 my-1 text-start'>
-                        Engine No:<span className='ml-2'>{el.AstEngNo}</span>
-                      </label>
-                      <label className='p-1 my-1 text-start'>
-                        Permit No:
-                        <span className='ml-2'>{el.AstPermitNo}</span>
-                      </label>
-                      <label className='p-1 my-1 text-start'>
-                        Insurance Expire Date:
-                        <span className='ml-2'>
-                          {moment(el.AstInsurExp).format('DD-MM-YYYY')}
-                        </span>
-                      </label>
-                      <label className='p-1 my-1 text-start'>
-                        Status:<span className='ml-2'>{el.AStatus}</span>
-                      </label>
-                      <div className='flex flex-row justify-evenly m-4'>
-                        <Link to={'/astview'}>
-                          <button className='hover:bg-pink-300  px-4 py-2 rounded-lg w-max'>
-                            Cancel
-                          </button>
-                        </Link>
-                        <Link to={`/astupdate/${el.AstId}`}>
-                          <button className='hover:bg-pink-300  px-4 py-2 rounded-lg w-max'>
-                            Edit
-                          </button>
-                        </Link>
-
-                        <button
-                          className='hover:bg-pink-300  px-4 py-2 rounded-lg w-max'
-                          onClick={handleSub}
-                        >
-                          Delete
-                        </button>
-                      </div>
-                    </div>
-                  </>
-                );
-              })
-            : ' '}
-        </div>
-      </div>
-    </>
-  );
+												<button
+													className='bg-gray-200 hover:bg-pink-300  px-4 py-1 rounded-lg w-max'
+													onClick={handleSub}
+												>
+													Delete
+												</button>
+											</div>
+										</div>
+									</>
+								);
+						  })
+						: ' '}
+				</div>
+			</div>
+		</>
+	);
 };
 
 export default Astview;

@@ -48,8 +48,8 @@ const ViewTicketType = () => {
 		}
 	};
 
-	 // Call useIdleTimeout and pass in the time to consider the user as idle
-	 const isIdle = useIdleTimeout(300000); // set to 5 minute
+	// Call useIdleTimeout and pass in the time to consider the user as idle
+	const isIdle = useIdleTimeout(300000); // set to 5 minute
 
 	//  const verify = async() => {
 	//    const token = window.localStorage.getItem('Lekpay');
@@ -67,8 +67,7 @@ const ViewTicketType = () => {
 	// 	 }
 	//    }
 	//  }
-   
-	 
+
 	//  useEffect(() => {
 	//    verify();
 	//    // Run verify() every 10 minute if the user is not idle
@@ -77,18 +76,18 @@ const ViewTicketType = () => {
 	// 	   verify();
 	// 	 }
 	//    }, 600000);
-   
+
 	//    // Clear the interval when the component unmounts
 	//    return () => clearInterval(intervalId);
 	//  }, [!isIdle]);
-   
-	 useEffect(() => {
-	   // Redirect to sign-in page if the user is idle
-	   if (isIdle) {
-		 window.localStorage.removeItem('Lekpay');
-		 history('/');
-	   }
-	 }, [isIdle, history]);
+
+	useEffect(() => {
+		// Redirect to sign-in page if the user is idle
+		if (isIdle) {
+			window.localStorage.removeItem('Lekpay');
+			history('/');
+		}
+	}, [isIdle, history]);
 
 	useEffect(() => {
 		const token = window.localStorage.getItem('Lekpay');
@@ -104,46 +103,72 @@ const ViewTicketType = () => {
 		<>
 			<div className='flex flex-row gap-4'>
 				<Sidebar />
-				<div className='container  my-8 h-full w-auto p-4 ml-[30%] pr-6 border'>
-					<h1 className='text-4xl text-pink-500 ml-4 py-6'>
+				<div className='container  my-8 h-full w-[450px] p-4 mx-auto pr-6 border'>
+					<h1 className='text-center text-4xl text-pink-500  py-6'>
 						Ticket Type Detail
 					</h1>
 					{data.length > 0
 						? data.map((el, i) => {
 								return (
 									<>
-										<div className='flex flex-col ml-4' key={el.OperId}>
-											<label className='p-1 my-1 text-start'>
-												Name: <span className='ml-2'>{el.TTname}</span>
-											</label>
-											<label className='p-1 my-1 text-start'>
-												Short Name:{' '}
-												<span className='ml-2'>{el.TTshortname}</span>
-											</label>
-											<label className='p-1 my-1 text-start'>
-												Status: <span className='ml-2'>{el.TTstatus}</span>
-											</label>
-											<label className='p-1 my-1 text-start'>
-												Created Date:
-												<span className='ml-2'>
-													{moment(el.TTCreatedDate).format('DD-MM-YYYY')}
-												</span>
-											</label>
-											<label className='p-1 my-1 text-start'>
-												Created Date:
-												<span className='ml-2'>
-													{moment(el.TTModifiedDate).format('DD-MM-YYYY')}
-												</span>
-											</label>
-											<div className='flex flex-row justify-between m-4'>
+										<div className='flex flex-col ml-3' key={i + 1}>
+											<div className='justify-center ml-[50px]'>
+												<table className='w-full'>
+													<tbody>
+														<tr>
+															<td className='p-1 my-1 text-start'>Name</td>
+															<td className='p-1 my-1 text-start'>:</td>
+															<td className='p-1 my-1 text-start'>
+																{el.TTname}
+															</td>
+														</tr>
+														<tr>
+															<td className='p-1 my-1 text-start'>
+																Short Name
+															</td>
+															<td className='p-1 my-1 text-start'>:</td>
+															<td className='p-1 my-1 text-start'>
+																{el.TTshortname}
+															</td>
+														</tr>
+														<tr>
+															<td className='p-1 my-1 text-start'>Status</td>
+															<td className='p-1 my-1 text-start'>:</td>
+															<td className='p-1 my-1 text-start'>
+																{el.TTstatus}
+															</td>
+														</tr>
+														<tr>
+															<td className='p-1 my-1 text-start'>
+																Created Date
+															</td>
+															<td className='p-1 my-1 text-start'>:</td>
+															<td className='p-1 my-1 text-start'>
+																{moment(el.TTCreatedDate).format('DD-MM-YYYY')}
+															</td>
+														</tr>
+														<tr>
+															<td className='p-1 my-1 text-start'>
+																Modified Date
+															</td>
+															<td className='p-1 my-1 text-start'>:</td>
+															<td className='p-1 my-1 text-start'>
+																{moment(el.TTModifiedDate).format('DD-MM-YYYY')}
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+
+											<div className='flex flex-row justify-evenly m-4'>
 												<button
-													className='hover:bg-pink-300 px-4 py-2 rounded-lg w-max'
+													className='bg-gray-200 hover:bg-pink-300 px-3 py-1 rounded-lg w-max'
 													onClick={handleDisableSub}
 												>
 													Disable
 												</button>
 												<button
-													className='hover:bg-pink-300 px-4 py-2 rounded-lg w-max'
+													className='bg-gray-200 hover:bg-pink-300 px-3 py-1 rounded-lg w-max'
 													onClick={handleEnableSub}
 												>
 													Enable

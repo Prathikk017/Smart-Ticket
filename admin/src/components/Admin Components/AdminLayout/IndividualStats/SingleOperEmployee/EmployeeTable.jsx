@@ -11,15 +11,14 @@ const Employees = () => {
 	const [data, setData] = useState('');
 	const [currentPage, setCurrentPage] = useState(1);
 	const [itemsPerPage, setItemsPerPage] = useState(10);
-	const {OperId} = useParams();
+	const { OperId } = useParams();
 	const history = useNavigate();
 
 	const getEmployeesData = async () => {
-		const res = await axios.post('https://amsweets.in/admin/employee',{
+		const res = await axios.post('https://amsweets.in/admin/employee', {
 			OperId,
-		  });
+		});
 		if (res.data.status === 201) {
-			
 			setData(res.data.data);
 		} else {
 			console.log('error');
@@ -52,8 +51,8 @@ const Employees = () => {
 		);
 	});
 
-	 // Call useIdleTimeout and pass in the time to consider the user as idle
-	 const isIdle = useIdleTimeout(300000); // set to 5 minute
+	// Call useIdleTimeout and pass in the time to consider the user as idle
+	const isIdle = useIdleTimeout(300000); // set to 5 minute
 
 	//  const verify = async() => {
 	//    const token = window.localStorage.getItem('Lekpay');
@@ -71,8 +70,7 @@ const Employees = () => {
 	// 	 }
 	//    }
 	//  }
-   
-	 
+
 	//  useEffect(() => {
 	//    verify();
 	//    // Run verify() every 10 minute if the user is not idle
@@ -81,18 +79,18 @@ const Employees = () => {
 	// 	   verify();
 	// 	 }
 	//    }, 600000);
-   
+
 	//    // Clear the interval when the component unmounts
 	//    return () => clearInterval(intervalId);
 	//  }, [!isIdle]);
-   
-	 useEffect(() => {
-	   // Redirect to sign-in page if the user is idle
-	   if (isIdle) {
-		 window.localStorage.removeItem('Lekpay');
-		 history('/');
-	   }
-	 }, [isIdle, history]);
+
+	useEffect(() => {
+		// Redirect to sign-in page if the user is idle
+		if (isIdle) {
+			window.localStorage.removeItem('Lekpay');
+			history('/');
+		}
+	}, [isIdle, history]);
 
 	useEffect(() => {
 		const token = window.localStorage.getItem('Lekpay');
@@ -116,15 +114,18 @@ const Employees = () => {
 							</h1>
 							<div className=' rounded-sm mt-2'>
 								<table className='w-full text-gray-700 justify-between mx-1 border border-gray-800 h-auto'>
-									<thead>
+									<thead className='bg-gray-200'>
 										<tr className='border border-gray-800'>
-											<th className='p-1 ml-1'>Sl No</th>
-											<th className='p-1 ml-1'>Operator</th>
-											<th className='p-1 ml-1'>Name</th>
-											<th className='p-1 ml-1'>Mobile</th>
-											<th className='p-1 ml-1'>Date of Birth</th>
-											<th className='p-1 ml-1'>Type</th>
-											<th className='p-1 ml-1'>Status</th>
+											<th className='p-1 ml-1 w-[15%]'>Sl No</th>
+											<th className='p-1 ml-1 text-start w-[15%]'>Operator</th>
+											<th className='p-1 ml-1 text-start w-[20%]'>
+												Employee Name
+											</th>
+											<th className='p-1 ml-1 text-end w-[20%]'>
+												Date Of Birth
+											</th>
+											<th className='p-1 ml-1 text-end w-[20%]'>Type</th>
+											<th className='p-1 ml-1 w-[10%] text-center'>Status</th>
 											<th className='p-2 ml-1'>View</th>
 										</tr>
 									</thead>
@@ -132,23 +133,38 @@ const Employees = () => {
 										{currentItems.length > 0
 											? currentItems.map((el, i) => {
 													const opid = el.EmpId.substring(0, 3);
+													let opername;
+													if (opid === 'OP1') {
+														opername = 'HDBRTS';
+													} else if (opid === 'OP2') {
+														opername = 'KSRTC';
+													} else if (opid === 'OP3') {
+														opername = 'BTS';
+													}
 													return (
 														<>
 															<tr>
-																<td className='p-1 ml-1'>
+																<td className='p-1 ml-1 w-[15%]' key={el.EmpId}>
 																	{indexOfFirstItem + i + 1}
 																</td>
-																<td className='p-1 ml-1'>{opid}</td>
-																<td className='p-1 ml-1'>{el.EmpName}</td>
-																<td className='p-1 ml-1'>{el.EmpMobile}</td>
-																<td className='p-1 ml-1'>
+																<td className='p-1 ml-1 text-start w-[15%]'>
+																	{opername}
+																</td>
+																<td className='p-1 ml-1 text-start w-[20%]'>
+																	{el.EmpName}
+																</td>
+																<td className='p-1 ml-1 text-end w-[20%]'>
 																	{moment(el.EmpDOB).format('DD-MM-YYYY')}
 																</td>
-																<td className='p-1 ml-1'>{el.EmpType}</td>
-																<td className='p-1 ml-1'>{el.EStatus}</td>
+																<td className='p-1 ml-1 text-end w-[20%]'>
+																	{el.EmpType}
+																</td>
+																<td className='p-1 ml-1 w-[10%] text-center'>
+																	{el.EStatus}
+																</td>
 																<td className='p-1 ml-1'>
 																	<Link to={`/admin/employeesview/${el.EmpId}`}>
-																		<button className='hover:bg-pink-300  px-2 py-2 rounded-lg w-max'>
+																		<button className='bg-gray-200 hover:bg-pink-300 px-3 py-1 rounded-lg w-max'>
 																			View
 																		</button>
 																	</Link>

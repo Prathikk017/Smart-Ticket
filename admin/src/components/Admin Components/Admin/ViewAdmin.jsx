@@ -20,8 +20,8 @@ const ViewAdmin = () => {
 		}
 	};
 
-	 // Call useIdleTimeout and pass in the time to consider the user as idle
-	 const isIdle = useIdleTimeout(300000); // set to 5 minute
+	// Call useIdleTimeout and pass in the time to consider the user as idle
+	const isIdle = useIdleTimeout(300000); // set to 5 minute
 
 	//  const verify = async() => {
 	//    const token = window.localStorage.getItem('Lekpay');
@@ -39,8 +39,7 @@ const ViewAdmin = () => {
 	// 	 }
 	//    }
 	//  }
-   
-	 
+
 	//  useEffect(() => {
 	//    verify();
 	//    // Run verify() every 10 minute if the user is not idle
@@ -49,18 +48,18 @@ const ViewAdmin = () => {
 	// 	   verify();
 	// 	 }
 	//    }, 600000);
-   
+
 	//    // Clear the interval when the component unmounts
 	//    return () => clearInterval(intervalId);
 	//  }, [!isIdle]);
-   
-	 useEffect(() => {
-	   // Redirect to sign-in page if the user is idle
-	   if (isIdle) {
-		 window.localStorage.removeItem('Lekpay');
-		 history('/');
-	   }
-	 }, [isIdle, history]);
+
+	useEffect(() => {
+		// Redirect to sign-in page if the user is idle
+		if (isIdle) {
+			window.localStorage.removeItem('Lekpay');
+			history('/');
+		}
+	}, [isIdle, history]);
 
 	useEffect(() => {
 		const token = window.localStorage.getItem('Lekpay');
@@ -76,7 +75,7 @@ const ViewAdmin = () => {
 		<>
 			<div className='flex flex-row gap-4'>
 				<Sidebar />
-				<div className='container  my-8 h-full w-[40%] p-4 mx-auto pr-6 border'>
+				<div className='container  my-8 h-full w-[450px] p-4 mx-auto pr-6 border'>
 					<h1 className='text-center text-4xl text-pink-500  py-6'>
 						Admin Detail
 					</h1>
@@ -84,41 +83,62 @@ const ViewAdmin = () => {
 						? data.map((el, i) => {
 								return (
 									<>
-										<div className='flex flex-col ml-4' key={i + 1}>
-											<label className='p-1 my-1 text-start'>
-												Name: <span className='ml-2'>{el.Aname}</span>
-											</label>
-											<label className='p-1 my-1 text-start'>
-												Email: <span className='ml-2'>{el.Aemail}</span>
-											</label>
-											<label className='p-1 my-1 text-start'>
-												Mobile No: <span className='ml-2'>{el.Amobile}</span>
-											</label>
-											<label className='p-1 my-1 text-start'>
-												Date of Birth:{' '}
-												<span className='ml-2'>
-													{moment(el.ADoB).format('DD-MM-YYYY')}
-												</span>
-											</label>
-											<label className='p-1 my-1 text-start'>
-												Gender:
-												<span className='ml-2'>{el.Agender}</span>
-											</label>
-											<label className='p-1 my-1 text-start'>
-												Created Date:
-												<span className='ml-2'>
-													{moment(el.ACreatedDate).format('DD-MM-YYYY')}
-												</span>
-											</label>
-											<label className='p-1 my-1 text-start'>
-												Modified Date:
-												<span className='ml-2'>
-													{moment(el.AModifiedDate).format('DD-MM-YYYY')}
-												</span>
-											</label>
-											<label className='p-1 my-1 text-start'>
-												Status:<span className='ml-2'>{el.Status}</span>
-											</label>
+										<div className='justify-center ml-[80px]'>
+											<table className='w-full'>
+												<tbody>
+													<tr>
+														<td className='p-1 my-1 text-start'>Name</td>
+														<td className='p-1 my-1 text-start'>:</td>
+														<td className='p-1 my-1 text-start'>{el.Aname}</td>
+													</tr>
+													<tr>
+														<td className='p-1 my-1 text-start'>Email</td>
+														<td className='p-1 my-1 text-start'>:</td>
+														<td className='p-1 my-1 text-start'>{el.Aemail}</td>
+													</tr>
+													<tr>
+														<td className='p-1 my-1 text-start'>Mobile No</td>
+														<td className='p-1 my-1 text-start'>:</td>
+														<td className='p-1 my-1 text-start'>
+															{el.Amobile}
+														</td>
+													</tr>
+													<tr>
+														<td className='p-1 my-1 text-start'>
+															Date of Birth
+														</td>
+														<td className='p-1 my-1 text-start'>:</td>
+														<td className='p-1 my-1 text-start'>
+															{moment(el.ADoB).format('DD-MM-YYYY')}
+														</td>
+													</tr>
+													<tr>
+														<td className='p-1 my-1 text-start'>Gender</td>
+														<td className='p-1 my-1 text-start'>:</td>
+														<td className='p-1 my-1 text-start'>
+															{el.Agender}
+														</td>
+													</tr>
+													<tr>
+														<td className='p-1 my-1 text-start'>
+															Created Date
+														</td>
+														<td className='p-1 my-1 text-start'>:</td>
+														<td className='p-1 my-1 text-start'>
+															{moment(el.ACreatedDate).format('DD-MM-YYYY')}
+														</td>
+													</tr>
+													<tr>
+														<td className='p-1 my-1 text-start'>
+															Modified Date
+														</td>
+														<td className='p-1 my-1 text-start'>:</td>
+														<td className='p-1 my-1 text-start'>
+															{moment(el.AModifiedDate).format('DD-MM-YYYY')}
+														</td>
+													</tr>
+												</tbody>
+											</table>
 										</div>
 									</>
 								);

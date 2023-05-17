@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { IoPeople} from 'react-icons/io5';
+import { IoPeople } from 'react-icons/io5';
 import axios from 'axios';
 import useIdleTimeout from '../../../../../useIdleTimeout';
 
 const AssetCard = () => {
-    const history = useNavigate();
+	const history = useNavigate();
 
 	// total operators data
 	const [data, setData] = useState('');
@@ -22,19 +22,18 @@ const AssetCard = () => {
 		}
 	};
 
-	const handleClick = async(OperId) => {
-
+	const handleClick = async (OperId) => {
 		history(`/admin/operator/asset/${OperId}`);
-	//    const res = await axios.post('https://amsweets.in/admin/operator/assets',{
-	// 	OperId
-	//    })
-	//    if(res.data.status === 201){
-	// 	setData1(res.data.data);
-	//    }
+		//    const res = await axios.post('https://amsweets.in/admin/operator/assets',{
+		// 	OperId
+		//    })
+		//    if(res.data.status === 201){
+		// 	setData1(res.data.data);
+		//    }
 	};
 
-	 // Call useIdleTimeout and pass in the time to consider the user as idle
-	 const isIdle = useIdleTimeout(300000); // set to 5 minute
+	// Call useIdleTimeout and pass in the time to consider the user as idle
+	const isIdle = useIdleTimeout(300000); // set to 5 minute
 
 	//  const verify = async() => {
 	//    const token = window.localStorage.getItem('Lekpay');
@@ -52,8 +51,7 @@ const AssetCard = () => {
 	// 	 }
 	//    }
 	//  }
-   
-	 
+
 	//  useEffect(() => {
 	//    verify();
 	//    // Run verify() every 10 minute if the user is not idle
@@ -62,19 +60,18 @@ const AssetCard = () => {
 	// 	   verify();
 	// 	 }
 	//    }, 600000);
-   
+
 	//    // Clear the interval when the component unmounts
 	//    return () => clearInterval(intervalId);
 	//  }, [!isIdle]);
-   
-	 useEffect(() => {
-	   // Redirect to sign-in page if the user is idle
-	   if (isIdle) {
-		 window.localStorage.removeItem('Lekpay');
-		 history('/');
-	   }
-	 }, [isIdle, history]);
 
+	useEffect(() => {
+		// Redirect to sign-in page if the user is idle
+		if (isIdle) {
+			window.localStorage.removeItem('Lekpay');
+			history('/');
+		}
+	}, [isIdle, history]);
 
 	useEffect(() => {
 		const token = window.localStorage.getItem('Lekpay');
@@ -101,10 +98,10 @@ const AssetCard = () => {
 											style={{ color: 'white' }}
 										/>
 									</div>
-									<div className='pl-4 cursor-pointer' onClick={() =>handleClick(el.OperId)}>
-										<span className='text-sm text-gray-500 font-medium'>
-											{el.OperId}
-										</span>
+									<div
+										className='pl-4 cursor-pointer'
+										onClick={() => handleClick(el.OperId)}
+									>
 										<div className='flex items-center'>
 											<strong className='text-xl text-gray-700 font-semibold'>
 												{el.OperShortName}
@@ -120,7 +117,7 @@ const AssetCard = () => {
 	);
 };
 
-export default AssetCard
+export default AssetCard;
 
 function BoxWrapper({ children }) {
 	return (

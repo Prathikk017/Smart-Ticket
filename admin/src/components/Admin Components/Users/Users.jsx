@@ -48,8 +48,8 @@ const Users = () => {
 		);
 	});
 
-	 // Call useIdleTimeout and pass in the time to consider the user as idle
-	 const isIdle = useIdleTimeout(300000); // set to 5 minute
+	// Call useIdleTimeout and pass in the time to consider the user as idle
+	const isIdle = useIdleTimeout(300000); // set to 5 minute
 
 	//  const verify = async() => {
 	//    const token = window.localStorage.getItem('Lekpay');
@@ -67,8 +67,7 @@ const Users = () => {
 	// 	 }
 	//    }
 	//  }
-   
-	 
+
 	//  useEffect(() => {
 	//    verify();
 	//    // Run verify() every 10 minute if the user is not idle
@@ -77,18 +76,18 @@ const Users = () => {
 	// 	   verify();
 	// 	 }
 	//    }, 600000);
-   
+
 	//    // Clear the interval when the component unmounts
 	//    return () => clearInterval(intervalId);
 	//  }, [!isIdle]);
-   
-	 useEffect(() => {
-	   // Redirect to sign-in page if the user is idle
-	   if (isIdle) {
-		 window.localStorage.removeItem('Lekpay');
-		 history('/');
-	   }
-	 }, [isIdle, history]);
+
+	useEffect(() => {
+		// Redirect to sign-in page if the user is idle
+		if (isIdle) {
+			window.localStorage.removeItem('Lekpay');
+			history('/');
+		}
+	}, [isIdle, history]);
 
 	useEffect(() => {
 		const token = window.localStorage.getItem('Lekpay');
@@ -103,23 +102,25 @@ const Users = () => {
 	return (
 		<>
 			<div>
-				<div className='flex flex-row gap-10'>
+				<div className='flex flex-row gap-6'>
 					<Sidebar />
-					<div className='flex-col mt-10 ml-5'>
-						<div className='bg-white  pt-1 mt-4 pl-4 max-h-96 justify-center items-center rounded-md sm:w-[120%] md:w-[160%] flex-1'>
+					<div className='flex-col  mr-10'>
+						<div className='bg-white pt-1 mt-4 pl-4 max-h-96 items-center sm:w-[90%] lg:w-[130%] xl:w-[140%] 2xl:w-[170%] rounded-md flex-1'>
 							<h1 className='text-pink-500 text-3xl text-center font-semibold pb-1'>
-								Users Table
+								Admins Table
 							</h1>
-							<div className=' rounded-sm mt-2'>
-								<table className='w-full text-gray-700 justify-between mx-1 border border-gray-800 h-auto'>
-									<thead>
+							<div className=' rounded-sm mt-6'>
+								<table className='w-full text-gray-700 justify-between mx-1 border border-gray-800 '>
+									<thead className='bg-gray-200'>
 										<tr className='border border-gray-800'>
 											<th className='p-1 ml-1'>Sl No</th>
-											<th className='p-1 ml-1'>Name</th>
-											<th className='p-1 ml-1'>Gender</th>
-											<th className='p-1 ml-1'>Mobile</th>
-											<th className='p-1 ml-1'>Date of Birth</th>
-											<th className='p-1 ml-1'>Status</th>
+											<th className='p-1 ml-1 text-start w-[15%]'>Name</th>
+											<th className='p-1 ml-1 text-start w-[15%]'>Gender</th>
+											<th className='p-1 ml-1 text-start w-[15%]'>Mobile</th>
+											<th className='p-1 ml-1 text-end w-[15%]'>
+												Date of Birth
+											</th>
+											<th className='p-1 ml-1 w-[10%] text-center'>Status</th>
 											<th className='p-2 ml-1'>View</th>
 										</tr>
 									</thead>
@@ -129,19 +130,27 @@ const Users = () => {
 													return (
 														<>
 															<tr>
-																<td className='p-1 ml-1'>
+																<td className='p-1 ml-1' key={el.UserId}>
 																	{indexOfFirstItem + i + 1}
 																</td>
-																<td className='p-1 ml-1'>{el.Uname}</td>
-																<td className='p-1 ml-1'>{el.Ugender}</td>
-																<td className='p-1 ml-1'>{el.Umobile}</td>
-																<td className='p-1 ml-1'>
+																<td className='p-1 ml-1 text-start w-[15%]'>
+																	{el.Uname}
+																</td>
+																<td className='p-1 ml-1 text-start w-[15%]'>
+																	{el.Ugender}
+																</td>
+																<td className='p-1 ml-1 text-start w-[15%]'>
+																	{el.Umobile}
+																</td>
+																<td className='p-1 ml-1 w-[10%] text-end'>
 																	{moment(el.UDoB).format('DD-MM-YYYY')}
 																</td>
-																<td className='p-1 ml-1'>{el.UStatus}</td>
+																<td className='p-1 ml-1 w-[10%] text-center'>
+																	{el.UStatus}
+																</td>
 																<td className='p-1 ml-1'>
 																	<Link to={`/admin/usersview/${el.UserId}`}>
-																		<button className='hover:bg-pink-300  px-4 py-2 rounded-lg w-max'>
+																		<button className='bg-gray-200 hover:bg-pink-300 px-3 py-1 rounded-lg w-max'>
 																			View
 																		</button>
 																	</Link>
@@ -155,7 +164,7 @@ const Users = () => {
 								</table>
 								{/* Pagination */}
 								<div className='flex justify-center items-center'>
-									<nav>
+									<nav className=' justify-between items-center'>
 										<ul className='flex' id='pagination'>
 											<li
 												className={`${
@@ -163,7 +172,7 @@ const Users = () => {
 												} page-item`}
 											>
 												<button
-													className='page-link  rounded-r-md focus:outline-none rounded-l-md mr-6 mt-1'
+													className='page-link  rounded-r-md focus:outline-none rounded-l-md mr-1 mt-1'
 													onClick={() =>
 														setCurrentPage((prev) =>
 															prev === 1 ? prev : prev - 1
@@ -180,7 +189,7 @@ const Users = () => {
 												} page-item`}
 											>
 												<button
-													className='page-link  rounded-r-md focus:outline-none rounded-l-md ml-6 mt-1'
+													className='page-link  rounded-r-md focus:outline-none rounded-l-md ml-2 mt-1'
 													onClick={() =>
 														setCurrentPage((prev) =>
 															prev === pageNumber.length ? prev : prev + 1

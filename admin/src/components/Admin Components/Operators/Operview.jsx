@@ -33,8 +33,8 @@ const Operview = () => {
 		}
 	};
 
-	 // Call useIdleTimeout and pass in the time to consider the user as idle
-	 const isIdle = useIdleTimeout(300000); // set to 5 minute
+	// Call useIdleTimeout and pass in the time to consider the user as idle
+	const isIdle = useIdleTimeout(300000); // set to 5 minute
 
 	//  const verify = async() => {
 	//    const token = window.localStorage.getItem('Lekpay');
@@ -52,8 +52,7 @@ const Operview = () => {
 	// 	 }
 	//    }
 	//  }
-   
-	 
+
 	//  useEffect(() => {
 	//    verify();
 	//    // Run verify() every 10 minute if the user is not idle
@@ -62,18 +61,18 @@ const Operview = () => {
 	// 	   verify();
 	// 	 }
 	//    }, 600000);
-   
+
 	//    // Clear the interval when the component unmounts
 	//    return () => clearInterval(intervalId);
 	//  }, [!isIdle]);
-   
-	 useEffect(() => {
-	   // Redirect to sign-in page if the user is idle
-	   if (isIdle) {
-		 window.localStorage.removeItem('Lekpay');
-		 history('/');
-	   }
-	 }, [isIdle, history]);
+
+	useEffect(() => {
+		// Redirect to sign-in page if the user is idle
+		if (isIdle) {
+			window.localStorage.removeItem('Lekpay');
+			history('/');
+		}
+	}, [isIdle, history]);
 
 	useEffect(() => {
 		const token = window.localStorage.getItem('Lekpay');
@@ -89,56 +88,93 @@ const Operview = () => {
 		<>
 			<div className='flex flex-row gap-4'>
 				<Sidebar />
-				<div className='container  my-8 h-full w-auto p-4 ml-[30%] pr-6 border'>
-					<h1 className='text-4xl text-pink-500 ml-4 py-6'>Operator Detail</h1>
+				<div className='container  my-8 h-full w-[500px] p-4 mx-auto pr-6 border'>
+					<h1 className='text-center text-4xl text-pink-500  py-6'>
+						Operator Detail
+					</h1>
 					{data.length > 0
 						? data.map((el, i) => {
 								return (
 									<>
 										<div className='flex flex-col ml-4' key={el.OperId}>
-											<label className='p-1 my-1 text-start'>
-												Company Name:{' '}
-												<span className='ml-2'>{el.OperName}</span>
-											</label>
-											<label className='p-1 my-1 text-start'>
-												Company Email:{' '}
-												<span className='ml-2'>{el.OperEmail}</span>
-											</label>
-											<label className='p-1 my-1 text-start'>
-												GST No: <span className='ml-2'>{el.OperGSTIN}</span>
-											</label>
-											<label className='p-1 my-1 text-start'>
-												Phone No: <span className='ml-2'>{el.OperPhone}</span>
-											</label>
-											<label className='p-1 my-1 text-start'>
-												Contact Name:
-												<span className='ml-2'>{el.OperContactName}</span>
-											</label>
-											<label className='p-1 my-1 text-start'>
-												Contact Email:
-												<span className='ml-2'>{el.OperContactEmail}</span>
-											</label>
-											<label className='p-1 my-1 text-start'>
-												Created Date:
-												<span className='ml-2'>
-													{moment(el.OperCreatedDate).format('DD-MM-YYYY')}
-												</span>
-											</label>
-											<div className='flex flex-row justify-center m-4'>
-												<Link to={'/admin/approveopersview'}>
-													<button className='hover:bg-pink-300  px-4 py-2 rounded-lg w-max'>
-														Cancel
-													</button>
-												</Link>
-												<Link to={`/admin/approveoper/${el.OperId}`}>
-													<button
-														className='hover:bg-pink-300  px-4 py-2 rounded-lg w-max'
-														onClick={handleSub}
-													>
-														Approve
-													</button>
-												</Link>
-											</div>
+											<table className='w-full'>
+												<tbody>
+													<tr>
+														<td className='p-1 my-1 text-start'>
+															Company Name
+														</td>
+														<td className='p-1 my-1 text-start'>:</td>
+														<td className='p-1 my-1 text-start'>
+															{el.OperName}
+														</td>
+													</tr>
+													<tr>
+														<td className='p-1 my-1 text-start'>
+															Company Email
+														</td>
+														<td className='p-1 my-1 text-start'>:</td>
+														<td className='p-1 my-1 text-start'>
+															{el.OperEmail}
+														</td>
+													</tr>
+													<tr>
+														<td className='p-1 my-1 text-start'>GST No</td>
+														<td className='p-1 my-1 text-start'>:</td>
+														<td className='p-1 my-1 text-start'>
+															{el.OperGSTIN}
+														</td>
+													</tr>
+													<tr>
+														<td className='p-1 my-1 text-start'>Phone No</td>
+														<td className='p-1 my-1 text-start'>:</td>
+														<td className='p-1 my-1 text-start'>
+															{el.OperPhone}
+														</td>
+													</tr>
+													<tr>
+														<td className='p-1 my-1 text-start'>
+															Contact Name
+														</td>
+														<td className='p-1 my-1 text-start'>:</td>
+														<td className='p-1 my-1 text-start'>
+															{el.OperContactName}
+														</td>
+													</tr>
+													<tr>
+														<td className='p-1 my-1 text-start'>
+															Contact Email
+														</td>
+														<td className='p-1 my-1 text-start'>:</td>
+														<td className='p-1 my-1 text-start'>
+															{el.OperContactEmail}
+														</td>
+													</tr>
+													<tr>
+														<td className='p-1 my-1 text-start'>
+															Created Date
+														</td>
+														<td className='p-1 my-1 text-start'>:</td>
+														<td className='p-1 my-1 text-start'>
+															{moment(el.OperCreatedDate).format('DD-MM-YYYY')}
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+										<div className='flex flex-row justify-center m-4'>
+											<Link to={'/admin/approveopersview'}>
+												<button className='hover:bg-pink-300  px-4 py-2 rounded-lg w-max'>
+													Cancel
+												</button>
+											</Link>
+											<Link to={`/admin/approveoper/${el.OperId}`}>
+												<button
+													className='hover:bg-pink-300  px-4 py-2 rounded-lg w-max'
+													onClick={handleSub}
+												>
+													Approve
+												</button>
+											</Link>
 										</div>
 									</>
 								);

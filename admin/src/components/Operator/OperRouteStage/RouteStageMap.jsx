@@ -15,6 +15,8 @@ const RouteStageMap = () => {
   const [intermediateStages, setIntermediateStages] = useState([]);
   const [intermediateStageValues, setIntermediateStageValues] = useState([]);
   const [routeData, setRouteData] = useState([]);
+  const [routeSStage, setRouteSStage] = useState('');
+  const [routeEStage, setRouteEStage] = useState('');
   const [stageData, setStageData] = useState([]);
   const [TicketData, setTicketData] = useState([]);
   const [TicketShortData, setTicketShortData] = useState([]);
@@ -37,17 +39,36 @@ const RouteStageMap = () => {
     setRouteTicket(e.target.value);
   };
 
+  const handleClick = (RouteName) =>{
+    let stages = RouteName.split('-');
+
+    // Assigning the start and end stages to respective variables
+    setRouteSStage(stages[0].trim())
+    setRouteEStage(stages[1].trim())
+  }
   const startStage = (e) => {
+    const selectedStageName = e.target.selectedOptions[0].text;
     if (e.target.value !== 'Select') {
-      setStartStage(e.target.value);
+      if(selectedStageName === routeSStage){
+        setStartStage(e.target.value);
+      }else{
+        alert(`Please enter ${routeSStage} has route Start stage`);
+      }
     } else {
       setStartStage('');
     }
   };
 
   const endStage = (e) => {
+    const selectedStageName = e.target.selectedOptions[0].text;
+
     if (e.target.value !== 'Select') {
-      setEndStage(e.target.value);
+      if(selectedStageName === routeEStage){
+        setEndStage(e.target.value);
+      }else{
+        alert(`Please enter ${routeEStage} has route End stage`);
+        return;
+      }
     } else {
       setEndStage('');
     }
@@ -265,6 +286,8 @@ const RouteStageMap = () => {
     }
   }, [operId]);
 
+  
+
   return (
     <div className='flex flex-row gap-4 bg-gray-50'>
       <Opersidebar />
@@ -279,6 +302,11 @@ const RouteStageMap = () => {
               <select
                 className='border p-1 rounded w-full hover:border-pink-500 duration-200'
                 onChange={setData1}
+                onClick={(e) => {
+                  if (e.target.value !== "Select") {
+                    handleClick(e.target.selectedOptions[0].text);
+                  }
+                }}
               >
                 <option>Select</option>
                 {routeData.length > 0 ? routeData.map((el, i) => {

@@ -15,15 +15,15 @@ const initialValues = {
 const SignIn = () => {
 	const history = useNavigate();
 
-	const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
-		useFormik({
-			initialValues: initialValues,
-			validationSchema: signInSchema,
-			onSubmit: (values, action) => {
-				console.log(values);
-				action.resetForm();
-			},
-		});
+	const { values, errors, touched, handleBlur, handleChange, handleSubmit, resetForm } = useFormik({
+		initialValues: initialValues,
+		validationSchema: signInSchema,
+		onSubmit: (values) => {
+		  console.log(values);
+		  resetForm();
+		},
+	  });
+	  
 	const Aname = values.Aname;
 	const Apassword = values.Apassword;
 	const [operid, setOperid] = useState('');
@@ -34,6 +34,7 @@ const SignIn = () => {
 
 		if (!Aname || !Apassword) {
 			alert('Fill the details');
+		    resetForm();
 		} else {
 			const res = await axios.post('https://amsweets.in/admin/login', {
 				Aname,
@@ -42,8 +43,7 @@ const SignIn = () => {
 
 			if (res.data.status === 200) {
 				alert("User doesn't exist");
-				var form = document.getElementsByName('contact-form')[0];
-				form.reset();
+				resetForm();
 				return;
 			}
 			if (res.data.status === 201) {
@@ -60,6 +60,8 @@ const SignIn = () => {
 				}
 			} else {
 				alert('Wrong username/password!!');
+				
+				resetForm();
 			}
 		}
 	};
@@ -80,7 +82,7 @@ const SignIn = () => {
 				<div className='flex flex-col justify-center'>
 					<form
 						className='max-w-[400px] w-full mx-auto p-4  rounded-md'
-						name='contact-form'
+						id='contact-form'
 						onSubmit={handleSubmit}
 					>
 						<h2 className='text-4xl text-pink-500 text-center py-6'>Sign In</h2>
