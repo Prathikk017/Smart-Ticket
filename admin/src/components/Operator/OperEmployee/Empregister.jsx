@@ -1,10 +1,11 @@
-import React, {  useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useFormik } from 'formik';
 import Opersidebar from '../Opersidebar';
 import { empRegisterSchema } from '../../../schemas/index';
 import useIdleTimeout from '../../../useIdleTimeout';
+import * as XLSX from 'xlsx';
 
 const initialValues = {
   EmpName: '',
@@ -20,42 +21,84 @@ const initialValues = {
 const Empregister = () => {
   const [EmpDOB, setEmpDOB] = useState('');
   const [EmpType, setEmpType] = useState('');
+  // const [currentItemIndex, setCurrentItemIndex] = useState(0);
+  const [recordsAdded, setRecordsAdded] = useState(0);
+  const [recordsNotAdded, setRecordsNotAdded] = useState(0);
+  const [skippedRecords, setSkippedRecords] = useState([]);
   const history = useNavigate();
-  
+
   const ID = window.localStorage.getItem('OperID');
   var operId = JSON.parse(ID);
+  const [items, setItems] = useState([]);
 
-  const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
-  useFormik({
+  const {
+    values,
+    errors,
+    touched,
+    handleBlur,
+    handleChange,
+    handleSubmit,
+    resetForm,
+  } = useFormik({
     initialValues: initialValues,
     validationSchema: empRegisterSchema,
-    onSubmit: (values, action) => {
+    onSubmit: (values) => {
       console.log(values);
-      action.resetForm();
+      resetForm();
     },
   });
-  
-   const EmpName= values.EmpName;
-   const EmpIntId=values.EmpIntId;
-   const EmpMobile=values.EmpPhone;
-   const EmpAadhar=values.EmpAadhar;
-   const EmpAddr1=values.EmpAddr1;
-   const EmpAddr2=values.EmpAddr2;
-   const EmpCity=values.EmpCity;
-   const EmpPincode=values.EmpPincode;
-  
 
-  // function 
+  const EmpName = values.EmpName;
+  const EmpIntId = values.EmpIntId;
+  const EmpMobile = values.EmpPhone;
+  const EmpAadhar = values.EmpAadhar;
+  const EmpAddr1 = values.EmpAddr1;
+  const EmpAddr2 = values.EmpAddr2;
+  const EmpCity = values.EmpCity;
+  const EmpPincode = values.EmpPincode;
+
+  // function
   const setData = (e) => {
-    setEmpDOB(e.target.value);
+    const dob = e.target.value;
+    setEmpDOB(dob);
   };
   const setData1 = (e) => {
     setEmpType(e.target.value);
   };
-  
+
+  //function to read excel file
+  const readExcel = (file) => {
+    const promise = new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsArrayBuffer(file);
+
+      fileReader.onload = (e) => {
+        const bufferArray = e.target.result;
+
+        const wb = XLSX.read(bufferArray, { type: 'buffer' });
+
+        const wsname = wb.SheetNames[0];
+
+        const ws = wb.Sheets[wsname];
+
+        const data = XLSX.utils.sheet_to_json(ws);
+
+        resolve(data);
+      };
+
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+
+    promise.then((d) => {
+      setItems(d);
+    });
+  };
+
   const handleSub = async (e) => {
     e.preventDefault();
-    
+    let skippedRecords = [];
     if (
       !EmpName ||
       !EmpIntId ||
@@ -70,29 +113,113 @@ const Empregister = () => {
     ) {
       alert('Fill the details');
       return;
-    } else {
-    const res = await axios.post('https://amsweets.in/employee/create', {
-      EmpName,
-      EmpIntId,
-      EmpDOB,
-      EmpType,
-      EmpMobile,
-      EmpAadhar,
-      EmpAddr1,
-      EmpAddr2,
-      EmpCity,
-      EmpPincode,
-      operId
-    });
-      if (res.data.status === 201) {
-        alert('Employee successfully created');
-        setTimeout(() => history('/Operdashboard'), 500);
-        return;
-      } else {
-        alert('Employee unable to register');
-        return;
+    }
+
+    if (items.length > 0) {
+    let addedCount = 0;
+    let notAddedCount = 0;
+
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+
+      const {
+        'Employee Name': EmpName,
+        'Employee Id': EmpIntId,
+        'Date of birth': EmpDOB,
+        'Employee Type': EmpType,
+        'Phone no': EmpMobile,
+        'Aadhar Number': EmpAadhar,
+        'Address 1': EmpAddr1,
+        'Address 2': EmpAddr2,
+        City: EmpCity,
+        Pincode: EmpPincode,
+      } = item;
+
+      try {
+        // Check if the EmployeeIntId already exists in the database
+        const checkResult = await axios.get(`https://amsweets.in/employee/check/${EmpIntId}`);
+
+        if (checkResult.data.status === 201 && checkResult.data.data !== 0) {
+          notAddedCount++;
+          skippedRecords.push(` ${EmpIntId}`);
+          continue;
+        }
+
+        // Register the item
+        await axios.post('https://amsweets.in/employee/create', {
+          EmpName,
+          EmpIntId,
+          EmpDOB,
+          EmpType,
+          EmpMobile,
+          EmpAadhar,
+          EmpAddr1,
+          EmpAddr2,
+          EmpCity,
+          EmpPincode,
+          operId,
+        });
+
+        addedCount++;
+      } catch (error) {
+        console.log(`Error occurred while registering item with EmployeeId ${EmpIntId}`);
+        notAddedCount++;
       }
     }
+
+    setRecordsAdded(addedCount);
+    setRecordsNotAdded(notAddedCount);
+    setSkippedRecords(skippedRecords);
+    resetForm(); 
+    setItems([]);
+    if(addedCount === 0){
+      alert(`${notAddedCount} records were not added. Employee with EmployeeID ${skippedRecords} already existed Skipped Registration.`);
+    }else{
+      alert(`${addedCount} records of employee data have been added.`);
+    }
+    // Reset the form values
+    setTimeout(() => window.location.reload(), 200);
+    } else {
+      try {
+        const checkResult = await axios.get(`https://amsweets.in/employee/check/${EmpIntId}`);
+
+        if (checkResult.data.status === 201 && checkResult.data.data !== 0) {
+          alert(`${EmpIntId} already existed.`);
+          resetForm();
+          return;
+        }else{
+          const res = await axios.post('https://amsweets.in/employee/create', {
+            EmpName,
+            EmpIntId,
+            EmpDOB,
+            EmpType,
+            EmpMobile,
+            EmpAadhar,
+            EmpAddr1,
+            EmpAddr2,
+            EmpCity,
+            EmpPincode,
+            operId,
+          });
+  
+          if (res.data.status === 201) {
+            alert('Employee successfully created');
+            resetForm();
+            setTimeout(() => history('/Operdashboard'), 500);
+            return;
+          } else {
+            alert('Employee unable to register');
+            resetForm();
+            return;
+          }
+        } 
+        }catch (error) {
+          console.log(error);
+          alert('Error occurred while registering employee');
+        }
+      }
+
+       
   };
 
   // Call useIdleTimeout and pass in the time to consider the user as idle
@@ -115,7 +242,6 @@ const Empregister = () => {
   //   }
   // }
 
-  
   // useEffect(() => {
   //   verify();
   //   // Run verify() every 10 minute if the user is not idle
@@ -136,7 +262,37 @@ const Empregister = () => {
       history('/');
     }
   }, [isIdle, history]);
-  
+
+  useEffect(() => {
+    if (items.length > 0) {
+      const data = items[0];
+      const {
+        'Employee Name': EmpName,
+        'Employee Id': EmpIntId,
+        'Date of birth': EmpDOB,
+        'Employee Type': EmpType,
+        'Phone no': EmpPhone,
+        'Aadhar Number': EmpAadhar,
+        'Address 1': EmpAddr1,
+        'Address 2': EmpAddr2,
+        City: EmpCity,
+        Pincode: EmpPincode,
+      } = data;
+
+      // Set form values
+      values.EmpName = EmpName || '';
+      values.EmpIntId = EmpIntId || '';
+      values.EmpPhone = EmpPhone || '';
+      values.EmpAadhar = EmpAadhar || '';
+      values.EmpAddr1 = EmpAddr1 || '';
+      values.EmpAddr2 = EmpAddr2 || '';
+      values.EmpCity = EmpCity || '';
+      values.EmpPincode = EmpPincode || '';
+      setEmpDOB(EmpDOB || '');
+      setEmpType(EmpType || '');
+    }
+  }, [items]);
+
   useEffect(() => {
     const token = window.localStorage.getItem('Lekpay');
     const Token = JSON.parse(token);
@@ -150,9 +306,12 @@ const Empregister = () => {
       <Opersidebar />
       <div className='grid grid-cols-1 sm:grid-cols-2 h-screen w-[90%] max-h-[100vh] overflow-y-auto mx-auto'>
         <div className='py-2 flex flex-col justify-center items-center'>
-          <form className='max-w-[400px] w-full mx-auto text-sm flex-row' onSubmit={handleSubmit}>
+          <form
+            className='max-w-[400px] w-full mx-auto text-sm flex-row'
+            onSubmit={handleSubmit}
+          >
             <h2 className='text-3xl text-pink-500 text-center py-2'>
-              Employee Register                                                                
+              Employee Register
             </h2>
             <div className='flex flex-col py-1'>
               <label>Employee Name</label>
@@ -164,7 +323,7 @@ const Empregister = () => {
                 value={values.EmpName}
                 className='border p-1 rounded w-full hover:border-pink-500 duration-200'
               />
-               {errors.EmpName && touched.EmpName ? (
+              {errors.EmpName && touched.EmpName ? (
                 <p className='text-red-500 text-xs '>{errors.EmpName}</p>
               ) : null}
             </div>
@@ -178,7 +337,7 @@ const Empregister = () => {
                 value={values.EmpIntId}
                 className='border p-1 rounded w-full hover:border-pink-500 duration-200'
               />
-               {errors.EmpIntId && touched.EmpIntId ? (
+              {errors.EmpIntId && touched.EmpIntId ? (
                 <p className='text-red-500 text-xs '>{errors.EmpIntId}</p>
               ) : null}
             </div>
@@ -187,17 +346,22 @@ const Empregister = () => {
               <input
                 type='date'
                 onChange={setData}
+                value={EmpDOB}
                 className='border p-1 rounded w-full hover:border-pink-500 duration-200'
               />
             </div>
-            <div className='flex flex-col py-1' >
+            <div className='flex flex-col py-1'>
               <label>Employee Type</label>
-              <select className='border p-1 rounded w-full hover:border-pink-500 duration-200' onChange={setData1}>
-              <option>Select Type</option>
-            <option value="Conductor">Conductor</option>
-            <option value="Checker">Checker</option>
-            <option value="Depo Manager">Depo Manager</option>
-            </select>
+              <select
+                className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+                value={EmpType}
+                onChange={setData1}
+              >
+                <option>Select Type</option>
+                <option value='Conductor'>Conductor</option>
+                <option value='Checker'>Checker</option>
+                <option value='Depo Manager'>Depo Manager</option>
+              </select>
             </div>
             <div className='flex flex-col py-1'>
               <label>Phone no</label>
@@ -209,7 +373,7 @@ const Empregister = () => {
                 value={values.EmpPhone}
                 className='border p-1 rounded w-full hover:border-pink-500 duration-200'
               />
-               {errors.EmpPhone && touched.EmpPhone ? (
+              {errors.EmpPhone && touched.EmpPhone ? (
                 <p className='text-red-500 text-xs '>{errors.EmpPhone}</p>
               ) : null}
             </div>
@@ -223,7 +387,7 @@ const Empregister = () => {
                 value={values.EmpAadhar}
                 className='border p-1 rounded w-full hover:border-pink-500 duration-200'
               />
-               {errors.EmpAadhar && touched.EmpAadhar ? (
+              {errors.EmpAadhar && touched.EmpAadhar ? (
                 <p className='text-red-500 text-xs '>{errors.EmpAadhar}</p>
               ) : null}
             </div>
@@ -237,7 +401,7 @@ const Empregister = () => {
                 value={values.EmpAddr1}
                 className='border p-1 rounded w-full hover:border-pink-500 duration-200'
               />
-               {errors.EmpAddr1 && touched.EmpAddr1 ? (
+              {errors.EmpAddr1 && touched.EmpAddr1 ? (
                 <p className='text-red-500 text-xs '>{errors.EmpAddr1}</p>
               ) : null}
             </div>
@@ -251,7 +415,7 @@ const Empregister = () => {
                 value={values.EmpAddr2}
                 className='border p-1 rounded w-full hover:border-pink-500 duration-200'
               />
-               {errors.EmpAddr2 && touched.EmpAddr2 ? (
+              {errors.EmpAddr2 && touched.EmpAddr2 ? (
                 <p className='text-red-500 text-xs '>{errors.EmpAddr2}</p>
               ) : null}
             </div>
@@ -265,7 +429,7 @@ const Empregister = () => {
                 value={values.EmpCity}
                 className='border p-1 rounded w-full hover:border-pink-500 duration-200'
               />
-               {errors.EmpCity && touched.EmpCity ? (
+              {errors.EmpCity && touched.EmpCity ? (
                 <p className='text-red-500 text-xs '>{errors.EmpCity}</p>
               ) : null}
             </div>
@@ -279,7 +443,7 @@ const Empregister = () => {
                 value={values.EmpPincode}
                 className='border p-1 rounded w-full hover:border-pink-500 duration-200'
               />
-               {errors.EmpPincode && touched.EmpPincode ? (
+              {errors.EmpPincode && touched.EmpPincode ? (
                 <p className='text-red-500 text-xs '>{errors.EmpPincode}</p>
               ) : null}
             </div>
@@ -291,7 +455,14 @@ const Empregister = () => {
             </button>
           </form>
         </div>
-        
+        <input
+          className='m-auto'
+          type='file'
+          onChange={(e) => {
+            const file = e.target.files[0];
+            readExcel(file);
+          }}
+        />      
       </div>
     </div>
   );

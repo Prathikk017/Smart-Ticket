@@ -105,7 +105,7 @@ exports.createEmployee = (req, res) => {
   exports.readEmployee = (req,res)=>{
 	let tblEmployee = req.body;
 	let operID = tblEmployee.operId;
-	let query = `SELECT EmpId,EmpName,EmpIntId,EmpDOB,EmpType,EStatus FROM tblEmployee WHERE  EmpId LIKE '%${operID}%'`;
+	let query = `SELECT Num, EmpId,EmpName,EmpIntId,EmpDOB,EmpType,EStatus FROM tblEmployee WHERE  EmpId LIKE '%${operID}%' ORDER BY Num ASC`;
 	db.query(query, (err, result) =>{
 	  if(!err){
 		res.status(200).json({status: 201, data: result});
@@ -270,6 +270,23 @@ exports.readEmpActive = (req,res) =>{
 		}
 	  }else{
 		console.log(err)
+	  }
+	})
+  }
+
+  exports.reademployeeIntId = (req, res) =>{
+	const { EmpIntId } = req.params;
+	console.log(EmpIntId)
+	let query = `SELECT EmpIntId FROM tblEmployee WHERE EmpIntId  = '${EmpIntId}'`
+	db.query(query,(err, result)=>{
+	  if (!err) {
+		if(result.length > 0){
+		  return res.status(200).json({ status:201, data:result.length });
+		}else{
+			return res.status(200).json({status:201, data: result.length});
+		}
+	  } else {
+		return res.status(500).json(err);
 	  }
 	})
   }

@@ -11,6 +11,7 @@ const {
 	astroid,
 	tripAmounnt,
 	readEmpActive,
+	reademployeeIntId,
 } = require('../../controllers/Employee/employee');
 
 router.route('/create').post(createEmployee);
@@ -23,5 +24,6 @@ router.route('/routeid').post(getRouteId);
 router.route('/astroid').post(astroid);
 router.route('/tripamount').post(tripAmounnt);
 router.route('/readempactive').post(readEmpActive);
+router.route('/check/:EmpIntId').get(reademployeeIntId)
 
 module.exports = router;
