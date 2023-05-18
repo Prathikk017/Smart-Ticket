@@ -14,7 +14,7 @@ const AssetTable = () => {
 	const history = useNavigate();
 	const OperId = useParams();
 	const getAssetsData = async () => {
-		const res = await axios.post('https://amsweets.in/admin/asset', {
+		const res = await axios.post('https://lekpay.com/admin/asset', {
 			OperId,
 		});
 		if (res.data.status === 201) {
@@ -56,7 +56,7 @@ const AssetTable = () => {
 	//    const token = window.localStorage.getItem('Lekpay');
 	//    const Token = JSON.parse(token);
 	//    const authorization = `Bearer ${Token}`;
-	//    const res = await axios.post('https://amsweets.in/admin/verify',{
+	//    const res = await axios.post('https://lekpay.com/admin/verify',{
 	// 	 authorization
 	//    });
 	//    if(res.data.status === 201){
@@ -105,7 +105,7 @@ const AssetTable = () => {
 				<div className='flex flex-row gap-10'>
 					<Sidebar />
 					<div className='flex-col mt-10 ml-5'>
-						<div className='bg-white  pt-1 mt-4 pl-4 max-h-96 justify-center items-center rounded-md sm:w-[100%] md:w-[130%] flex-1'>
+						<div className='bg-white  pt-1 mt-4 pl-4 max-h-96 justify-center items-center rounded-md sm:w-[90%] lg:w-[120%] xl:w-[140%] 2xl:w-[170%] flex-1'>
 							<h1 className='text-pink-500 text-3xl text-center font-semibold pb-1'>
 								Assets Table
 							</h1>
@@ -115,8 +115,8 @@ const AssetTable = () => {
 										<tr className='border border-gray-800'>
 											<th className='p-1 ml-1'>Sl No</th>
 											<th className='p-1 ml-1 w-[15%] text-start'>Operator</th>
-											<th className='p-1 ml-1 w-[20%] text-start'>Name</th>
-											<th className='p-1 ml-1 w-[20%] text-start'>
+											<th className='p-1 ml-1 w-[15%] text-start'>Name</th>
+											<th className='p-1 ml-1 w-[15%] text-start'>
 												Vehicle No
 											</th>
 											<th className='p-1 ml-1 w-[15%] text-center'>Model No</th>
@@ -145,10 +145,10 @@ const AssetTable = () => {
 																<td className='p-1 ml-1 w-[15%] text-start'>
 																	{opername}
 																</td>
-																<td className='p-1 ml-1 w-[20%] text-start'>
+																<td className='p-1 ml-1 w-[15%] text-start'>
 																	{el.AstName}
 																</td>
-																<td className='p-1 ml-1 w-[20%] text-start'>
+																<td className='p-1 ml-1 w-[15%] text-start'>
 																	{el.AstRegNo}
 																</td>
 																<td className='p-1 ml-1 w-[15%] text-center'>

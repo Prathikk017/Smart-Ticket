@@ -15,15 +15,23 @@ const initialValues = {
 const SignIn = () => {
 	const history = useNavigate();
 
-	const { values, errors, touched, handleBlur, handleChange, handleSubmit, resetForm } = useFormik({
+	const {
+		values,
+		errors,
+		touched,
+		handleBlur,
+		handleChange,
+		handleSubmit,
+		resetForm,
+	} = useFormik({
 		initialValues: initialValues,
 		validationSchema: signInSchema,
 		onSubmit: (values) => {
-		  console.log(values);
-		  resetForm();
+			console.log(values);
+			resetForm();
 		},
-	  });
-	  
+	});
+
 	const Aname = values.Aname;
 	const Apassword = values.Apassword;
 	const [operid, setOperid] = useState('');
@@ -34,9 +42,9 @@ const SignIn = () => {
 
 		if (!Aname || !Apassword) {
 			alert('Fill the details');
-		    resetForm();
+			resetForm();
 		} else {
-			const res = await axios.post('https://amsweets.in/admin/login', {
+			const res = await axios.post('https://lekpay.com/admin/login', {
 				Aname,
 				Apassword,
 			});
@@ -60,7 +68,7 @@ const SignIn = () => {
 				}
 			} else {
 				alert('Wrong username/password!!');
-				
+
 				resetForm();
 			}
 		}
@@ -73,7 +81,7 @@ const SignIn = () => {
 	useEffect(() => {
 		window.localStorage.setItem('OperID', JSON.stringify(operid));
 		window.localStorage.setItem('Lekpay', JSON.stringify(token));
-	}, [operid,token]);
+	}, [operid, token]);
 
 	return (
 		<>

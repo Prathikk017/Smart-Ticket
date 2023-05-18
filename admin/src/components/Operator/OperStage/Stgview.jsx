@@ -11,9 +11,7 @@ const Stgview = () => {
 	const [data, setData] = useState([]);
 	const { StageID } = useParams();
 	const getAssetData = async () => {
-		const res = await axios.get(
-			`https://amsweets.in/operator/stage/${StageID}`
-		);
+		const res = await axios.get(`https://lekpay.com/operator/stage/${StageID}`);
 
 		if (res.data.status === 201) {
 			setData(res.data.data);
@@ -24,7 +22,7 @@ const Stgview = () => {
 
 	const handleSub = async () => {
 		const res = await axios.patch(
-			`https://amsweets.in/operator/stage/delete/${StageID}`
+			`https://lekpay.com/operator/stage/delete/${StageID}`
 		);
 		if (res.data.status === 201) {
 			alert(res.data.data);
@@ -42,7 +40,7 @@ const Stgview = () => {
 	//   const token = window.localStorage.getItem('Lekpay');
 	//   const Token = JSON.parse(token);
 	//   const authorization = `Bearer ${Token}`;
-	//   const res = await axios.post('https://amsweets.in/admin/verify',{
+	//   const res = await axios.post('https://lekpay.com/admin/verify',{
 	//     authorization
 	//   });
 	//   if(res.data.status === 201){

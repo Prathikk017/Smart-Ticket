@@ -15,7 +15,7 @@ const Employees = () => {
 	const history = useNavigate();
 
 	const getEmployeesData = async () => {
-		const res = await axios.post('https://amsweets.in/admin/employee', {
+		const res = await axios.post('https://lekpay.com/admin/employee', {
 			OperId,
 		});
 		if (res.data.status === 201) {
@@ -58,7 +58,7 @@ const Employees = () => {
 	//    const token = window.localStorage.getItem('Lekpay');
 	//    const Token = JSON.parse(token);
 	//    const authorization = `Bearer ${Token}`;
-	//    const res = await axios.post('https://amsweets.in/admin/verify',{
+	//    const res = await axios.post('https://lekpay.com/admin/verify',{
 	// 	 authorization
 	//    });
 	//    if(res.data.status === 201){
@@ -108,7 +108,7 @@ const Employees = () => {
 				<div className='flex flex-row gap-10'>
 					<Sidebar />
 					<div className='flex-col mt-10 ml-5'>
-						<div className='bg-white  pt-1 mt-4 pl-4 max-h-96 items-center sm:w-[70%] md:w-[120%] rounded-md flex-1'>
+						<div className='bg-white  pt-1 mt-4 pl-4 max-h-96 items-center sm:w-[90%] lg:w-[130%] xl:w-[140%] 2xl:w-[170%] rounded-md flex-1'>
 							<h1 className='text-pink-500 text-3xl text-center font-semibold pb-1'>
 								Employees Table
 							</h1>
@@ -118,13 +118,13 @@ const Employees = () => {
 										<tr className='border border-gray-800'>
 											<th className='p-1 ml-1 w-[15%]'>Sl No</th>
 											<th className='p-1 ml-1 text-start w-[15%]'>Operator</th>
-											<th className='p-1 ml-1 text-start w-[20%]'>
+											<th className='p-1 ml-1 text-start w-[15%]'>
 												Employee Name
 											</th>
-											<th className='p-1 ml-1 text-end w-[20%]'>
+											<th className='p-1 ml-1 text-start w-[15%]'>Type</th>
+											<th className='p-1 ml-1 text-end w-[15%]'>
 												Date Of Birth
 											</th>
-											<th className='p-1 ml-1 text-end w-[20%]'>Type</th>
 											<th className='p-1 ml-1 w-[10%] text-center'>Status</th>
 											<th className='p-2 ml-1'>View</th>
 										</tr>
@@ -150,14 +150,14 @@ const Employees = () => {
 																<td className='p-1 ml-1 text-start w-[15%]'>
 																	{opername}
 																</td>
-																<td className='p-1 ml-1 text-start w-[20%]'>
+																<td className='p-1 ml-1 text-start w-[15%]'>
 																	{el.EmpName}
 																</td>
-																<td className='p-1 ml-1 text-end w-[20%]'>
-																	{moment(el.EmpDOB).format('DD-MM-YYYY')}
-																</td>
-																<td className='p-1 ml-1 text-end w-[20%]'>
+																<td className='p-1 ml-1 text-start w-[15%]'>
 																	{el.EmpType}
+																</td>
+																<td className='p-1 ml-1 text-end w-[15%]'>
+																	{moment(el.EmpDOB).format('DD-MM-YYYY')}
 																</td>
 																<td className='p-1 ml-1 w-[10%] text-center'>
 																	{el.EStatus}

@@ -16,7 +16,7 @@ const Astview = () => {
 
 	const getOperator = async () => {
 		const res = await axios.post(
-			'https://amsweets.in/operator/readoperatorshortname',
+			'https://lekpay.com/operator/readoperatorshortname',
 			{ operId }
 		);
 
@@ -27,7 +27,7 @@ const Astview = () => {
 		}
 	};
 	const getAssetData = async () => {
-		const res = await axios.get(`https://amsweets.in/operator/asset/${AstId}`);
+		const res = await axios.get(`https://lekpay.com/operator/asset/${AstId}`);
 
 		if (res.data.status === 201) {
 			setData(res.data.data);
@@ -38,7 +38,7 @@ const Astview = () => {
 
 	const handleSub = async () => {
 		const res = await axios.patch(
-			`https://amsweets.in/operator/asset/delete/${AstId}`
+			`https://lekpay.com/operator/asset/delete/${AstId}`
 		);
 		if (res.data.status === 201) {
 			alert(res.data.data);
@@ -138,7 +138,7 @@ const Astview = () => {
 	//   const token = window.localStorage.getItem('Lekpay');
 	//   const Token = JSON.parse(token);
 	//   const authorization = `Bearer ${Token}`;
-	//   const res = await axios.post('https://amsweets.in/admin/verify',{
+	//   const res = await axios.post('https://lekpay.com/admin/verify',{
 	//     authorization
 	//   });
 	//   if(res.data.status === 201){

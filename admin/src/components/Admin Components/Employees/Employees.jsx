@@ -14,7 +14,7 @@ const Employees = () => {
 	const history = useNavigate();
 
 	const getEmployeesData = async () => {
-		const res = await axios.get('https://amsweets.in/admin/employees');
+		const res = await axios.get('https://lekpay.com/admin/employees');
 		if (res.data.status === 201) {
 			setData(res.data.data);
 		} else {
@@ -55,7 +55,7 @@ const Employees = () => {
 	//    const token = window.localStorage.getItem('Lekpay');
 	//    const Token = JSON.parse(token);
 	//    const authorization = `Bearer ${Token}`;
-	//    const res = await axios.post('https://amsweets.in/admin/verify',{
+	//    const res = await axios.post('https://lekpay.com/admin/verify',{
 	// 	 authorization
 	//    });
 	//    if(res.data.status === 201){
@@ -118,10 +118,10 @@ const Employees = () => {
 											<th className='p-1 ml-1 text-start w-[15%]'>
 												Employee Name
 											</th>
+											<th className='p-1 ml-1 text-start w-[15%]'>Type</th>
 											<th className='p-1 ml-1 text-end w-[15%]'>
 												Date Of Birth
 											</th>
-											<th className='p-1 ml-1 text-end w-[15%]'>Type</th>
 											<th className='p-1 ml-1 w-[10%] text-center'>Status</th>
 											<th className='p-2 ml-1'>View</th>
 										</tr>
@@ -150,11 +150,11 @@ const Employees = () => {
 																<td className='p-1 ml-1 text-start w-[15%]'>
 																	{el.EmpName}
 																</td>
-																<td className='p-1 ml-1 text-end w-[15%]'>
-																	{moment(el.EmpDOB).format('DD-MM-YYYY')}
+																<td className='p-1 ml-1 text-start w-[15%]'>
+																	{el.EmpType}
 																</td>
 																<td className='p-1 ml-1 text-end w-[15%]'>
-																	{el.EmpType}
+																	{moment(el.EmpDOB).format('DD-MM-YYYY')}
 																</td>
 																<td className='p-1 ml-1 w-[10%] text-center'>
 																	{el.EStatus}

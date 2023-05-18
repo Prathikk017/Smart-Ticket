@@ -35,7 +35,7 @@ const TicketType = () => {
 			alert('Fill the details');
 			return;
 		} else {
-			const res = await axios.post('https://amsweets.in/admin/tickettype', {
+			const res = await axios.post('https://lekpay.com/admin/tickettype', {
 				TTname,
 				TTshortname,
 				ttDuration,

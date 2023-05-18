@@ -11,7 +11,7 @@ const ViewUser = () => {
 	const history = useNavigate();
 
 	const getSingleUserData = async () => {
-		const res = await axios.get(`https://amsweets.in/admin/users/${UserId}`);
+		const res = await axios.get(`https://lekpay.com/admin/users/${UserId}`);
 
 		if (res.data.status === 201) {
 			console.log(res.data.data);
@@ -28,7 +28,7 @@ const ViewUser = () => {
 	//    const token = window.localStorage.getItem('Lekpay');
 	//    const Token = JSON.parse(token);
 	//    const authorization = `Bearer ${Token}`;
-	//    const res = await axios.post('https://amsweets.in/admin/verify',{
+	//    const res = await axios.post('https://lekpay.com/admin/verify',{
 	// 	 authorization
 	//    });
 	//    if(res.data.status === 201){
