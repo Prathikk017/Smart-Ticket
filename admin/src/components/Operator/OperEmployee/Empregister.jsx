@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useFormik } from 'formik';
+import EmployeeDetail from '../../../assets/template/Employee_Detail.xlsx';
 import Opersidebar from '../Opersidebar';
 import { empRegisterSchema } from '../../../schemas/index';
 import useIdleTimeout from '../../../useIdleTimeout';
@@ -99,6 +100,14 @@ const Empregister = () => {
     promise.then((d) => {
       setItems(d);
     });
+  };
+
+  //function to download template
+  const handleDownload = () => {
+    const link = document.createElement('a');
+    link.href = EmployeeDetail; // Replace with the actual path to your template file
+    link.download = 'Employee Detail.xlsx'; // Specify the desired filename
+    link.click();
   };
 
   const handleSub = async (e) => {
@@ -484,14 +493,20 @@ const Empregister = () => {
             </button>
           </form>
         </div>
+        <div className='m-auto grid grid-flow-row gap-4'>
+          <button className='bg-gray-200 hover:bg-pink-300  px-2 py-2 rounded-lg w-max m-auto' onClick={handleDownload}>
+          Download Template
+        </button>
         <input
-          className='m-auto'
+          
           type='file'
           onChange={(e) => {
             const file = e.target.files[0];
             readExcel(file);
           }}
-        />      
+        />
+        </div>
+              
       </div>
     </div>
   );
