@@ -316,7 +316,7 @@ const Register = () => {
 						</div>
 						<div className='py-2 mx-auto'>
 							<ReCAPTCHA
-								sitekey='6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
+								sitekey='6Lfk3RsmAAAAABDeJtGUOUruyAp0o76ZI3IP8CrV'
 								onChange={onChanges}
 							/>
 						</div>
