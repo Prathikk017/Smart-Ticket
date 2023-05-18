@@ -11,9 +11,9 @@ const Transaction = () => {
 	const [data, setData] = useState('');
 	const [currentPage, setCurrentPage] = useState(1);
 	const [itemsPerPage, setItemsPerPage] = useState(10);
- const history = useNavigate();
+	const history = useNavigate();
 	const getAdminsData = async () => {
-		const res = await axios.get('https://amsweets.in/admin/transactions/');
+		const res = await axios.get('https://lekpay.com/admin/transactions/');
 		if (res.data.status === 201) {
 			setData(res.data.data);
 		} else {
@@ -47,14 +47,14 @@ const Transaction = () => {
 		);
 	});
 
-	 // Call useIdleTimeout and pass in the time to consider the user as idle
-	 const isIdle = useIdleTimeout(300000); // set to 5 minute
+	// Call useIdleTimeout and pass in the time to consider the user as idle
+	const isIdle = useIdleTimeout(300000); // set to 5 minute
 
 	//  const verify = async() => {
 	//    const token = window.localStorage.getItem('Lekpay');
 	//    const Token = JSON.parse(token);
 	//    const authorization = `Bearer ${Token}`;
-	//    const res = await axios.post('https://amsweets.in/admin/verify',{
+	//    const res = await axios.post('https://lekpay.com/admin/verify',{
 	// 	 authorization
 	//    });
 	//    if(res.data.status === 201){
@@ -66,8 +66,7 @@ const Transaction = () => {
 	// 	 }
 	//    }
 	//  }
-   
-	 
+
 	//  useEffect(() => {
 	//    verify();
 	//    // Run verify() every 10 minute if the user is not idle
@@ -76,18 +75,18 @@ const Transaction = () => {
 	// 	   verify();
 	// 	 }
 	//    }, 600000);
-   
+
 	//    // Clear the interval when the component unmounts
 	//    return () => clearInterval(intervalId);
 	//  }, [!isIdle]);
-   
-	 useEffect(() => {
-	   // Redirect to sign-in page if the user is idle
-	   if (isIdle) {
-		 window.localStorage.removeItem('Lekpay');
-		 history('/');
-	   }
-	 }, [isIdle, history]);
+
+	useEffect(() => {
+		// Redirect to sign-in page if the user is idle
+		if (isIdle) {
+			window.localStorage.removeItem('Lekpay');
+			history('/');
+		}
+	}, [isIdle, history]);
 
 	useEffect(() => {
 		getAdminsData();
@@ -97,7 +96,7 @@ const Transaction = () => {
 		const token = window.localStorage.getItem('Lekpay');
 		const Token = JSON.parse(token);
 		if (!Token) {
-		  history('/');
+			history('/');
 		}
 	});
 

@@ -19,7 +19,7 @@ const StatsGrid = () => {
 	const [data4, setData4] = useState('');
 
 	const getOperatorsData = async () => {
-		const res = await axios.get('https://amsweets.in/admin/operators');
+		const res = await axios.get('https://lekpay.com/admin/operators');
 		if (res.data.status === 201) {
 			setData(res.data.data);
 		} else {
@@ -28,7 +28,7 @@ const StatsGrid = () => {
 	};
 
 	const getEmployeesData = async () => {
-		const res = await axios.get('https://amsweets.in/admin/employees');
+		const res = await axios.get('https://lekpay.com/admin/employees');
 		if (res.data.status === 201) {
 			setData1(res.data.data);
 		} else {
@@ -37,7 +37,7 @@ const StatsGrid = () => {
 	};
 
 	const getAssetsData = async () => {
-		const res = await axios.get('https://amsweets.in/admin/assets');
+		const res = await axios.get('https://lekpay.com/admin/assets');
 		if (res.data.status === 201) {
 			setData2(res.data.data);
 		} else {
@@ -46,22 +46,22 @@ const StatsGrid = () => {
 	};
 
 	const getUsersData = async () => {
-		const res = await axios.get('https://amsweets.in/admin/users');
+		const res = await axios.get('https://lekpay.com/admin/users');
 		if (res.data.status === 201) {
 			setData3(res.data.data);
 		} else {
 			console.log('error');
 		}
 	};
- 
-	const getTransactionData = async() =>{
-		const res = await axios.get('https://amsweets.in/admin/readalltransaction');
-		if(res.data.status === 201){
+
+	const getTransactionData = async () => {
+		const res = await axios.get('https://lekpay.com/admin/readalltransaction');
+		if (res.data.status === 201) {
 			setData4(res.data.data);
-		}else{
-			console.log("error")
+		} else {
+			console.log('error');
 		}
-	}
+	};
 	const handleClick = () => {
 		history('/admin/singleoperstats');
 	};
@@ -76,7 +76,7 @@ const StatsGrid = () => {
 	};
 	const handleClick4 = () => {
 		history('/admin/singleoperator');
-	}
+	};
 	useEffect(() => {
 		const token = window.localStorage.getItem('Lekpay');
 		const Token = JSON.parse(token);

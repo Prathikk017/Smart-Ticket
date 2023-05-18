@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { MdOutlineDirectionsBusFilled } from 'react-icons/md';
 import { BiRupee } from 'react-icons/bi';
 import { IoPeople, IoPieChart } from 'react-icons/io5';
@@ -21,9 +21,9 @@ const StatsGrid = () => {
 		}
 	};
 
-	const handleClick = () => {
-		history('/admin/operatorsview');
-	};
+	// const handleClick = () => {
+	// 	history('/admin/operatorsview');
+	// };
 
 	// Call useIdleTimeout and pass in the time to consider the user as idle
 	const isIdle = useIdleTimeout(300000); // set to 5 minute
@@ -44,8 +44,7 @@ const StatsGrid = () => {
 	// 	 }
 	//    }
 	//  }
-   
-	 
+
 	//  useEffect(() => {
 	//    verify();
 	//    // Run verify() every 10 minute if the user is not idle
@@ -54,18 +53,18 @@ const StatsGrid = () => {
 	// 	   verify();
 	// 	 }
 	//    }, 600000);
-   
+
 	//    // Clear the interval when the component unmounts
 	//    return () => clearInterval(intervalId);
 	//  }, [!isIdle]);
-   
-	 useEffect(() => {
-	   // Redirect to sign-in page if the user is idle
-	   if (isIdle) {
-		 window.localStorage.removeItem('Lekpay');
-		 history('/');
-	   }
-	 }, [isIdle, history]);
+
+	useEffect(() => {
+		// Redirect to sign-in page if the user is idle
+		if (isIdle) {
+			window.localStorage.removeItem('Lekpay');
+			history('/');
+		}
+	}, [isIdle, history]);
 
 	useEffect(() => {
 		const token = window.localStorage.getItem('Lekpay');
@@ -83,24 +82,24 @@ const StatsGrid = () => {
 						return (
 							<>
 								<BoxWrapper>
-									<div
-										className='rounded-full h-12 w-12 flex items-center justify-center bg-pink-400 cursor-pointer'
-										onClick={handleClick}
-										key={i}
-									>
-										<IoPeople
-											className='text-2xl text-black'
-											style={{ color: 'white' }}
-										/>
-									</div>
-									<div className='pl-4 cursor-pointer' onClick={handleClick}>
-										<span className='text-sm text-gray-500 font-medium'>
-											OP {el.Num}
-										</span>
+									<Link to={`/admin/operatorsview/${el.OperId}`}>
+										<div
+											className='rounded-full h-12 w-12 flex items-center justify-center bg-pink-400 cursor-pointer'
+											key={i}
+										>
+											<IoPeople
+												className='text-2xl text-black'
+												style={{ color: 'white' }}
+											/>
+										</div>
+									</Link>
+									<div className='pl-4 cursor-pointer'>
 										<div className='flex items-center'>
-											<strong className='text-xl text-gray-700 font-semibold'>
-												{el.OperShortName}
-											</strong>
+											<Link to={`/admin/operatorsview/${el.OperId}`}>
+												<strong className='text-xl text-gray-700 font-semibold'>
+													{el.OperShortName}
+												</strong>
+											</Link>
 										</div>
 									</div>
 								</BoxWrapper>

@@ -14,7 +14,7 @@ const ViewAsset = () => {
 
 	const getOperator = async () => {
 		const res = await axios.post(
-			'https://amsweets.in/operator/readoperatorshortname',
+			'https://lekpay.com/operator/readoperatorshortname',
 			{ operId }
 		);
 
@@ -26,7 +26,7 @@ const ViewAsset = () => {
 	};
 
 	const getSingleAssetData = async () => {
-		const res = await axios.get(`https://amsweets.in/admin/assets/${AstId}`);
+		const res = await axios.get(`https://lekpay.com/admin/assets/${AstId}`);
 
 		if (res.data.status === 201) {
 			setData(res.data.data);
@@ -173,7 +173,7 @@ const ViewAsset = () => {
 		<>
 			<div className='flex flex-row gap-4'>
 				<Sidebar />
-				<div className='container  my-8 h-full w-[700px] p-4 mx-auto pr-6 border'>
+				<div className='container  my-8 h-full w-[650px] p-4 mx-auto pr-6 border'>
 					<h1 className='text-center text-4xl text-pink-500  py-6'>
 						Asset Detail
 					</h1>
@@ -182,7 +182,7 @@ const ViewAsset = () => {
 								var qr1 = 'data:image/png;base64,' + el.QR;
 								return (
 									<>
-										<div className='justify-center ml-[50px]' key={el.OperId}>
+										<div className='justify-center mx-[50px]' key={el.OperId}>
 											<div className='flex'>
 												<table className='w-full'>
 													<tbody>
@@ -252,7 +252,7 @@ const ViewAsset = () => {
 														</tr>
 													</tbody>
 												</table>
-												<div className='flex flex-col justify-center top-0'>
+												<div className='flex flex-col justify-center ml-4'>
 													<img
 														src={qr1}
 														className='w-[150px] border'

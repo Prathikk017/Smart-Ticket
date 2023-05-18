@@ -12,7 +12,7 @@ const ViewTicketType = () => {
 	const { TTid } = useParams();
 	const getUserData = async () => {
 		const res = await axios.get(
-			`https://amsweets.in/admin/ticket-types/${TTid}`
+			`https://lekpay.com/admin/ticket-types/${TTid}`
 		);
 
 		if (res.data.status === 201) {
@@ -24,7 +24,7 @@ const ViewTicketType = () => {
 
 	const handleEnableSub = async () => {
 		const res = await axios.patch(
-			`https://amsweets.in/admin/ticket-types/enable/${TTid}`
+			`https://lekpay.com/admin/ticket-types/enable/${TTid}`
 		);
 		if (res.data.status === 201) {
 			alert('Ticket Type Activated');
@@ -37,7 +37,7 @@ const ViewTicketType = () => {
 
 	const handleDisableSub = async () => {
 		const res = await axios.patch(
-			`https://amsweets.in/admin/ticket-types/disable/${TTid}`
+			`https://lekpay.com/admin/ticket-types/disable/${TTid}`
 		);
 		if (res.data.status === 201) {
 			alert('Ticket Type Deactivated');
@@ -55,7 +55,7 @@ const ViewTicketType = () => {
 	//    const token = window.localStorage.getItem('Lekpay');
 	//    const Token = JSON.parse(token);
 	//    const authorization = `Bearer ${Token}`;
-	//    const res = await axios.post('https://amsweets.in/admin/verify',{
+	//    const res = await axios.post('https://lekpay.com/admin/verify',{
 	// 	 authorization
 	//    });
 	//    if(res.data.status === 201){

@@ -11,9 +11,7 @@ const ViewOperator = () => {
 	const history = useNavigate();
 
 	const getSingleOperatorData = async () => {
-		const res = await axios.get(
-			`https://amsweets.in/admin/operators/${OperId}`
-		);
+		const res = await axios.get(`https://lekpay.com/admin/operators/${OperId}`);
 
 		if (res.data.status === 201) {
 			setData(res.data.data);
@@ -29,7 +27,7 @@ const ViewOperator = () => {
 	//    const token = window.localStorage.getItem('Lekpay');
 	//    const Token = JSON.parse(token);
 	//    const authorization = `Bearer ${Token}`;
-	//    const res = await axios.post('https://amsweets.in/admin/verify',{
+	//    const res = await axios.post('https://lekpay.com/admin/verify',{
 	// 	 authorization
 	//    });
 	//    if(res.data.status === 201){

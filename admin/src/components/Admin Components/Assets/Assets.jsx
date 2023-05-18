@@ -13,7 +13,7 @@ const Assets = () => {
 	const history = useNavigate();
 
 	const getAssetsData = async () => {
-		const res = await axios.get('https://amsweets.in/admin/assets');
+		const res = await axios.get('https://lekpay.com/admin/assets');
 		if (res.data.status === 201) {
 			setData(res.data.data);
 		} else {

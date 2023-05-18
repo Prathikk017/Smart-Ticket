@@ -14,7 +14,7 @@ const EmployeeCard = () => {
 	const [data1, setData1] = useState('');
 
 	const getOperatorsData = async () => {
-		const res = await axios.get('https://amsweets.in/admin/operators');
+		const res = await axios.get('https://lekpay.com/admin/operators');
 		if (res.data.status === 201) {
 			setData(res.data.data);
 		} else {
@@ -24,7 +24,7 @@ const EmployeeCard = () => {
 
 	const handleClick = async (OperId) => {
 		history(`/admin/operator/employee/${OperId}`);
-		//    const res = await axios.post('https://amsweets.in/admin/operator/assets',{
+		//    const res = await axios.post('https://lekpay.com/admin/operator/assets',{
 		// 	OperId
 		//    })
 		//    if(res.data.status === 201){
@@ -39,7 +39,7 @@ const EmployeeCard = () => {
 	//    const token = window.localStorage.getItem('Lekpay');
 	//    const Token = JSON.parse(token);
 	//    const authorization = `Bearer ${Token}`;
-	//    const res = await axios.post('https://amsweets.in/admin/verify',{
+	//    const res = await axios.post('https://lekpay.com/admin/verify',{
 	// 	 authorization
 	//    });
 	//    if(res.data.status === 201){

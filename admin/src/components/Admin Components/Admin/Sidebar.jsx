@@ -45,7 +45,7 @@ const Sidebar = () => {
 	}, []);
 
 	return (
-		<div className='bg-neutral-100 flex flex-col py-3 px-1 w-64 h-screen'>
+		<div className='bg-neutral-100 flex flex-col py-3 px-1 w-50 h-screen'>
 			<div className='flex items-center justify-start hover:cursor-pointer'>
 				<img
 					className='w-[50px] ml-2 rounded-r-full rounded-l-full'
@@ -57,22 +57,22 @@ const Sidebar = () => {
 			<div className='flex-1'>
 				<ul className='p-2'>
 					<Link to='/admin/dashboard'>
-						<li className=' flex justify-start items-center p-2 m-2 rounded-lg text-center hover:bg-pink-300 hover:cursor-pointer'>
+						<li className=' flex justify-start items-center p-2 m-2 rounded-lg text-center hover:bg-pink-300 hover:cursor-pointer w-[200px]'>
 							<HiOutlineViewGrid />
 							<span className='ml-1'>Dashboard</span>
 						</li>
 					</Link>
 					<div>
 						<button
-							className='flex justify-start items-center p-2 ml-2 mr-0 mt-2 rounded-lg text-center hover:bg-pink-300 hover:cursor-pointer w-max'
+							className='flex justify-start items-center p-2 ml-2 mr-0 mt-2 rounded-lg text-center hover:bg-pink-300 hover:cursor-pointer w-[160px]'
 							onClick={handleOperatorDropdown}
 						>
-							<li className='flex justify-start items-center pr-12 text-center'>
+							<li className='flex justify-start items-center text-center'>
 								<MdApproval />
 								<span className='ml-2'>Operator</span>
 								<FontAwesomeIcon
 									icon={faChevronRight}
-									className={`transition-transform duration-300 ml-[54px] ${
+									className={`transition-transform duration-300 ml-[30px] mr-[10px] ${
 										showOperatorDropdown ? 'transform rotate-90' : ''
 									}`}
 								/>
@@ -117,7 +117,7 @@ const Sidebar = () => {
 					</div>
 					<div>
 						<button
-							className='flex justify-start items-center p-2 ml-2 mr-0 mt-2 rounded-lg text-center hover:bg-pink-300 hover:cursor-pointer w-max'
+							className='flex justify-start items-center p-2 ml-2 mr-0 mt-2 rounded-lg text-center hover:bg-pink-300 hover:cursor-pointer w-[160px]'
 							onClick={handleTeamDropdown}
 						>
 							<li className='flex justify-start items-center pr-12 text-center'>
@@ -125,7 +125,7 @@ const Sidebar = () => {
 								<span className='ml-2'>Team</span>
 								<FontAwesomeIcon
 									icon={faChevronRight}
-									className={`ml-auto transition-transform duration-300 ml-[81px] ${
+									className={`ml-auto transition-transform duration-300 ml-[30px] ${
 										showTeamDropdown ? 'transform rotate-90' : ''
 									}`}
 								/>
@@ -153,14 +153,14 @@ const Sidebar = () => {
 						)}
 					</div>
 					<Link to='/admin/usersview'>
-						<li className=' flex justify-start items-center p-2 m-2 rounded-lg text-center hover:bg-pink-300 hover:cursor-pointer'>
+						<li className=' flex justify-start items-center p-2 m-2 rounded-lg text-center hover:bg-pink-300 hover:cursor-pointer w-[160px]'>
 							<ImUser />
 							<span className='ml-1'>Users</span>
 						</li>
 					</Link>
 					<div>
 						<button
-							className='flex justify-start items-center p-2 ml-2 mr-0 mt-2 rounded-lg text-center hover:bg-pink-300 hover:cursor-pointer w-max'
+							className='flex justify-start items-center p-2 ml-2 mr-0 mt-2 rounded-lg text-center hover:bg-pink-300 hover:cursor-pointer'
 							onClick={handleTTDropdown}
 						>
 							<li className='flex justify-start items-center pr-12 text-center'>
@@ -168,7 +168,7 @@ const Sidebar = () => {
 								<span className='ml-2'>Ticket Type</span>
 								<FontAwesomeIcon
 									icon={faChevronRight}
-									className={`ml-auto transition-transform duration-300 ml-[81px] ${
+									className={`ml-auto transition-transform duration-300 ml-[20px] mr-[10px] ${
 										showTTDropdown ? 'transform rotate-90' : ''
 									}`}
 								/>

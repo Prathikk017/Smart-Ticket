@@ -11,7 +11,7 @@ const Operview = () => {
 	const [data, setData] = useState([]);
 	const { OperId } = useParams();
 	const getUserData = async () => {
-		const res = await axios.get(`https://amsweets.in/operator/${OperId}`);
+		const res = await axios.get(`https://lekpay.com/operator/${OperId}`);
 
 		if (res.data.status === 201) {
 			setData(res.data.data);
@@ -21,9 +21,7 @@ const Operview = () => {
 	};
 
 	const handleSub = async () => {
-		const res = await axios.patch(
-			`https://amsweets.in/admin/approve/${OperId}`
-		);
+		const res = await axios.patch(`https://lekpay.com/admin/approve/${OperId}`);
 		if (res.data.status === 201) {
 			alert('Operator Approved');
 			setTimeout(() => history('/admin/dashboard'), 500);
@@ -40,7 +38,7 @@ const Operview = () => {
 	//    const token = window.localStorage.getItem('Lekpay');
 	//    const Token = JSON.parse(token);
 	//    const authorization = `Bearer ${Token}`;
-	//    const res = await axios.post('https://amsweets.in/admin/verify',{
+	//    const res = await axios.post('https://lekpay.com/admin/verify',{
 	// 	 authorization
 	//    });
 	//    if(res.data.status === 201){
