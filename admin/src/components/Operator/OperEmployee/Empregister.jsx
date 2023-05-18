@@ -137,7 +137,7 @@ const Empregister = () => {
 
       try {
         // Check if the EmployeeIntId already exists in the database
-        const checkResult = await axios.get(`https://amsweets.in/employee/check/${EmpIntId}`);
+        const checkResult = await axios.get(`https://lekpay.com/employee/check/${EmpIntId}`);
 
         if (checkResult.data.status === 201 && checkResult.data.data !== 0) {
           notAddedCount++;
@@ -146,7 +146,7 @@ const Empregister = () => {
         }
 
         // Register the item
-        await axios.post('https://amsweets.in/employee/create', {
+        await axios.post('https://lekpay.com/employee/create', {
           EmpName,
           EmpIntId,
           EmpDOB,
@@ -173,7 +173,8 @@ const Empregister = () => {
     resetForm(); 
     setItems([]);
     if(addedCount === 0){
-      alert(`${notAddedCount} records were not added. Employee with EmployeeID ${skippedRecords} already existed Skipped Registration.`);
+      alert(`${notAddedCount} records were not added.`);
+      alert(`Employee with EmployeeID ${skippedRecords} already existed skipped registration.`);
     }else{
       alert(`${addedCount} records of employee data have been added.`);
     }
@@ -181,14 +182,14 @@ const Empregister = () => {
     setTimeout(() => window.location.reload(), 200);
     } else {
       try {
-        const checkResult = await axios.get(`https://amsweets.in/employee/check/${EmpIntId}`);
+        const checkResult = await axios.get(`https://lekpay.com/employee/check/${EmpIntId}`);
 
         if (checkResult.data.status === 201 && checkResult.data.data !== 0) {
           alert(`${EmpIntId} already existed.`);
           resetForm();
           return;
         }else{
-          const res = await axios.post('https://amsweets.in/employee/create', {
+          const res = await axios.post('https://lekpay.com/employee/create', {
             EmpName,
             EmpIntId,
             EmpDOB,
@@ -229,7 +230,7 @@ const Empregister = () => {
   //   const token = window.localStorage.getItem('Lekpay');
   //   const Token = JSON.parse(token);
   //   const authorization = `Bearer ${Token}`;
-  //   const res = await axios.post('https://amsweets.in/admin/verify',{
+  //   const res = await axios.post('https://lekpay.com/admin/verify',{
   //     authorization
   //   });
   //   if(res.data.status === 201){
