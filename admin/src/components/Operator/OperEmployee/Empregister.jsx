@@ -83,7 +83,12 @@ const Empregister = () => {
 
         const data = XLSX.utils.sheet_to_json(ws);
 
-        resolve(data);
+        if (data.length === 0) {
+          alert('Excel file is empty.');
+          reject('Empty file');
+        } else {
+          resolve(data);
+        }
       };
 
       fileReader.onerror = (error) => {
@@ -99,6 +104,7 @@ const Empregister = () => {
   const handleSub = async (e) => {
     e.preventDefault();
     let skippedRecords = [];
+    let notAddedRecords = [];
     if (
       !EmpName ||
       !EmpIntId ||
@@ -118,6 +124,7 @@ const Empregister = () => {
     if (items.length > 0) {
     let addedCount = 0;
     let notAddedCount = 0;
+    let notAddedCount1 = 0;
 
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
@@ -134,6 +141,25 @@ const Empregister = () => {
         City: EmpCity,
         Pincode: EmpPincode,
       } = item;
+
+       // Check if any field is empty
+       if (
+        !EmpName ||
+        !EmpIntId ||
+        !EmpDOB ||
+        !EmpType ||
+        !EmpMobile ||
+        !EmpAadhar ||
+        !EmpAddr1 ||
+        !EmpAddr2 ||
+        !EmpCity ||
+        !EmpPincode
+      ) {
+        notAddedCount1++;
+        notAddedRecords.push(EmpIntId);
+        continue;
+      }
+
 
       try {
         // Check if the EmployeeIntId already exists in the database
@@ -162,7 +188,7 @@ const Empregister = () => {
 
         addedCount++;
       } catch (error) {
-        console.log(`Error occurred while registering item with EmployeeId ${EmpIntId}`);
+        console.log(`Error occurred while registering item with EmployeeID ${EmpIntId}`);
         notAddedCount++;
       }
     }
@@ -173,10 +199,12 @@ const Empregister = () => {
     resetForm(); 
     setItems([]);
     if(addedCount === 0){
-      alert(`${notAddedCount} records were not added.`);
-      alert(`Employee with EmployeeID ${skippedRecords} already existed skipped registration.`);
+      alert(`${notAddedCount} and employee with EmployeeID ${skippedRecords} records already existed skipped registration .`);
     }else{
       alert(`${addedCount} records of employee data have been added.`);
+    }
+    if(notAddedCount1 > 0){
+      alert(`${notAddedCount1} records and employee with EmployeeID ${notAddedRecords} have empty fields skipped registartion.`);
     }
     // Reset the form values
     setTimeout(() => window.location.reload(), 200);
