@@ -276,7 +276,6 @@ exports.readEmpActive = (req,res) =>{
 
   exports.reademployeeIntId = (req, res) =>{
 	const { EmpIntId } = req.params;
-	console.log(EmpIntId)
 	let query = `SELECT EmpIntId FROM tblEmployee WHERE EmpIntId  = '${EmpIntId}'`
 	db.query(query,(err, result)=>{
 	  if (!err) {
