@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
-const { getOperator, createOperator, getAllOperators, getOperators, validateOperator, createAsset, createQrcodeAsset, readAsset, readAssetActive, deleteAsset, updateAsset, createStage,  validateStage, readRoute, readStage, readStageTbl, getStageById, deleteStage, updateStage, createRoute, createRoutemap, getAssetById, readTicket , createRouteTicType, readRouteTicType, getOperatorShortName, getRouteById, deleteRoute, updateRoute, readTransactionData, readRouteActive, readPassengersData, readTransactionDataByAsset, readRouteByAssetID, readTicketDuration, readAssetByRegNo} = require('../../controllers/Operator/operator');
+const { getOperator, createOperator, getAllOperators, getOperators, validateOperator, createAsset, createQrcodeAsset, readAsset, readAssetActive, deleteAsset, updateAsset, createStage,  validateStage, readRoute, readStage, readStageTbl, getStageById, deleteStage, updateStage, createRoute, createRoutemap, getAssetById, readTicket , createRouteTicType, readRouteTicType, getOperatorShortName, getRouteById, deleteRoute, updateRoute, readTransactionData, readRouteActive, readPassengersData, readTransactionDataByAsset, readRouteByAssetID, readTicketDuration, readAssetByRegNo, changePassword, verifyUser} = require('../../controllers/Operator/operator');
 
+router.route('/verifyuser').post(verifyUser);
+router.route('/changepassword').patch(changePassword);
 router.route('/readId').get(getOperator);
 router.route('/create').post(createOperator);
 router.route('/read').get(getAllOperators);

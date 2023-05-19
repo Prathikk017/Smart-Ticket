@@ -48,6 +48,7 @@ import IndividualTransAssetRouteData from './components/Operator/OperLayout/Indi
 import SingleOperator from './components/Admin Components/AdminLayout/individualTransStats/SingleOperator';
 import IndiviualTransAsset from './components/Admin Components/AdminLayout/individualTransStats/IndiviualTransAsset';
 import IndiviualTransRoute from './components/Admin Components/AdminLayout/individualTransStats/IndiviualTransRoute';
+import ForgotPassword from './components/ForgotPassword';
 
 function App() {
 	return (
@@ -55,6 +56,7 @@ function App() {
 			<Routes>
 				<Route path='/' element={<SignIn />} />
 				<Route path='/register' element={<Register />} />
+				<Route path='/forgotpassword' element={<ForgotPassword/>}/>
 				<Route path='/admin/dashboard' element={<Dashboard />} />
 				<Route path='/admin/addAdmin' element={<AdmiCreate />} />
 				<Route path='admin/approveopersview' element={<Opertable />} />
@@ -79,14 +81,10 @@ function App() {
 				<Route path='/operator/route/:RouteID' element={<Rutview />} />
 				<Route path='/rutupdate/:RouteID' element={<Rutedit />} />
 				<Route path='/routemap' element={<RouteStageMap />} />
-				<Route
-					path='/transactionasset'
-					element={<IndividualTransAssetData />}
-				/>
-				<Route
-					path='/transactionassetroute/:AstId'
-					element={<IndividualTransAssetRouteData />}
-				/>
+				<Route path='/transactionasset' element={<IndividualTransAssetData />}/>
+				<Route path='/transactionassetroute/:AstId' element={<IndividualTransAssetRouteData />}/>
+
+
 				<Route path='/admin/assetsview' element={<Assets />} />
 				<Route path='/admin/assetsview/:AstId' element={<ViewAsset />} />
 				<Route path='/admin/employeesview' element={<Employees />} />

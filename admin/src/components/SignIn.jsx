@@ -129,7 +129,7 @@ const SignIn = () => {
 								Remember Me
 							</p>
 							<p className='hover:text-pink-500 cursor-pointer'>
-								<a href='/'>Forgotten Password?</a>
+								<a href='/forgotpassword'>Forgotten Password?</a>
 							</p>
 						</div>
 						<button
