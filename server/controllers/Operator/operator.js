@@ -128,6 +128,24 @@ exports.getOperatorShortName = (req,res) =>{
     }
   })
 }
+
+//check asset registration number
+exports.readAssetByRegNo = (req, res) =>{
+	const { astRegNo } = req.params;
+	let query = `SELECT AstRegNo FROM tblAsset WHERE AstRegNo  = '${astRegNo}'`
+	db.query(query,(err, result)=>{
+	  if (!err) {
+		if(result.length > 0){
+		  return res.status(200).json({ status:201, data:result.length });
+		}else{
+			return res.status(200).json({status:201, data: result.length});
+		}
+	  } else {
+		return res.status(500).json(err);
+	  }
+	})
+  }
+
 //Create Asset
 exports.createAsset = (req, res) => {
   let tblAsset = req.body;
