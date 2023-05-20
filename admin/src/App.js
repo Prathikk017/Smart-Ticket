@@ -48,15 +48,23 @@ import IndividualTransAssetRouteData from './components/Operator/OperLayout/Indi
 import SingleOperator from './components/Admin Components/AdminLayout/individualTransStats/SingleOperator';
 import IndiviualTransAsset from './components/Admin Components/AdminLayout/individualTransStats/IndiviualTransAsset';
 import IndiviualTransRoute from './components/Admin Components/AdminLayout/individualTransStats/IndiviualTransRoute';
+import Home from './components/Home';
+import PrivacyPolicy from './components/PivacyPolicy';
+import RefundsAndCancels from './components/RefundsAndCancels';
+import TermsAndConditions from './components/TermsAndConditions';
 import ForgotPassword from './components/ForgotPassword';
 
 function App() {
 	return (
 		<BrowserRouter>
 			<Routes>
-				<Route path='/' element={<SignIn />} />
+				<Route path='/' element={<Home />} />
+				<Route path='/privacypolicy' element={<PrivacyPolicy />} />
+				<Route path='/refundandcancellations' element={<RefundsAndCancels />} />
+				<Route path='/termsandconditions' element={<TermsAndConditions />} />
+				<Route path='/signin' element={<SignIn />} />
 				<Route path='/register' element={<Register />} />
-				<Route path='/forgotpassword' element={<ForgotPassword/>}/>
+				<Route path='/forgotpassword' element={<ForgotPassword />} />
 				<Route path='/admin/dashboard' element={<Dashboard />} />
 				<Route path='/admin/addAdmin' element={<AdmiCreate />} />
 				<Route path='admin/approveopersview' element={<Opertable />} />
@@ -81,10 +89,14 @@ function App() {
 				<Route path='/operator/route/:RouteID' element={<Rutview />} />
 				<Route path='/rutupdate/:RouteID' element={<Rutedit />} />
 				<Route path='/routemap' element={<RouteStageMap />} />
-				<Route path='/transactionasset' element={<IndividualTransAssetData />}/>
-				<Route path='/transactionassetroute/:AstId' element={<IndividualTransAssetRouteData />}/>
-
-
+				<Route
+					path='/transactionasset'
+					element={<IndividualTransAssetData />}
+				/>
+				<Route
+					path='/transactionassetroute/:AstId'
+					element={<IndividualTransAssetRouteData />}
+				/>
 				<Route path='/admin/assetsview' element={<Assets />} />
 				<Route path='/admin/assetsview/:AstId' element={<ViewAsset />} />
 				<Route path='/admin/employeesview' element={<Employees />} />

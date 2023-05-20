@@ -6,6 +6,7 @@ import moment from 'moment';
 import Sidebar from '../Admin/Sidebar';
 import '../../pagination.css';
 import useIdleTimeout from '../../../useIdleTimeout';
+import Footer from '../../Footer';
 
 const Users = () => {
 	const [data, setData] = useState('');
@@ -206,6 +207,7 @@ const Users = () => {
 						</div>
 					</div>
 				</div>
+				<Footer />
 			</div>
 		</>
 	);

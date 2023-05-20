@@ -5,6 +5,7 @@ import { useFormik } from 'formik';
 import useIdleTimeout from '../../../useIdleTimeout';
 import Sidebar from './Sidebar';
 import { adminRegisterSchema } from '../../../schemas';
+import Footer from '../../Footer';
 
 const initialValues = {
 	Aname: '',
@@ -118,10 +119,10 @@ const AdmiCreate = () => {
 	return (
 		<div className='flex flex-row gap-4'>
 			<Sidebar />
-			<div className='grid grid-cols-1 sm:grid-cols-2 h-screen w-[90%] max-h-[100vh] overflow-y-auto mx-auto'>
-				<div className='py-2 flex flex-col justify-center items-center'>
+			<div className='grid grid-cols-1 sm:grid-cols-2 h-screen w-[90%] max-h-[100vh] overflow-y-auto mx-auto pb-24'>
+				<div className='flex flex-col justify-center'>
 					<form
-						className='max-w-[400px] w-full mx-auto text-sm flex-row'
+						className='max-w-[400px] w-full mx-auto text-md flex-row'
 						onSubmit={handleSubmit}
 					>
 						<h2 className='text-3xl text-pink-500 text-center py-2'>
@@ -212,6 +213,7 @@ const AdmiCreate = () => {
 					</form>
 				</div>
 			</div>
+			<Footer />
 		</div>
 	);
 };

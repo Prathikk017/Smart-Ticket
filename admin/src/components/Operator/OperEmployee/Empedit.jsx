@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import Opersidebar from '../Opersidebar';
 import useIdleTimeout from '../../../useIdleTimeout';
+import Footer from '../../Footer';
 
 const Empedit = () => {
 	const [EmpName, setEmpName] = useState('');
@@ -162,7 +163,7 @@ const Empedit = () => {
 		// Redirect to sign-in page if the user is idle
 		if (isIdle) {
 			window.localStorage.removeItem('Lekpay');
-			history('/');
+			history('/signin');
 		}
 	}, [isIdle, history]);
 
@@ -170,7 +171,7 @@ const Empedit = () => {
 		const token = window.localStorage.getItem('Lekpay');
 		const Token = JSON.parse(token);
 		if (!Token) {
-			history('/');
+			history('/signin');
 		} else {
 			getData();
 		}
@@ -184,40 +185,40 @@ const Empedit = () => {
 						<h2 className='text-3xl text-pink-500 text-center py-2'>
 							Update Employee
 						</h2>
-						<div className='flex flex-col py-1'>
-							<label>Employee Name</label>
+						<div className='flex flex-row py-2'>
+							<label className='justify-center items-center mr-4 mt-1'>Employee Name: </label>
 							<input
 								type='text'
 								name='EmpName'
 								value={EmpName}
-								className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+								className='border p-1 rounded w-[69%] hover:border-pink-500 duration-200'
 								onChange={setData1}
 							/>
 						</div>
-						<div className='flex flex-col py-1'>
-							<label>Employee Id</label>
+						<div className='flex flex-row py-2'>
+							<label className='justify-center items-center mr-10 mt-1'>Employee Id: </label>
 							<input
 								type='text'
 								name='EmpIntId'
 								value={EmpIntId}
-								className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+								className='border p-1 rounded w-[69%] hover:border-pink-500 duration-200'
 								onChange={setData2}
 							/>
 						</div>
-						<div className='flex flex-col py-1'>
-							<label>Date of birth</label>
+						<div className='flex flex-row py-2'>
+							<label className='justify-center items-center mr-9 mt-1'>Date of birth: </label>
 							<input
 								type='date'
 								name='EmpDOB'
 								onChange={setData3}
 								value={EmpDOB}
-								className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+								className='border p-1 rounded w-[69%] hover:border-pink-500 duration-200'
 							/>
 						</div>
-						<div className='flex flex-col py-1'>
-							<label>Employee Type</label>
+						<div className='flex flex-row py-2'>
+							<label className='justify-center items-center mr-6 mt-1'>Employee Type: </label>
 							<select
-								className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+								className='border p-1 rounded w-[69%] hover:border-pink-500 duration-200'
 								value={EmpType}
 								onChange={setData4}
 							>
@@ -227,71 +228,71 @@ const Empedit = () => {
 								<option value='Depo Manager'>Depo Manager</option>
 							</select>
 						</div>
-						<div className='flex flex-col py-1'>
-							<label>Phone no</label>
+						<div className='flex flex-row py-2'>
+							<label className='justify-center items-center mr-14 mt-1'>Phone no: </label>
 							<input
 								type='number'
 								name='EmpMobile'
 								value={EmpMobile}
-								className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+								className='border p-1 rounded w-[69%] hover:border-pink-500 duration-200'
 								onChange={setData5}
 							/>
 						</div>
-						<div className='flex flex-col py-1'>
-							<label>Aadhar Number</label>
+						<div className='flex flex-row py-2'>
+							<label className='justify-center items-center mr-4 mt-1'>Aadhar Number: </label>
 							<input
 								type='number'
 								name='EmpAadhar'
 								value={EmpAadhar}
-								className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+								className='border p-1 rounded w-[69%] hover:border-pink-500 duration-200'
 								onChange={setData6}
 							/>
 						</div>
 
-						<div className='flex flex-col py-1'>
-							<label>Address 1</label>
+						<div className='flex flex-row py-2'>
+							<label className='justify-center items-center mr-14 mt-1'>Address 1: </label>
 							<input
 								type='text'
 								name='EmpAddr1'
 								value={EmpAddr1}
-								className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+								className='border p-1 rounded w-[69%] hover:border-pink-500 duration-200'
 								onChange={setData7}
 							/>
 						</div>
-						<div className='flex flex-col py-1'>
-							<label>Address 2</label>
+						<div className='flex flex-row py-2'>
+							<label className='justify-center items-center mr-14 mt-1'>Address 2: </label>
 							<input
 								type='text'
 								name='EmpAddr2'
 								value={EmpAddr2}
-								className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+								className='border p-1 rounded w-[69%] hover:border-pink-500 duration-200'
 								onChange={setData8}
 							/>
 						</div>
-						<div className='flex flex-col py-1'>
-							<label>City</label>
+						<div className='flex flex-row py-2'>
+							<label className='justify-center items-center mr-20 mt-1'>City: </label>
 							<input
 								type='text'
 								name='EmpCity'
 								value={EmpCity}
-								className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+								className='border p-1 rounded w-[69%] ml-3 hover:border-pink-500 duration-200'
 								onChange={setData9}
 							/>
 						</div>
-						<div className='flex flex-col py-1'>
-							<label>Pincode</label>
+						<div className='flex flex-row py-2'>
+							<label className='justify-center items-center mr-16 mt-1'>Pincode: </label>
 							<input
 								type='number'
 								name='EmpPincode'
 								value={EmpPincode}
-								className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+								className='border p-1 rounded w-[69%] hover:border-pink-500 duration-200'
 								onChange={setData10}
 							/>
 						</div>
-						<div className='flex flex-col py-1'>
-							<label>Status</label>
+						<div className='flex flex-row py-2'>
+							<label className='justify-center items-center mr-16 mt-1'>Status: </label>
 							<select
-								className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+								className='border p-1 rounded w-[69%] ml-3 hover:border-pink-500 duration-200'
 								name='estatus'
 								value={estatus}
 								onChange={setData11}
@@ -309,6 +310,7 @@ const Empedit = () => {
 					</form>
 				</div>
 			</div>
+			<Footer />
 		</div>
 	);
 };

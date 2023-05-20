@@ -6,6 +6,7 @@ import moment from 'moment';
 import Opersidebar from '../Opersidebar';
 import '../../pagination.css';
 import useIdleTimeout from '../../../useIdleTimeout';
+import Footer from '../../Footer';
 
 const Stgtable = () => {
 	const [data, setData] = useState('');
@@ -89,7 +90,7 @@ const Stgtable = () => {
 		// Redirect to sign-in page if the user is idle
 		if (isIdle) {
 			window.localStorage.removeItem('Lekpay');
-			history('/');
+			history('/signin');
 		}
 	}, [isIdle, history]);
 
@@ -97,7 +98,7 @@ const Stgtable = () => {
 		const token = window.localStorage.getItem('Lekpay');
 		const Token = JSON.parse(token);
 		if (!Token) {
-			history('/');
+			history('/signin');
 		} else {
 			getStgData();
 		}
@@ -202,6 +203,7 @@ const Stgtable = () => {
 						</div>
 					</div>
 				</div>
+				<Footer />
 			</div>
 		</>
 	);

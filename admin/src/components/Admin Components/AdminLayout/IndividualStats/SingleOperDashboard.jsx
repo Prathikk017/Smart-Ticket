@@ -7,6 +7,7 @@ import Sidebar from '../../Admin/Sidebar';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../AdminLayout/Header';
 import StatsGrid from '../../AdminLayout/IndividualStats/SingleOperCard/IndividualOperatorCard';
+import Footer from '../../../Footer';
 
 const SingleOperDashboard = () => {
 	const history = useNavigate();
@@ -69,6 +70,7 @@ const SingleOperDashboard = () => {
 					{/* <TransactionChart /> */}
 				</div>
 			</div>
+			<Footer />
 		</div>
 	);
 };

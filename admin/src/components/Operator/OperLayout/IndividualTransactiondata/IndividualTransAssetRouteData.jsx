@@ -6,6 +6,7 @@ import OperHeader from '../OperHeader';
 import Opersidebar from '../../Opersidebar';
 import { TbRoute } from 'react-icons/tb';
 import useIdleTimeout from '../../../../useIdleTimeout';
+import Footer from '../../../Footer';
 
 const IndividualTransAssetRouteData = () => {
 	const { AstId } = useParams();
@@ -62,7 +63,7 @@ const IndividualTransAssetRouteData = () => {
 		// Redirect to sign-in page if the user is idle
 		if (isIdle) {
 			window.localStorage.removeItem('Lekpay');
-			history('/');
+			history('/signin');
 		}
 	}, [isIdle, history]);
 
@@ -70,7 +71,7 @@ const IndividualTransAssetRouteData = () => {
 		const token = window.localStorage.getItem('Lekpay');
 		const Token = JSON.parse(token);
 		if (!Token) {
-			history('/');
+			history('/signin');
 		} else {
 			getRouteByAssetID();
 		}
@@ -124,6 +125,7 @@ const IndividualTransAssetRouteData = () => {
 					</div>
 				</div>
 			</div>
+			<Footer />
 		</div>
 	);
 };

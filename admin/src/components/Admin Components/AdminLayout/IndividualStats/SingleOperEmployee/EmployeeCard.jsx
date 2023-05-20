@@ -82,6 +82,7 @@ const EmployeeCard = () => {
 			getOperatorsData();
 		}
 	}, []);
+
 	return (
 		<div className='grid md:grid-cols-3 gap-4 w-[98%] lg:grid-cols-4 gap-4 w-[98%] mt-4 ml-0 '>
 			{data.length > 0

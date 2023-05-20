@@ -6,6 +6,7 @@ import axios from 'axios';
 import Header from '../../Header';
 import Sidebar from '../../../Admin/Sidebar';
 import useIdleTimeout from '../../../../../useIdleTimeout';
+import Footer from '../../../../Footer';
 const IndiviualOperAsset = () => {
 	const { OperId } = useParams();
 
@@ -96,6 +97,7 @@ const IndiviualOperAsset = () => {
 					</div>
 				</div>
 			</div>
+			<Footer />
 		</div>
 	);
 };

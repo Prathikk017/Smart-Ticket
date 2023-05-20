@@ -6,6 +6,7 @@ import login from '../../assets/login.jpg';
 import { useFormik } from 'formik';
 import axios from 'axios';
 import { operRegisterSchema } from '../../schemas';
+import Footer from '../Footer';
 
 const initialValues = {
 	OperName: '',
@@ -117,7 +118,7 @@ const Register = () => {
 
 				if (res1.data.status === 201) {
 					alert('User Successfully Created');
-					setTimeout(() => history('/'), 500);
+					setTimeout(() => history('/signin'), 500);
 				} else {
 					alert('User unable to Register');
 					return;
@@ -316,7 +317,7 @@ const Register = () => {
 						</div>
 						<div className='py-2 mx-auto'>
 							<ReCAPTCHA
-								sitekey='6Lfk3RsmAAAAABDeJtGUOUruyAp0o76ZI3IP8CrV'
+								sitekey='6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
 								onChange={onChanges}
 							/>
 						</div>
@@ -334,6 +335,7 @@ const Register = () => {
 					<img src={login} alt='logo' className='w-[500px] h-[600px]' />
 				</div>
 			</div>
+			<Footer />
 		</div>
 	);
 };

@@ -5,6 +5,7 @@ import { useFormik } from 'formik';
 
 import Sidebar from '../Admin/Sidebar';
 import { adminRegisterSchema } from '../../../schemas/index';
+import Footer from '../../Footer';
 
 const initialValues = {
 	TTname: '',
@@ -170,6 +171,7 @@ const TicketType = () => {
 					</form>
 				</div>
 			</div>
+			<Footer />
 		</div>
 	);
 };

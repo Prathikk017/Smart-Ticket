@@ -6,6 +6,7 @@ import moment from 'moment';
 import Sidebar from '../Admin/Sidebar';
 import '../../pagination.css';
 import useIdleTimeout from '../../../useIdleTimeout';
+import Footer from '../../Footer';
 
 const Operators = () => {
 	const [data, setData] = useState('');
@@ -208,6 +209,7 @@ const Operators = () => {
 						</div>
 					</div>
 				</div>
+				<Footer />
 			</div>
 		</>
 	);

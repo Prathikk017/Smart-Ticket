@@ -6,6 +6,8 @@ import moment from 'moment';
 import Sidebar from './Sidebar';
 import '../../pagination.css';
 import useIdleTimeout from '../../../useIdleTimeout';
+import Footer from '../../Footer';
+
 const Admins = () => {
 	const [data, setData] = useState('');
 	const [currentPage, setCurrentPage] = useState(1);
@@ -207,6 +209,7 @@ const Admins = () => {
 						</div>
 					</div>
 				</div>
+				<Footer />
 			</div>
 		</>
 	);

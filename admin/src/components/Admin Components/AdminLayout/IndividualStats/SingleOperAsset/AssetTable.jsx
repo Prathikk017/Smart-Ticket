@@ -6,6 +6,7 @@ import moment from 'moment';
 import Sidebar from '../../../Admin/Sidebar';
 import '../../../../../components/pagination.css';
 import useIdleTimeout from '../../../../../useIdleTimeout';
+import Footer from '../../../../Footer';
 
 const AssetTable = () => {
 	const [data, setData] = useState('');
@@ -215,6 +216,7 @@ const AssetTable = () => {
 						</div>
 					</div>
 				</div>
+				<Footer />
 			</div>
 		</>
 	);

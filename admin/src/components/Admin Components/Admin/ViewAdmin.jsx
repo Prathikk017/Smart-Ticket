@@ -4,6 +4,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import moment from 'moment';
 import Sidebar from './Sidebar';
 import useIdleTimeout from '../../../useIdleTimeout';
+import Footer from '../../Footer';
+
 const ViewAdmin = () => {
 	const [data, setData] = useState([]);
 	const { AdminId } = useParams();
@@ -145,6 +147,7 @@ const ViewAdmin = () => {
 						  })
 						: ' '}
 				</div>
+				<Footer />
 			</div>
 		</>
 	);

@@ -6,6 +6,7 @@ import { MdOutlineDirectionsBusFilled } from 'react-icons/md';
 import Header from '../Header';
 import Sidebar from '../../Admin/Sidebar';
 import axios from 'axios';
+import Footer from '../../../Footer';
 
 const IndiviualTransAsset = () => {
 	const { OperId } = useParams();
@@ -133,6 +134,7 @@ const IndiviualTransAsset = () => {
 					</div>
 				</div>
 			</div>
+			<Footer />
 		</div>
 	);
 };

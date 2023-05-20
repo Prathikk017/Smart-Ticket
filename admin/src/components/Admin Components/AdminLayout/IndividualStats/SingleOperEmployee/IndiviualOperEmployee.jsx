@@ -6,6 +6,7 @@ import axios from 'axios';
 import Header from '../../Header';
 import Sidebar from '../../../Admin/Sidebar';
 import useIdleTimeout from '../../../../../useIdleTimeout';
+import Footer from '../../../../Footer';
 const IndiviualOperEmployee = () => {
 	const { OperId } = useParams();
 
@@ -100,6 +101,7 @@ const IndiviualOperEmployee = () => {
 					</div>
 				</div>
 			</div>
+			<Footer />
 		</div>
 	);
 };

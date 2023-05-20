@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 // import Opertable from './Opertable';
 import axios from 'axios';
 import useIdleTimeout from '../../../useIdleTimeout';
-// import Dheader from './Dheader';
+import Footer from '../../Footer';
 import Sidebar from './Sidebar';
 import { useNavigate } from 'react-router-dom';
 import Header from '../AdminLayout/Header';
@@ -70,6 +70,7 @@ const Dashboard = () => {
 					{/* <TransactionChart /> */}
 				</div>
 			</div>
+			<Footer />
 		</div>
 	);
 };

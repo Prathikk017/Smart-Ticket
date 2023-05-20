@@ -187,7 +187,7 @@ const OperStatsGrid = () => {
 		const token = window.localStorage.getItem('Lekpay');
 		const Token = JSON.parse(token);
 		if (!Token) {
-			history('/');
+			history('/signin');
 		} else {
 			getAstData();
 			getEmpData();

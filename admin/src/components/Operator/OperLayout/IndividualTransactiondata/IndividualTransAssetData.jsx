@@ -6,6 +6,7 @@ import useIdleTimeout from '../../../../useIdleTimeout';
 import { useNavigate } from 'react-router-dom';
 import Opersidebar from '../../Opersidebar';
 import OperHeader from '../OperHeader';
+import Footer from '../../../Footer';
 
 const IndividualTransAssetData = () => {
 	const [data, setData] = useState([]);
@@ -69,7 +70,7 @@ const IndividualTransAssetData = () => {
 		// Redirect to sign-in page if the user is idle
 		if (isIdle) {
 			window.localStorage.removeItem('Lekpay');
-			history('/');
+			history('/signin');
 		}
 	}, [isIdle, history]);
 
@@ -77,7 +78,7 @@ const IndividualTransAssetData = () => {
 		const token = window.localStorage.getItem('Lekpay');
 		const Token = JSON.parse(token);
 		if (!Token) {
-			history('/');
+			history('/signin');
 		} else {
 			getTransactionAssetData();
 		}
@@ -134,6 +135,7 @@ const IndividualTransAssetData = () => {
 					</div>
 				</div>
 			</div>
+			<Footer />
 		</div>
 	);
 };

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { HiOutlineViewGrid } from 'react-icons/hi';
+import { HiOutlineLogout, HiOutlineViewGrid } from 'react-icons/hi';
 import { Link } from 'react-router-dom';
 import logo from '../../../assets/logo.jpg';
-import { AiFillSetting } from 'react-icons/ai';
+
 import { MdApproval } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,7 +11,7 @@ import { GrBus, GrGroup } from 'react-icons/gr';
 import { BsFillPersonPlusFill, BsPersonBadge } from 'react-icons/bs';
 import { GiPoliceOfficerHead } from 'react-icons/gi';
 import { BiShowAlt } from 'react-icons/bi';
-import { FaUser } from 'react-icons/fa';
+
 import { ImUser } from 'react-icons/im';
 import { IoTicketOutline } from 'react-icons/io5';
 
@@ -197,18 +197,14 @@ const Sidebar = () => {
 					</div>
 				</ul>
 			</div>
-			<div className='opacity-70'>
+			<div className='fixed bottom-16'>
 				<hr />
 				<ul className='p-1'>
-					<li className='flex justify-start items-center p-2 m-2 rounded-lg text-center hover:bg-pink-300 hover:cursor-pointer'>
-						<AiFillSetting />
-						<span className='ml-1'>Settings</span>
-					</li>
 					<li
 						className='flex justify-start items-center p-2 m-2 rounded-lg text-center hover:bg-pink-300 hover:cursor-pointer'
 						onClick={handlesub}
 					>
-						<FaUser />
+						<HiOutlineLogout />
 						<span className='ml-1'>Logout</span>
 					</li>
 				</ul>

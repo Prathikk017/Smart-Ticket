@@ -7,6 +7,7 @@ import Opersidebar from '../Opersidebar';
 import { empRegisterSchema } from '../../../schemas/index';
 import useIdleTimeout from '../../../useIdleTimeout';
 import * as XLSX from 'xlsx';
+import Footer from '../../Footer';
 
 const initialValues = {
   EmpName: '',
@@ -16,7 +17,7 @@ const initialValues = {
   EmpAddr1: '',
   EmpAddr2: '',
   EmpCity: '',
-  EmpPincode: ''
+  EmpPincode: '',
 };
 
 const Empregister = () => {
@@ -131,101 +132,110 @@ const Empregister = () => {
     }
 
     if (items.length > 0) {
-    let addedCount = 0;
-    let notAddedCount = 0;
-    let notAddedCount1 = 0;
+      let addedCount = 0;
+      let notAddedCount = 0;
+      let notAddedCount1 = 0;
 
-    for (let i = 0; i < items.length; i++) {
-      const item = items[i];
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i];
 
-      const {
-        'Employee Name': EmpName,
-        'Employee Id': EmpIntId,
-        'Date of birth': EmpDOB,
-        'Employee Type': EmpType,
-        'Phone no': EmpMobile,
-        'Aadhar Number': EmpAadhar,
-        'Address 1': EmpAddr1,
-        'Address 2': EmpAddr2,
-        City: EmpCity,
-        Pincode: EmpPincode,
-      } = item;
+        const {
+          'Employee Name': EmpName,
+          'Employee Id': EmpIntId,
+          'Date of birth': EmpDOB,
+          'Employee Type': EmpType,
+          'Phone no': EmpMobile,
+          'Aadhar Number': EmpAadhar,
+          'Address 1': EmpAddr1,
+          'Address 2': EmpAddr2,
+          City: EmpCity,
+          Pincode: EmpPincode,
+        } = item;
 
-       // Check if any field is empty
-       if (
-        !EmpName ||
-        !EmpIntId ||
-        !EmpDOB ||
-        !EmpType ||
-        !EmpMobile ||
-        !EmpAadhar ||
-        !EmpAddr1 ||
-        !EmpAddr2 ||
-        !EmpCity ||
-        !EmpPincode
-      ) {
-        notAddedCount1++;
-        notAddedRecords.push(EmpIntId);
-        continue;
-      }
-
-
-      try {
-        // Check if the EmployeeIntId already exists in the database
-        const checkResult = await axios.get(`https://lekpay.com/employee/check/${EmpIntId}`);
-
-        if (checkResult.data.status === 201 && checkResult.data.data !== 0) {
-          notAddedCount++;
-          skippedRecords.push(` ${EmpIntId}`);
+        // Check if any field is empty
+        if (
+          !EmpName ||
+          !EmpIntId ||
+          !EmpDOB ||
+          !EmpType ||
+          !EmpMobile ||
+          !EmpAadhar ||
+          !EmpAddr1 ||
+          !EmpAddr2 ||
+          !EmpCity ||
+          !EmpPincode
+        ) {
+          notAddedCount1++;
+          notAddedRecords.push(EmpIntId);
           continue;
         }
 
-        // Register the item
-        await axios.post('https://lekpay.com/employee/create', {
-          EmpName,
-          EmpIntId,
-          EmpDOB,
-          EmpType,
-          EmpMobile,
-          EmpAadhar,
-          EmpAddr1,
-          EmpAddr2,
-          EmpCity,
-          EmpPincode,
-          operId,
-        });
+        try {
+          // Check if the EmployeeIntId already exists in the database
+          const checkResult = await axios.get(
+            `https://lekpay.com/employee/check/${EmpIntId}`
+          );
 
-        addedCount++;
-      } catch (error) {
-        console.log(`Error occurred while registering item with EmployeeID ${EmpIntId}`);
-        notAddedCount++;
+          if (checkResult.data.status === 201 && checkResult.data.data !== 0) {
+            notAddedCount++;
+            skippedRecords.push(` ${EmpIntId}`);
+            continue;
+          }
+
+          // Register the item
+          await axios.post('https://lekpay.com/employee/create', {
+            EmpName,
+            EmpIntId,
+            EmpDOB,
+            EmpType,
+            EmpMobile,
+            EmpAadhar,
+            EmpAddr1,
+            EmpAddr2,
+            EmpCity,
+            EmpPincode,
+            operId,
+          });
+
+          addedCount++;
+        } catch (error) {
+          console.log(
+            `Error occurred while registering item with EmployeeID ${EmpIntId}`
+          );
+          notAddedCount++;
+        }
       }
-    }
 
-    setRecordsAdded(addedCount);
-    setRecordsNotAdded(notAddedCount);
-    setSkippedRecords(skippedRecords);
-    resetForm(); 
-    setItems([]);
-    if(addedCount === 0){
-      alert(`${notAddedCount} and employee with EmployeeID ${skippedRecords} records already existed skipped registration .`);
-    }else{
-      alert(`${addedCount} records of employee data have been added.`);
-    }
-    if(notAddedCount1 > 0){
-      alert(`${notAddedCount1} records and employee with EmployeeID ${notAddedRecords} have empty fields skipped registartion.`);
-    }
-    // Reset the form values
-    setTimeout(() => window.location.reload(), 200);
+      setRecordsAdded(addedCount);
+      setRecordsNotAdded(notAddedCount);
+      setSkippedRecords(skippedRecords);
+      resetForm();
+      setItems([]);
+      if (addedCount === 0) {
+        alert(
+          `${notAddedCount} and employee with EmployeeID ${skippedRecords} records already existed skipped registration .`
+        );
+      } else {
+        alert(`${addedCount} records of employee data have been added.`);
+      }
+      if (notAddedCount1 > 0) {
+        alert(
+          `${notAddedCount1} records and employee with EmployeeID ${notAddedRecords} have empty fields skipped registartion.`
+        );
+      }
+      // Reset the form values
+      setTimeout(() => window.location.reload(), 200);
     } else {
       try {
-        const checkResult = await axios.get(`https://lekpay.com/employee/check/${EmpIntId}`);
+        const checkResult = await axios.get(
+          `https://lekpay.com/employee/check/${EmpIntId}`
+        );
 
         if (checkResult.data.status === 201 && checkResult.data.data !== 0) {
           alert(`${EmpIntId} already existed.`);
           resetForm();
           return;
-        }else{
+        } else {
           const res = await axios.post('https://lekpay.com/employee/create', {
             EmpName,
             EmpIntId,
@@ -239,7 +249,7 @@ const Empregister = () => {
             EmpPincode,
             operId,
           });
-  
+
           if (res.data.status === 201) {
             alert('Employee successfully created');
             resetForm();
@@ -250,14 +260,12 @@ const Empregister = () => {
             resetForm();
             return;
           }
-        } 
-        }catch (error) {
-          console.log(error);
-          alert('Error occurred while registering employee');
         }
+      } catch (error) {
+        console.log(error);
+        alert('Error occurred while registering employee');
       }
-
-       
+    }
   };
 
   // Call useIdleTimeout and pass in the time to consider the user as idle
@@ -297,7 +305,7 @@ const Empregister = () => {
     // Redirect to sign-in page if the user is idle
     if (isIdle) {
       window.localStorage.removeItem('Lekpay');
-      history('/');
+      history('/signin');
     }
   }, [isIdle, history]);
 
@@ -335,7 +343,7 @@ const Empregister = () => {
     const token = window.localStorage.getItem('Lekpay');
     const Token = JSON.parse(token);
     if (!Token) {
-      history('/');
+      history('/signin');
     }
   }, []);
 
@@ -348,50 +356,58 @@ const Empregister = () => {
             className='max-w-[400px] w-full mx-auto text-sm flex-row'
             onSubmit={handleSubmit}
           >
-            <h2 className='text-3xl text-pink-500 text-center py-2'>
+            <h2 className='text-3xl text-pink-500 text-center pb-6'>
               Employee Register
             </h2>
-            <div className='flex flex-col py-1'>
-              <label>Employee Name</label>
+            <div className='flex flex-row py-2'>
+              <label className='justify-center items-center mr-4 mt-1'>
+                Employee Name:{' '}
+              </label>
               <input
                 type='text'
                 name='EmpName'
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.EmpName}
-                className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+                className='border p-1 rounded w-[69%] hover:border-pink-500 duration-200'
               />
               {errors.EmpName && touched.EmpName ? (
                 <p className='text-red-500 text-xs '>{errors.EmpName}</p>
               ) : null}
             </div>
-            <div className='flex flex-col py-1'>
-              <label>Employee Id</label>
+            <div className='flex flex-row py-2'>
+              <label className='justify-center items-center mr-10 mt-1'>
+                Employee Id:{' '}
+              </label>
               <input
                 type='text'
                 name='EmpIntId'
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.EmpIntId}
-                className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+                className='border p-1 rounded w-[69%] hover:border-pink-500 duration-200'
               />
               {errors.EmpIntId && touched.EmpIntId ? (
                 <p className='text-red-500 text-xs '>{errors.EmpIntId}</p>
               ) : null}
             </div>
-            <div className='flex flex-col py-1'>
-              <label>Date of birth</label>
+            <div className='flex flex-row py-2'>
+              <label className='justify-center items-center mr-9 mt-1'>
+                Date of birth:{' '}
+              </label>
               <input
                 type='date'
                 onChange={setData}
                 value={EmpDOB}
-                className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+                className='border p-1 rounded w-[69%] hover:border-pink-500 duration-200'
               />
             </div>
-            <div className='flex flex-col py-1'>
-              <label>Employee Type</label>
+            <div className='flex flex-row py-2'>
+              <label className='justify-center items-center mr-6 mt-1'>
+                Employee Type:{' '}
+              </label>
               <select
-                className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+                className='border p-1 rounded w-[69%] hover:border-pink-500 duration-200'
                 value={EmpType}
                 onChange={setData1}
               >
@@ -401,92 +417,104 @@ const Empregister = () => {
                 <option value='Depo Manager'>Depo Manager</option>
               </select>
             </div>
-            <div className='flex flex-col py-1'>
-              <label>Phone no</label>
+            <div className='flex flex-row py-2'>
+              <label className='justify-center items-center mr-14 mt-1'>
+                Phone no:{' '}
+              </label>
               <input
                 type='number'
                 name='EmpPhone'
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.EmpPhone}
-                className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+                className='border p-1 rounded w-[69%] hover:border-pink-500 duration-200'
               />
               {errors.EmpPhone && touched.EmpPhone ? (
                 <p className='text-red-500 text-xs '>{errors.EmpPhone}</p>
               ) : null}
             </div>
-            <div className='flex flex-col py-1'>
-              <label>Aadhar Number</label>
+            <div className='flex flex-row py-2'>
+              <label className='justify-center items-center mr-4 mt-1'>
+                Aadhar Number:{' '}
+              </label>
               <input
                 type='number'
                 name='EmpAadhar'
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.EmpAadhar}
-                className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+                className='border p-1 rounded w-[69%] hover:border-pink-500 duration-200'
               />
               {errors.EmpAadhar && touched.EmpAadhar ? (
                 <p className='text-red-500 text-xs '>{errors.EmpAadhar}</p>
               ) : null}
             </div>
-            <div className='flex flex-col py-1'>
-              <label>Address 1</label>
+            <div className='flex flex-row py-2'>
+              <label className='justify-center items-center mr-14 mt-1'>
+                Address 1:{' '}
+              </label>
               <input
                 type='text'
                 name='EmpAddr1'
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.EmpAddr1}
-                className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+                className='border p-1 rounded w-[69%] hover:border-pink-500 duration-200'
               />
               {errors.EmpAddr1 && touched.EmpAddr1 ? (
                 <p className='text-red-500 text-xs '>{errors.EmpAddr1}</p>
               ) : null}
             </div>
-            <div className='flex flex-col py-1'>
-              <label>Address 2</label>
+            <div className='flex flex-row py-2'>
+              <label className='justify-center items-center mr-14 mt-1'>
+                Address 2:{' '}
+              </label>
               <input
                 type='text'
                 name='EmpAddr2'
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.EmpAddr2}
-                className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+                className='border p-1 rounded w-[69%] hover:border-pink-500 duration-200'
               />
               {errors.EmpAddr2 && touched.EmpAddr2 ? (
                 <p className='text-red-500 text-xs '>{errors.EmpAddr2}</p>
               ) : null}
             </div>
-            <div className='flex flex-col py-1'>
-              <label>City</label>
+            <div className='flex flex-row py-2'>
+              <label className='justify-center items-center mr-20 mt-1'>
+                City:{' '}
+              </label>
               <input
                 type='text'
                 name='EmpCity'
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.EmpCity}
-                className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+                className='border p-1 rounded w-[69%] ml-3 hover:border-pink-500 duration-200'
               />
               {errors.EmpCity && touched.EmpCity ? (
                 <p className='text-red-500 text-xs '>{errors.EmpCity}</p>
               ) : null}
             </div>
-            <div className='flex flex-col py-1'>
-              <label>Pincode</label>
+            <div className='flex flex-row py-2'>
+              <label className='justify-center items-center mr-16 mt-1'>
+                Pincode:{' '}
+              </label>
               <input
                 type='number'
                 name='EmpPincode'
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.EmpPincode}
-                className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+                className='border p-1 rounded w-[69%] hover:border-pink-500 duration-200'
               />
               {errors.EmpPincode && touched.EmpPincode ? (
                 <p className='text-red-500 text-xs '>{errors.EmpPincode}</p>
               ) : null}
             </div>
             <button
-              className='border  w-full my-2 py-2 text-white bg-pink-500 rounded text-lg hover:bg-pink-400 duration-200'
+              className='border  w-full my-2 py-2  mb-16 text-white bg-pink-500 rounded text-lg hover:bg-pink-400 duration-200'
               onClick={handleSub}
             >
               Register
@@ -494,21 +522,23 @@ const Empregister = () => {
           </form>
         </div>
         <div className='m-auto grid grid-flow-row gap-4'>
-          <button className='bg-gray-200 hover:bg-pink-300  px-2 py-2 rounded-lg w-max m-auto' onClick={handleDownload}>
-          Download Template
-        </button>
-        <input
-          
-          type='file'
-          accept=".xlsx, .xls"
-          onChange={(e) => {
-            const file = e.target.files[0];
-            readExcel(file);
-          }}
-        />
+          <button
+            className='bg-gray-200 hover:bg-pink-300  px-2 py-2 rounded-md w-max'
+            onClick={handleDownload}
+          >
+            Download Template
+          </button>
+          <input
+            type='file'
+            accept='.xlsx, .xls'
+            onChange={(e) => {
+              const file = e.target.files[0];
+              readExcel(file);
+            }}
+          />
         </div>
-              
       </div>
+      <Footer />
     </div>
   );
 };

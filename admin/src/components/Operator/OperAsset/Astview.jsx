@@ -5,6 +5,7 @@ import { Link, useParams } from 'react-router-dom';
 import moment from 'moment';
 import Opersidebar from '../Opersidebar';
 import useIdleTimeout from '../../../useIdleTimeout';
+import Footer from '../../Footer';
 
 const Astview = () => {
 	const history = useNavigate();
@@ -168,7 +169,7 @@ const Astview = () => {
 		// Redirect to sign-in page if the user is idle
 		if (isIdle) {
 			window.localStorage.removeItem('Lekpay');
-			history('/');
+			history('/signin');
 		}
 	}, [isIdle, history]);
 
@@ -180,7 +181,7 @@ const Astview = () => {
 		const token = window.localStorage.getItem('Lekpay');
 		const Token = JSON.parse(token);
 		if (!Token) {
-			history('/');
+			history('/signin');
 		} else {
 			getAssetData();
 		}
@@ -310,6 +311,7 @@ const Astview = () => {
 						  })
 						: ' '}
 				</div>
+				<Footer />
 			</div>
 		</>
 	);
