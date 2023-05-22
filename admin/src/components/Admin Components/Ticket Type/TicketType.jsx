@@ -1,66 +1,116 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useFormik } from 'formik';
 
 import Sidebar from '../Admin/Sidebar';
 import { adminRegisterSchema } from '../../../schemas/index';
+import Footer from '../../Footer';
+import useIdleTimeout from '../../../useIdleTimeout';
 
 const initialValues = {
-	TTname: '',
-	TTshortname: '',
+  TTname: '',
+  TTshortname: '',
 };
 
 const TicketType = () => {
-	const history = useNavigate();
-	const [ttDuration, setTtDuration] = useState([]);
+  const history = useNavigate();
+  const [ttDuration, setTtDuration] = useState([]);
 
-	const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
-		useFormik({
-			initialValues: initialValues,
-			validationSchema: adminRegisterSchema,
-			onSubmit: (values, action) => {
-				console.log(values);
-				action.resetForm();
-			},
-		});
+  const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
+    useFormik({
+      initialValues: initialValues,
+      validationSchema: adminRegisterSchema,
+      onSubmit: (values, action) => {
+        console.log(values);
+        action.resetForm();
+      },
+    });
 
-	const TTname = values.TTname;
-	const TTshortname = values.TTshortname;
+  const TTname = values.TTname;
+  const TTshortname = values.TTshortname;
 
-	const handleSub = async (e) => {
-		e.preventDefault();
+  const handleSub = async (e) => {
+    e.preventDefault();
 
-		if (!TTname || !TTshortname || !ttDuration) {
-			alert('Fill the details');
-			return;
-		} else {
-			const res = await axios.post('https://lekpay.com/admin/tickettype', {
-				TTname,
-				TTshortname,
-				ttDuration,
-			});
-			if (res.data.status === 201) {
-				alert('Ticket Type added successfully');
-				setTimeout(() => history('/admin/dashboard'), 500);
-				return;
-			} else {
-				alert('Please Try Again');
-				return;
-			}
-		}
-	};
+    if (!TTname || !TTshortname || !ttDuration) {
+      alert('Fill the details');
+      return;
+    } else {
+      const res = await axios.post('https://lekpay.com/admin/tickettype', {
+        TTname,
+        TTshortname,
+        ttDuration,
+      });
+      if (res.data.status === 201) {
+        alert('Ticket Type added successfully');
+        setTimeout(() => history('/admin/dashboard'), 500);
+        return;
+      } else {
+        alert('Please Try Again');
+        return;
+      }
+    }
+  };
 
-	const handleCheckboxChange = (e) => {
-		const ticketValue = e.target.value;
-		const isChecked = e.target.checked;
-		if (isChecked) {
-			setTtDuration([...ttDuration, ticketValue]);
-			// console.log(ticketValue);
-		} else {
-			setTtDuration(ttDuration.filter((t) => t !== ticketValue));
-		}
-	};
+  const handleCheckboxChange = (e) => {
+    const ticketValue = e.target.value;
+    const isChecked = e.target.checked;
+    if (isChecked) {
+      setTtDuration([...ttDuration, ticketValue]);
+      // console.log(ticketValue);
+    } else {
+      setTtDuration(ttDuration.filter((t) => t !== ticketValue));
+    }
+  };
+  // Call useIdleTimeout and pass in the time to consider the user as idle
+  const isIdle = useIdleTimeout(600000); // set to 10 minute
+
+  //  const verify = async() => {
+  //    const token = window.localStorage.getItem('Lekpay');
+  //    const Token = JSON.parse(token);
+  //    const authorization = `Bearer ${Token}`;
+  //    const res = await axios.post('https://lekpay.com/admin/verify',{
+  // 	 authorization
+  //    });
+  //    if(res.data.status === 201){
+  // 	 console.log(res.data.data);
+  //    }else{
+  // 	 if(res.data.data === 'Token is not valid'){
+  // 	   window.localStorage.removeItem('Lekpay');
+  // 	   history('/');
+  // 	 }
+  //    }
+  //  }
+
+  //  useEffect(() => {
+  //    verify();
+  //    // Run verify() every 10 minute if the user is not idle
+  //    const intervalId = setInterval(() => {
+  // 	 if (!isIdle) {
+  // 	   verify();
+  // 	 }
+  //    }, 600000);
+
+  //    // Clear the interval when the component unmounts
+  //    return () => clearInterval(intervalId);
+  //  }, [!isIdle]);
+
+  useEffect(() => {
+    // Redirect to sign-in page if the user is idle
+    if (isIdle) {
+      window.localStorage.removeItem('Lekpay');
+      history('/signin');
+    }
+  }, [isIdle, history]);
+
+  useEffect(() => {
+	const token = window.localStorage.getItem('Lekpay');
+	const Token = JSON.parse(token);
+	if (!Token) {
+		history('/signin');
+	}
+}, []);
 
 	return (
 		<div className='flex flex-row gap-4'>
@@ -74,29 +124,29 @@ const TicketType = () => {
 						<h2 className='text-3xl text-pink-500 text-center py-2'>
 							Ticket Type
 						</h2>
-						<div className='flex flex-col py-1'>
-							<label>Name</label>
+						<div className='flex flex-row py-2'>
+							<label className='justify-center items-center mr-16 mt-2'>Name: </label>
 							<input
 								type='text'
 								name='TTname'
 								onChange={handleChange}
 								onBlur={handleBlur}
 								value={values.TTname}
-								className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+								className='border p-2 rounded w-[65%] hover:border-pink-500 duration-200'
 							/>
 							{errors.TTname && touched.TTname ? (
 								<p className='text-red-500 text-xs '>{errors.TTname}</p>
 							) : null}
 						</div>
-						<div className='flex flex-col py-1'>
-							<label>Short Name</label>
+						<div className='flex flex-row py-2'>
+							<label className='justify-center items-center mr-7 mt-2'>Short Name: </label>
 							<input
 								type='text'
 								name='TTshortname'
 								onChange={handleChange}
 								onBlur={handleBlur}
 								value={values.TTshortname}
-								className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+								className='border p-2 rounded w-[65%] hover:border-pink-500 duration-200'
 							/>
 							{errors.TTshortname && touched.TTshortname ? (
 								<p className='text-red-500 text-xs '>{errors.TTshortname}</p>
@@ -170,6 +220,7 @@ const TicketType = () => {
 					</form>
 				</div>
 			</div>
+			<Footer />
 		</div>
 	);
 };

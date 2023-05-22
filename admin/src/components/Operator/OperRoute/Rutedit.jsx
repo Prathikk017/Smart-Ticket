@@ -111,8 +111,8 @@ const Rutedit = () => {
 		}
 	};
 
-	// Call useIdleTimeout and pass in the time to consider the user as idle
-	const isIdle = useIdleTimeout(300000); // set to 5 minute
+  // Call useIdleTimeout and pass in the time to consider the user as idle
+  const isIdle = useIdleTimeout(600000); // set to 10 minute
 
 	//  const verify = async() => {
 	//    const token = window.localStorage.getItem('Lekpay');

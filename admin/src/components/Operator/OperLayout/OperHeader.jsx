@@ -75,7 +75,7 @@ const OperHeader = () => {
             </>
           )}
         </Popover> */}
-				<strong>{operFullName}</strong>
+				<strong className='md:text-lg text-xs md:ml-0 ml-2'>{operFullName}</strong>
 				<Popover className='relative'>
 					{({ open }) => (
 						<>

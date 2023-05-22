@@ -114,21 +114,7 @@ const Empregister = () => {
     e.preventDefault();
     let skippedRecords = [];
     let notAddedRecords = [];
-    if (
-      !EmpName ||
-      !EmpIntId ||
-      !EmpDOB ||
-      !EmpType ||
-      !EmpMobile ||
-      !EmpAadhar ||
-      !EmpAddr1 ||
-      !EmpAddr2 ||
-      !EmpCity ||
-      !EmpPincode
-    ) {
-      alert('Fill the details');
-      return;
-    }
+    
 
     if (items.length > 0) {
     let addedCount = 0;
@@ -219,7 +205,24 @@ const Empregister = () => {
     setTimeout(() => window.location.reload(), 200);
     } else {
       try {
-        const checkResult = await axios.get(`https://lekpay.com/employee/check/${EmpIntId}`);
+        if (
+          !EmpName ||
+          !EmpIntId ||
+          !EmpDOB ||
+          !EmpType ||
+          !EmpMobile ||
+          !EmpAadhar ||
+          !EmpAddr1 ||
+          !EmpAddr2 ||
+          !EmpCity ||
+          !EmpPincode
+        ) {
+          alert('Fill the details');
+          return;
+        }
+        const checkResult = await axios.get(
+          `https://lekpay.com/employee/check/${EmpIntId}`
+        );
 
         if (checkResult.data.status === 201 && checkResult.data.data !== 0) {
           alert(`${EmpIntId} already existed.`);
@@ -261,7 +264,7 @@ const Empregister = () => {
   };
 
   // Call useIdleTimeout and pass in the time to consider the user as idle
-  const isIdle = useIdleTimeout(300000); // set to 5 minute
+  const isIdle = useIdleTimeout(600000); // set to 10 minute
 
   // const verify = async() => {
   //   const token = window.localStorage.getItem('Lekpay');
@@ -301,35 +304,35 @@ const Empregister = () => {
     }
   }, [isIdle, history]);
 
-  useEffect(() => {
-    if (items.length > 0) {
-      const data = items[0];
-      const {
-        'Employee Name': EmpName,
-        'Employee Id': EmpIntId,
-        'Date of birth': EmpDOB,
-        'Employee Type': EmpType,
-        'Phone no': EmpPhone,
-        'Aadhar Number': EmpAadhar,
-        'Address 1': EmpAddr1,
-        'Address 2': EmpAddr2,
-        City: EmpCity,
-        Pincode: EmpPincode,
-      } = data;
+  // useEffect(() => {
+  //   if (items.length > 0) {
+  //     const data = items[0];
+  //     const {
+  //       'Employee Name': EmpName,
+  //       'Employee Id': EmpIntId,
+  //       'Date of birth': EmpDOB,
+  //       'Employee Type': EmpType,
+  //       'Phone no': EmpPhone,
+  //       'Aadhar Number': EmpAadhar,
+  //       'Address 1': EmpAddr1,
+  //       'Address 2': EmpAddr2,
+  //       City: EmpCity,
+  //       Pincode: EmpPincode,
+  //     } = data;
 
-      // Set form values
-      values.EmpName = EmpName || '';
-      values.EmpIntId = EmpIntId || '';
-      values.EmpPhone = EmpPhone || '';
-      values.EmpAadhar = EmpAadhar || '';
-      values.EmpAddr1 = EmpAddr1 || '';
-      values.EmpAddr2 = EmpAddr2 || '';
-      values.EmpCity = EmpCity || '';
-      values.EmpPincode = EmpPincode || '';
-      setEmpDOB(EmpDOB || '');
-      setEmpType(EmpType || '');
-    }
-  }, [items]);
+  //     // Set form values
+  //     values.EmpName = EmpName || '';
+  //     values.EmpIntId = EmpIntId || '';
+  //     values.EmpPhone = EmpPhone || '';
+  //     values.EmpAadhar = EmpAadhar || '';
+  //     values.EmpAddr1 = EmpAddr1 || '';
+  //     values.EmpAddr2 = EmpAddr2 || '';
+  //     values.EmpCity = EmpCity || '';
+  //     values.EmpPincode = EmpPincode || '';
+  //     setEmpDOB(EmpDOB || '');
+  //     setEmpType(EmpType || '');
+  //   }
+  // }, [items]);
 
   useEffect(() => {
     const token = window.localStorage.getItem('Lekpay');

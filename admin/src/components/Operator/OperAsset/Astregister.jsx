@@ -21,6 +21,7 @@ const Astregister = () => {
   const [recordsAdded, setRecordsAdded] = useState(0);
   const [recordsNotAdded, setRecordsNotAdded] = useState(0);
   const [skippedRecords, setSkippedRecords] = useState([]);
+  const [fileSelected, setFileSelected] = useState(false);
 
   const [qrcode, setQrcode] = useState('');
   const history = useNavigate();
@@ -62,10 +63,26 @@ const Astregister = () => {
     setAstPermitNo(e.target.value);
   };
   const setData6 = (e) => {
-    setAstInsurExp(e.target.value);
+    const selectedDate = new Date(e.target.value);
+    const currentDate = new Date();
+
+    if (selectedDate > currentDate) {
+      setAstInsurExp(e.target.value);
+    } else {
+      const currentDateISO = currentDate.toISOString().split('T')[0];
+      setAstInsurExp(currentDateISO);
+    }
   };
   const setData7 = (e) => {
-    setAstPermitExp(e.target.value);
+    const selectedDate = new Date(e.target.value);
+    const currentDate = new Date();
+
+    if (selectedDate > currentDate) {
+      setAstPermitExp(e.target.value);
+    } else {
+      const currentDateISO = currentDate.toISOString().split('T')[0];
+      setAstPermitExp(currentDateISO);
+    }
   };
 
   //function to download template
@@ -115,25 +132,13 @@ const Astregister = () => {
     e.preventDefault();
     let skippedRecords = [];
     let notAddedRecords = [];
-
-    if (
-      !astRegNo ||
-      !astName ||
-      !astModel ||
-      !astChasNo ||
-      !astEngNo ||
-      !astPermitNo ||
-      !astInsurExp ||
-      !astPermitExp
-    ) {
-      alert('Fill the details');
-      return;
-    }
+    let skippedRecords1 = [];
 
     if (items.length > 0) {
       let addedCount = 0;
       let notAddedCount = 0;
       let notAddedCount1 = 0;
+      let notAddedCount2 = 0;
 
       for (let i = 0; i < items.length; i++) {
         const item = items[i];
@@ -162,6 +167,17 @@ const Astregister = () => {
         ) {
           notAddedCount1++;
           notAddedRecords.push(astRegNo);
+          continue;
+        }
+
+        const selectedInsurExp = new Date(astInsurExp);
+        const selectedPermitExp = new Date(astPermitExp);
+        const currentDate = new Date();
+
+        // Check if the insurance expire date and permit date are not past dates
+        if (selectedInsurExp < currentDate || selectedPermitExp < currentDate) {
+          notAddedCount2++;
+          skippedRecords1.push(astRegNo);
           continue;
         }
 
@@ -228,6 +244,9 @@ const Astregister = () => {
       } else {
         alert(`${addedCount} records of asset data have been added.`);
       }
+      if(notAddedCount2 > 0){
+        alert(`${notAddedCount2} records and asset with Registration Number ${skippedRecords1} insurance expire date and permit date are past dates. `)
+      }
       if (notAddedCount1 > 0) {
         alert(
           `${notAddedCount1} records and asset with Registration Number ${notAddedRecords} have empty fields, skipped registration.`
@@ -238,6 +257,20 @@ const Astregister = () => {
 	  setTimeout(() => history('/Operdashboard'), 300);
     } else {
       try {
+        if (
+          !astRegNo ||
+          !astName ||
+          !astModel ||
+          !astChasNo ||
+          !astEngNo ||
+          !astPermitNo ||
+          !astInsurExp ||
+          !astPermitExp
+        ) {
+          alert('Fill the details');
+          return;
+        }
+
         const checkResult = await axios.get(
           `https://lekpay.com/operator/check/${astRegNo}`
         );
@@ -376,7 +409,7 @@ const Astregister = () => {
   };
 
   // Call useIdleTimeout and pass in the time to consider the user as idle
-  const isIdle = useIdleTimeout(300000); // set to 5 minute
+  const isIdle = useIdleTimeout(600000); // set to 10 minute
 
   //   const verify = async() => {
   //     const token = window.localStorage.getItem('Lekpay');
@@ -416,31 +449,31 @@ const Astregister = () => {
     }
   }, [isIdle, history]);
 
-  useEffect(() => {
-    if (items.length > 0) {
-      const data = items[0];
-      const {
-        'Asset Registration Number': astRegNo,
-        'Asset Model': astName,
-        'Manufacture Year': astModel,
-        'Chasis Number': astChasNo,
-        'Engine Number': astEngNo,
-        'Permit Number': astPermitNo,
-        'Insurance Exp': astInsurExp,
-        'Permit Exp': astPermitExp,
-      } = data;
+  // useEffect(() => {
+  //   if (items.length > 0) {
+  //     const data = items[0];
+  //     const {
+  //       'Asset Registration Number': astRegNo,
+  //       'Asset Model': astName,
+  //       'Manufacture Year': astModel,
+  //       'Chasis Number': astChasNo,
+  //       'Engine Number': astEngNo,
+  //       'Permit Number': astPermitNo,
+  //       'Insurance Exp': astInsurExp,
+  //       'Permit Exp': astPermitExp,
+  //     } = data;
 
-      // Set form values
-      setAstRegNo(astRegNo || '');
-      setAstName(astName || '');
-      setAstModel(astModel || '');
-      setAstChasNo(astChasNo || '');
-      setAstEngNo(astEngNo || '');
-      setAstPermitNo(astPermitNo || '');
-      setAstInsurExp(astInsurExp || '');
-      setAstPermitExp(astPermitExp || '');
-    }
-  }, [items]);
+  //     // Set form values
+  //     setAstRegNo(astRegNo || '');
+  //     setAstName(astName || '');
+  //     setAstModel(astModel || '');
+  //     setAstChasNo(astChasNo || '');
+  //     setAstEngNo(astEngNo || '');
+  //     setAstPermitNo(astPermitNo || '');
+  //     setAstInsurExp(astInsurExp || '');
+  //     setAstPermitExp(astPermitExp || '');
+  //   }
+  // }, [items]);
 
   useEffect(() => {
     getOperator();
@@ -522,8 +555,8 @@ const Astregister = () => {
               <input
                 type='date'
                 onChange={setData6}
-				value={astInsurExp}
-                className='border rounded w-full hover:border-pink-500 duration-200 p-1'
+                value={astInsurExp}
+                className='border rounded w-[58%] ml-3 hover:border-pink-500 duration-200 p-1'
               />
             </div>
             <div className='flex flex-col py-1'>
@@ -531,15 +564,15 @@ const Astregister = () => {
               <input
                 type='date'
                 onChange={setData7}
-				value={astPermitExp}
-                className='border rounded w-full hover:border-pink-500 duration-200 p-1'
+                value={astPermitExp}
+                className='border rounded w-[58%] ml-8 hover:border-pink-500 duration-200 p-1'
               />
             </div>
             <button
               className='border w-full my-2 py-2 text-white bg-pink-500 rounded text-lg hover:bg-pink-400 duration-200'
               onClick={handleSubmit}
             >
-              Register
+             {fileSelected ? 'Submit' : 'Register'}
             </button>
           </form>
         </div>
