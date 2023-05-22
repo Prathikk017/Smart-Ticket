@@ -23,7 +23,7 @@ const Sidebar = () => {
 	const history = useNavigate();
 
 	const handlesub = () => {
-		history('/');
+		history('/signin');
 	};
 
 	const handleOperatorDropdown = () => {
@@ -40,20 +40,22 @@ const Sidebar = () => {
 		const token = window.localStorage.getItem('Lekpay');
 		const Token = JSON.parse(token);
 		if (!Token) {
-			history('/');
+			history('/signin');
 		}
 	}, []);
 
 	return (
 		<div className='bg-neutral-100 flex flex-col py-3 px-1 w-50 h-screen'>
-			<div className='flex items-center justify-start hover:cursor-pointer'>
-				<img
-					className='w-[50px] ml-2 rounded-r-full rounded-l-full'
-					src={logo}
-					alt='LOGO'
-				/>
-				<h1 className='text-2xl ml-2'>LEKPAY</h1>
-			</div>
+			<Link to='/signin'>
+				<div className='flex items-center justify-start hover:cursor-pointer'>
+					<img
+						className='w-[50px] ml-2 rounded-r-full rounded-l-full'
+						src={logo}
+						alt='LOGO'
+					/>
+					<h1 className='text-2xl ml-2'>LEKPAY</h1>
+				</div>
+			</Link>
 			<div className='flex-1'>
 				<ul className='p-2'>
 					<Link to='/admin/dashboard'>
@@ -197,7 +199,7 @@ const Sidebar = () => {
 					</div>
 				</ul>
 			</div>
-			<div className='fixed bottom-16'>
+			<div className='fixed bottom-0'>
 				<hr />
 				<ul className='p-1'>
 					<li

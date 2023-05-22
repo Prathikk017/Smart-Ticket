@@ -6,7 +6,6 @@ import useIdleTimeout from '../../../../useIdleTimeout';
 import { useNavigate } from 'react-router-dom';
 import Opersidebar from '../../Opersidebar';
 import OperHeader from '../OperHeader';
-import Footer from '../../../Footer';
 
 const IndividualTransAssetData = () => {
 	const [data, setData] = useState([]);
@@ -34,7 +33,7 @@ const IndividualTransAssetData = () => {
 	};
 
 	// Call useIdleTimeout and pass in the time to consider the user as idle
-	const isIdle = useIdleTimeout(300000); // set to 5 minute
+	const isIdle = useIdleTimeout(600000); // set to 10 minute
 
 	// const verify = async() => {
 	//   const token = window.localStorage.getItem('Lekpay');
@@ -135,7 +134,6 @@ const IndividualTransAssetData = () => {
 					</div>
 				</div>
 			</div>
-			<Footer />
 		</div>
 	);
 };

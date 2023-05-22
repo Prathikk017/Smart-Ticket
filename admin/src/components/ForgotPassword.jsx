@@ -55,7 +55,7 @@ const ForgotPassword = () => {
 			);
 			if (res1.data.status === 201) {
 				alert('Password changed successfully');
-				history('/sigin');
+				history('/signin');
 				return;
 			} else {
 				console.log('error');

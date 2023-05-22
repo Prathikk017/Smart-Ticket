@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 import * as XLSX from 'xlsx';
 import AssetDetail from '../../../assets/template/Asset_Detail.xlsx';
 import useIdleTimeout from '../../../useIdleTimeout';
-import Footer from '../../Footer';
 
 const Astregister = () => {
   const [astRegNo, setAstRegNo] = useState('');
@@ -22,6 +21,7 @@ const Astregister = () => {
   const [recordsAdded, setRecordsAdded] = useState(0);
   const [recordsNotAdded, setRecordsNotAdded] = useState(0);
   const [skippedRecords, setSkippedRecords] = useState([]);
+  const [fileSelected, setFileSelected] = useState(false);
 
   const [qrcode, setQrcode] = useState('');
   const history = useNavigate();
@@ -63,10 +63,26 @@ const Astregister = () => {
     setAstPermitNo(e.target.value);
   };
   const setData6 = (e) => {
-    setAstInsurExp(e.target.value);
+    const selectedDate = new Date(e.target.value);
+    const currentDate = new Date();
+
+    if (selectedDate > currentDate) {
+      setAstInsurExp(e.target.value);
+    } else {
+      const currentDateISO = currentDate.toISOString().split('T')[0];
+      setAstInsurExp(currentDateISO);
+    }
   };
   const setData7 = (e) => {
-    setAstPermitExp(e.target.value);
+    const selectedDate = new Date(e.target.value);
+    const currentDate = new Date();
+
+    if (selectedDate > currentDate) {
+      setAstPermitExp(e.target.value);
+    } else {
+      const currentDateISO = currentDate.toISOString().split('T')[0];
+      setAstPermitExp(currentDateISO);
+    }
   };
 
   //function to download template
@@ -116,25 +132,13 @@ const Astregister = () => {
     e.preventDefault();
     let skippedRecords = [];
     let notAddedRecords = [];
-
-    if (
-      !astRegNo ||
-      !astName ||
-      !astModel ||
-      !astChasNo ||
-      !astEngNo ||
-      !astPermitNo ||
-      !astInsurExp ||
-      !astPermitExp
-    ) {
-      alert('Fill the details');
-      return;
-    }
+    let skippedRecords1 = [];
 
     if (items.length > 0) {
       let addedCount = 0;
       let notAddedCount = 0;
       let notAddedCount1 = 0;
+      let notAddedCount2 = 0;
 
       for (let i = 0; i < items.length; i++) {
         const item = items[i];
@@ -163,6 +167,17 @@ const Astregister = () => {
         ) {
           notAddedCount1++;
           notAddedRecords.push(astRegNo);
+          continue;
+        }
+
+        const selectedInsurExp = new Date(astInsurExp);
+        const selectedPermitExp = new Date(astPermitExp);
+        const currentDate = new Date();
+
+        // Check if the insurance expire date and permit date are not past dates
+        if (selectedInsurExp < currentDate || selectedPermitExp < currentDate) {
+          notAddedCount2++;
+          skippedRecords1.push(astRegNo);
           continue;
         }
 
@@ -229,6 +244,9 @@ const Astregister = () => {
       } else {
         alert(`${addedCount} records of asset data have been added.`);
       }
+      if(notAddedCount2 > 0){
+        alert(`${notAddedCount2} records and asset with Registration Number ${skippedRecords1} insurance expire date and permit date are past dates. `)
+      }
       if (notAddedCount1 > 0) {
         alert(
           `${notAddedCount1} records and asset with Registration Number ${notAddedRecords} have empty fields, skipped registration.`
@@ -236,9 +254,23 @@ const Astregister = () => {
       }
       let form = document.getElementsByName('contact-form')[0];
       form.reset();
-      setTimeout(() => history('/Operdashboard'), 300);
+	  setTimeout(() => history('/Operdashboard'), 300);
     } else {
       try {
+        if (
+          !astRegNo ||
+          !astName ||
+          !astModel ||
+          !astChasNo ||
+          !astEngNo ||
+          !astPermitNo ||
+          !astInsurExp ||
+          !astPermitExp
+        ) {
+          alert('Fill the details');
+          return;
+        }
+
         const checkResult = await axios.get(
           `https://lekpay.com/operator/check/${astRegNo}`
         );
@@ -246,8 +278,8 @@ const Astregister = () => {
         if (checkResult.data.status === 201 && checkResult.data.data !== 0) {
           alert(`${astRegNo} already existed.`);
           let form = document.getElementsByName('contact-form')[0];
-          form.reset();
-          window.location.reload();
+            form.reset();
+			window.location.reload();
           return;
         } else {
           const res = await axios.post(
@@ -280,7 +312,7 @@ const Astregister = () => {
               });
             let form = document.getElementsByName('contact-form')[0];
             form.reset();
-            setTimeout(() => history('/Operdashboard'), 300);
+			setTimeout(() => history('/Operdashboard'), 300);
             return;
           } else {
             alert('Asset unable to register');
@@ -377,7 +409,7 @@ const Astregister = () => {
   };
 
   // Call useIdleTimeout and pass in the time to consider the user as idle
-  const isIdle = useIdleTimeout(300000); // set to 5 minute
+  const isIdle = useIdleTimeout(600000); // set to 10 minute
 
   //   const verify = async() => {
   //     const token = window.localStorage.getItem('Lekpay');
@@ -413,35 +445,35 @@ const Astregister = () => {
     // Redirect to sign-in page if the user is idle
     if (isIdle) {
       window.localStorage.removeItem('Lekpay');
-      history('/signin');
+      history('/');
     }
   }, [isIdle, history]);
 
-  useEffect(() => {
-    if (items.length > 0) {
-      const data = items[0];
-      const {
-        'Asset Registration Number': astRegNo,
-        'Asset Model': astName,
-        'Manufacture Year': astModel,
-        'Chasis Number': astChasNo,
-        'Engine Number': astEngNo,
-        'Permit Number': astPermitNo,
-        'Insurance Exp': astInsurExp,
-        'Permit Exp': astPermitExp,
-      } = data;
+  // useEffect(() => {
+  //   if (items.length > 0) {
+  //     const data = items[0];
+  //     const {
+  //       'Asset Registration Number': astRegNo,
+  //       'Asset Model': astName,
+  //       'Manufacture Year': astModel,
+  //       'Chasis Number': astChasNo,
+  //       'Engine Number': astEngNo,
+  //       'Permit Number': astPermitNo,
+  //       'Insurance Exp': astInsurExp,
+  //       'Permit Exp': astPermitExp,
+  //     } = data;
 
-      // Set form values
-      setAstRegNo(astRegNo || '');
-      setAstName(astName || '');
-      setAstModel(astModel || '');
-      setAstChasNo(astChasNo || '');
-      setAstEngNo(astEngNo || '');
-      setAstPermitNo(astPermitNo || '');
-      setAstInsurExp(astInsurExp || '');
-      setAstPermitExp(astPermitExp || '');
-    }
-  }, [items]);
+  //     // Set form values
+  //     setAstRegNo(astRegNo || '');
+  //     setAstName(astName || '');
+  //     setAstModel(astModel || '');
+  //     setAstChasNo(astChasNo || '');
+  //     setAstEngNo(astEngNo || '');
+  //     setAstPermitNo(astPermitNo || '');
+  //     setAstInsurExp(astInsurExp || '');
+  //     setAstPermitExp(astPermitExp || '');
+  //   }
+  // }, [items]);
 
   useEffect(() => {
     getOperator();
@@ -451,7 +483,7 @@ const Astregister = () => {
     const token = window.localStorage.getItem('Lekpay');
     const Token = JSON.parse(token);
     if (!Token) {
-      history('/signin');
+      history('/');
     }
   }, []);
 
@@ -460,103 +492,89 @@ const Astregister = () => {
       <Opersidebar />
       <div className='grid grid-cols-1 sm:grid-cols-2 h-screen w-full'>
         <div className='py-4 flex flex-col justify-center items-center'>
-          <form className='max-w-[500px] w-full mx-auto' name='contact-form'>
-            <h2 className='text-4xl text-pink-500 text-center pb-6'>
+          <form className='max-w-[400px] w-full mx-auto' name='contact-form'>
+            <h2 className='text-4xl text-pink-500 text-center py-1'>
               Asset Register
             </h2>
-            <div className='flex flex-row py-1'>
-              <label className='text-md justify-center items-center mr-4 mt-1'>
-                Asset Registration Number:{' '}
-              </label>
+            <div className='flex flex-col py-1'>
+              <label>Asset Registration Number</label>
               <input
                 type='text'
                 onChange={setData}
-                value={astRegNo}
-                className='border rounded w-[58%] hover:border-pink-500 duration-200 p-1'
+				value={astRegNo}
+                className='border rounded w-full hover:border-pink-500 duration-200 p-1'
               />
             </div>
-            <div className='flex flex-row py-2'>
-              <label className='justify-center items-center mr-28 mt-1'>
-                Asset Model:{' '}
-              </label>
+            <div className='flex flex-col py-1'>
+              <label>Asset Model</label>
               <input
                 type='text'
                 onChange={setData1}
-                value={astName}
-                className='border rounded w-[58%] ml-1 hover:border-pink-500 duration-200 p-1'
+				value={astName}
+                className='border rounded w-full hover:border-pink-500 duration-200 p-1'
               />
             </div>
-            <div className='flex flex-row py-2'>
-              <label className='justify-center items-center mr-20 mt-1'>
-                Manufacture Year:{' '}
-              </label>
+            <div className='flex flex-col py-1'>
+              <label>Manufacture Year</label>
               <input
                 type='number'
                 onChange={setData2}
-                value={astModel}
-                className='border rounded w-[58%] hover:border-pink-500 duration-200 p-1'
+				value={astModel}
+                className='border rounded w-full hover:border-pink-500 duration-200 p-1'
               />
             </div>
-            <div className='flex flex-row py-2'>
-              <label className='justify-center items-center mr-24 mt-1'>
-                Chasis Number:{' '}
-              </label>
+            <div className='flex flex-col py-1'>
+              <label>Chasis Number</label>
               <input
                 type='text'
                 onChange={setData3}
-                value={astChasNo}
-                className='border rounded w-[58%] hover:border-pink-500 duration-200 p-1'
+				value={astChasNo}
+                className='border rounded w-full hover:border-pink-500 duration-200 p-1'
               />
             </div>
-            <div className='flex flex-row py-2'>
-              <label className='justify-center items-center mr-20 mt-1'>
-                Engine Number:{' '}
-              </label>
+            <div className='flex flex-col py-1'>
+              <label>Engine Number</label>
               <input
                 type='text'
                 onChange={setData4}
-                value={astEngNo}
-                className='border rounded w-[58%] ml-3 hover:border-pink-500 duration-200 p-1'
+				value={astEngNo}
+                className='border rounded w-full hover:border-pink-500 duration-200 p-1'
               />
             </div>
-            <div className='flex flex-row py-2'>
-              <label className='justify-center items-center mr-20 mt-1'>
-                Permit Number:{' '}
-              </label>
+            <div className='flex flex-col py-1'>
+              <label>Permit Number</label>
               <input
                 type='text'
                 onChange={setData5}
-                value={astPermitNo}
-                className='border rounded w-[58%] ml-4 hover:border-pink-500 duration-200 p-1'
+				value={astPermitNo}
+                className='border rounded w-full hover:border-pink-500 duration-200 p-1'
               />
             </div>
-            <div className='flex flex-row py-2'>
-              <label className='justify-center items-center mr-24 mt-1'>
-                Insurance Exp:{' '}
-              </label>
+            <div className='flex flex-col py-1'>
+              <label>Insurance Exp</label>
               <input
                 type='date'
                 onChange={setData6}
                 value={astInsurExp}
+                min={new Date().toISOString().split('T')[0]}
                 className='border rounded w-[58%] ml-3 hover:border-pink-500 duration-200 p-1'
               />
             </div>
-            <div className='flex flex-row py-2'>
-              <label className='justify-center items-center mr-24 mt-1'>
-                Permit Exp:{' '}
-              </label>
+            <div className='flex flex-col py-1'>
+              <label>Permit Exp</label>
               <input
                 type='date'
                 onChange={setData7}
                 value={astPermitExp}
+                min={new Date().toISOString().split('T')[0]}
                 className='border rounded w-[58%] ml-8 hover:border-pink-500 duration-200 p-1'
               />
             </div>
             <button
-              className='border w-full my-2 py-2 mb-20 text-white bg-pink-500 rounded text-lg hover:bg-pink-400 duration-200'
+              className='border w-full my-2 py-2 text-white bg-pink-500 rounded text-lg hover:bg-pink-400 duration-200'
               onClick={handleSubmit}
             >
-              Register
+             {fileSelected ? 'Submit' : 'Register'}
             </button>
           </form>
         </div>
@@ -581,14 +599,13 @@ const Astregister = () => {
             </div>
           )}
           <button
-            className='bg-gray-200 hover:bg-pink-300  px-2 py-2 rounded-md w-max'
+            className='bg-gray-200 hover:bg-pink-300  px-2 py-2 rounded-lg w-max m-auto'
             onClick={handleDownloadTemplate}
           >
             Download Template
           </button>
           <input
             type='file'
-            accept='.xlsx, .xls'
             onChange={(e) => {
               const file = e.target.files[0];
               readExcel(file);
@@ -596,7 +613,6 @@ const Astregister = () => {
           />
         </div>
       </div>
-      <Footer />
     </div>
   );
 };

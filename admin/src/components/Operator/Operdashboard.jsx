@@ -6,13 +6,12 @@ import OperHeader from '../Operator/OperLayout/OperHeader';
 import OperStatsGrid from '../Operator/OperLayout/OperStatsGrid';
 // import OperTransactionChart from '../Operator/OperLayout/OperTransactionChart';
 import useIdleTimeout from '../../useIdleTimeout';
-import Footer from '../Footer';
 
 const Operdashboard = () => {
 	const history = useNavigate();
 
 	// Call useIdleTimeout and pass in the time to consider the user as idle
-	const isIdle = useIdleTimeout(300000); // set to 5 minute
+	const isIdle = useIdleTimeout(600000); // set to 10 minute
 
 	// const verify = async() => {
 	//   const token = window.localStorage.getItem('Lekpay');
@@ -70,7 +69,6 @@ const Operdashboard = () => {
 					{/* <OperTransactionChart/> */}
 				</div>
 			</div>
-			<Footer />
 		</div>
 	);
 };

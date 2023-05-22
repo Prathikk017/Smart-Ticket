@@ -26,7 +26,7 @@ const StatsGrid = () => {
 	// };
 
 	// Call useIdleTimeout and pass in the time to consider the user as idle
-	const isIdle = useIdleTimeout(300000); // set to 5 minute
+	const isIdle = useIdleTimeout(600000); // set to 10 minute
 
 	//  const verify = async() => {
 	//    const token = window.localStorage.getItem('Lekpay');
@@ -62,7 +62,7 @@ const StatsGrid = () => {
 		// Redirect to sign-in page if the user is idle
 		if (isIdle) {
 			window.localStorage.removeItem('Lekpay');
-			history('/');
+			history('/signin');
 		}
 	}, [isIdle, history]);
 
@@ -70,7 +70,7 @@ const StatsGrid = () => {
 		const token = window.localStorage.getItem('Lekpay');
 		const Token = JSON.parse(token);
 		if (!Token) {
-			history('/');
+			history('/signin');
 		} else {
 			getOperatorsData();
 		}
