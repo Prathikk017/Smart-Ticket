@@ -98,7 +98,7 @@ const Astregister = () => {
     const promise = new Promise((resolve, reject) => {
       const fileReader = new FileReader();
       fileReader.readAsArrayBuffer(file);
-
+      setFileSelected(true);
       fileReader.onload = (e) => {
         const bufferArray = e.target.result;
 
@@ -244,8 +244,10 @@ const Astregister = () => {
       } else {
         alert(`${addedCount} records of asset data have been added.`);
       }
-      if(notAddedCount2 > 0){
-        alert(`${notAddedCount2} records and asset with Registration Number ${skippedRecords1} insurance expire date and permit date are past dates. `)
+      if (notAddedCount2 > 0) {
+        alert(
+          `${notAddedCount2} records and asset with Registration Number ${skippedRecords1} insurance expire date and permit date are past dates. `
+        );
       }
       if (notAddedCount1 > 0) {
         alert(
@@ -254,7 +256,7 @@ const Astregister = () => {
       }
       let form = document.getElementsByName('contact-form')[0];
       form.reset();
-	  setTimeout(() => history('/Operdashboard'), 300);
+      setTimeout(() => history('/Operdashboard'), 300);
     } else {
       try {
         if (
@@ -278,8 +280,8 @@ const Astregister = () => {
         if (checkResult.data.status === 201 && checkResult.data.data !== 0) {
           alert(`${astRegNo} already existed.`);
           let form = document.getElementsByName('contact-form')[0];
-            form.reset();
-			window.location.reload();
+          form.reset();
+          window.location.reload();
           return;
         } else {
           const res = await axios.post(
@@ -312,7 +314,7 @@ const Astregister = () => {
               });
             let form = document.getElementsByName('contact-form')[0];
             form.reset();
-			setTimeout(() => history('/Operdashboard'), 300);
+            setTimeout(() => history('/Operdashboard'), 300);
             return;
           } else {
             alert('Asset unable to register');
@@ -445,7 +447,7 @@ const Astregister = () => {
     // Redirect to sign-in page if the user is idle
     if (isIdle) {
       window.localStorage.removeItem('Lekpay');
-      history('/');
+      history('/signin');
     }
   }, [isIdle, history]);
 
@@ -483,7 +485,7 @@ const Astregister = () => {
     const token = window.localStorage.getItem('Lekpay');
     const Token = JSON.parse(token);
     if (!Token) {
-      history('/');
+      history('/signin');
     }
   }, []);
 
@@ -492,76 +494,92 @@ const Astregister = () => {
       <Opersidebar />
       <div className='grid grid-cols-1 sm:grid-cols-2 h-screen w-full'>
         <div className='py-4 flex flex-col justify-center items-center'>
-          <form className='max-w-[400px] w-full mx-auto' name='contact-form'>
-            <h2 className='text-4xl text-pink-500 text-center py-1'>
+          <form className='max-w-[500px] w-full mx-auto' name='contact-form'>
+            <h2 className='text-5xl text-pink-500 text-center py-1 mb-8'>
               Asset Register
             </h2>
-            <div className='flex flex-col py-1'>
-              <label>Asset Registration Number</label>
+            <div className='flex flex-row py-1'>
+              <label className='justify-center items-center mr-4 mt-1'>
+                Asset Registration Number:{' '}
+              </label>
               <input
                 type='text'
                 onChange={setData}
-				value={astRegNo}
-                className='border rounded w-full hover:border-pink-500 duration-200 p-1'
+                value={astRegNo}
+                className='border rounded w-[58%] hover:border-pink-500 duration-200 p-1'
               />
             </div>
-            <div className='flex flex-col py-1'>
-              <label>Asset Model</label>
+            <div className='flex flex-row py-1'>
+              <label className='justify-center items-center mr-28 mt-1'>
+                Asset Model:{' '}
+              </label>
               <input
                 type='text'
                 onChange={setData1}
-				value={astName}
-                className='border rounded w-full hover:border-pink-500 duration-200 p-1'
+                value={astName}
+                className='border rounded w-[58%] ml-1 hover:border-pink-500 duration-200 p-1'
               />
             </div>
-            <div className='flex flex-col py-1'>
-              <label>Manufacture Year</label>
+            <div className='flex flex-row py-1'>
+              <label className='justify-center items-center mr-20 mt-1'>
+                Manufacture Year:{' '}
+              </label>
               <input
                 type='number'
                 onChange={setData2}
-				value={astModel}
-                className='border rounded w-full hover:border-pink-500 duration-200 p-1'
+                value={astModel}
+                className='border rounded w-[58%] hover:border-pink-500 duration-200 p-1'
               />
             </div>
-            <div className='flex flex-col py-1'>
-              <label>Chasis Number</label>
+            <div className='flex flex-row py-1'>
+              <label className='justify-center items-center mr-24 mt-1'>
+                Chasis Number:{' '}
+              </label>
               <input
                 type='text'
                 onChange={setData3}
-				value={astChasNo}
-                className='border rounded w-full hover:border-pink-500 duration-200 p-1'
+                value={astChasNo}
+                className='border rounded w-[58%] hover:border-pink-500 duration-200 p-1'
               />
             </div>
-            <div className='flex flex-col py-1'>
-              <label>Engine Number</label>
+            <div className='flex flex-row py-1'>
+              <label className='justify-center items-center mr-20 mt-1'>
+                Engine Number:{' '}
+              </label>
               <input
                 type='text'
                 onChange={setData4}
-				value={astEngNo}
-                className='border rounded w-full hover:border-pink-500 duration-200 p-1'
+                value={astEngNo}
+                className='border rounded w-[58%] ml-3 hover:border-pink-500 duration-200 p-1'
               />
             </div>
-            <div className='flex flex-col py-1'>
-              <label>Permit Number</label>
+            <div className='flex flex-row py-1'>
+              <label className='justify-center items-center mr-20 mt-1'>
+                Permit Number:{' '}
+              </label>
               <input
                 type='text'
                 onChange={setData5}
-				value={astPermitNo}
-                className='border rounded w-full hover:border-pink-500 duration-200 p-1'
+                value={astPermitNo}
+                className='border rounded w-[58%] ml-3 hover:border-pink-500 duration-200 p-1'
               />
             </div>
-            <div className='flex flex-col py-1'>
-              <label>Insurance Exp</label>
+            <div className='flex flex-row py-1'>
+              <label className='justify-center items-center mr-20 mt-1'>
+                Insurance Exp:{' '}
+              </label>
               <input
                 type='date'
                 onChange={setData6}
                 value={astInsurExp}
                 min={new Date().toISOString().split('T')[0]}
-                className='border rounded w-[58%] ml-3 hover:border-pink-500 duration-200 p-1'
+                className='border rounded w-[58%] ml-6 hover:border-pink-500 duration-200 p-1'
               />
             </div>
-            <div className='flex flex-col py-1'>
-              <label>Permit Exp</label>
+            <div className='flex flex-row py-1'>
+              <label className='justify-center items-center mr-24 mt-1'>
+                Permit Exp:{' '}
+              </label>
               <input
                 type='date'
                 onChange={setData7}
@@ -574,7 +592,7 @@ const Astregister = () => {
               className='border w-full my-2 py-2 text-white bg-pink-500 rounded text-lg hover:bg-pink-400 duration-200'
               onClick={handleSubmit}
             >
-             {fileSelected ? 'Submit' : 'Register'}
+              {fileSelected ? 'Submit' : 'Register'}
             </button>
           </form>
         </div>
@@ -599,7 +617,7 @@ const Astregister = () => {
             </div>
           )}
           <button
-            className='bg-gray-200 hover:bg-pink-300  px-2 py-2 rounded-lg w-max m-auto'
+            className='bg-gray-200 hover:bg-pink-300  px-2 py-2 rounded-lg w-max'
             onClick={handleDownloadTemplate}
           >
             Download Template
