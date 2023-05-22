@@ -27,6 +27,8 @@ const Empregister = () => {
   const [recordsAdded, setRecordsAdded] = useState(0);
   const [recordsNotAdded, setRecordsNotAdded] = useState(0);
   const [skippedRecords, setSkippedRecords] = useState([]);
+  const [fileSelected, setFileSelected] = useState(false); 
+
   const history = useNavigate();
 
   const ID = window.localStorage.getItem('OperID');
@@ -72,6 +74,7 @@ const Empregister = () => {
   const readExcel = (file) => {
     const promise = new Promise((resolve, reject) => {
       const fileReader = new FileReader();
+      setFileSelected(true);
       fileReader.readAsArrayBuffer(file);
 
       fileReader.onload = (e) => {
@@ -88,6 +91,7 @@ const Empregister = () => {
         if (data.length === 0) {
           alert('Excel file is empty.');
           reject('Empty file');
+          
         } else {
           resolve(data);
         }
@@ -517,7 +521,7 @@ const Empregister = () => {
               className='border  w-full my-2 py-2  mb-16 text-white bg-pink-500 rounded text-lg hover:bg-pink-400 duration-200'
               onClick={handleSub}
             >
-              Register
+             {fileSelected ? 'Submit' : 'Register'}
             </button>
           </form>
         </div>

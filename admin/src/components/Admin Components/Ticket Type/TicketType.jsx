@@ -75,29 +75,29 @@ const TicketType = () => {
 						<h2 className='text-3xl text-pink-500 text-center py-2'>
 							Ticket Type
 						</h2>
-						<div className='flex flex-col py-1'>
-							<label>Name</label>
+						<div className='flex flex-row py-2'>
+							<label className='justify-center items-center mr-16 mt-2'>Name: </label>
 							<input
 								type='text'
 								name='TTname'
 								onChange={handleChange}
 								onBlur={handleBlur}
 								value={values.TTname}
-								className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+								className='border p-2 rounded w-[65%] hover:border-pink-500 duration-200'
 							/>
 							{errors.TTname && touched.TTname ? (
 								<p className='text-red-500 text-xs '>{errors.TTname}</p>
 							) : null}
 						</div>
-						<div className='flex flex-col py-1'>
-							<label>Short Name</label>
+						<div className='flex flex-row py-2'>
+							<label className='justify-center items-center mr-7 mt-2'>Short Name: </label>
 							<input
 								type='text'
 								name='TTshortname'
 								onChange={handleChange}
 								onBlur={handleBlur}
 								value={values.TTshortname}
-								className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+								className='border p-2 rounded w-[65%] hover:border-pink-500 duration-200'
 							/>
 							{errors.TTshortname && touched.TTshortname ? (
 								<p className='text-red-500 text-xs '>{errors.TTshortname}</p>

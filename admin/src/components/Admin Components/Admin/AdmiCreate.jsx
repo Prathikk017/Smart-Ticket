@@ -105,7 +105,7 @@ const AdmiCreate = () => {
 		// Redirect to sign-in page if the user is idle
 		if (isIdle) {
 			window.localStorage.removeItem('Lekpay');
-			history('/');
+			history('/signin');
 		}
 	}, [isIdle, history]);
 
@@ -113,7 +113,7 @@ const AdmiCreate = () => {
 		const token = window.localStorage.getItem('Lekpay');
 		const Token = JSON.parse(token);
 		if (!Token) {
-			history('/');
+			history('/signin');
 		}
 	});
 	return (
@@ -128,38 +128,38 @@ const AdmiCreate = () => {
 						<h2 className='text-3xl text-pink-500 text-center py-2'>
 							Admin Register
 						</h2>
-						<div className='flex flex-col py-1'>
-							<label>Admin Name</label>
+						<div className='flex flex-row py-1'>
+							<label className='justify-center items-center mr-16 mt-1'>Admin Name: </label>
 							<input
 								type='text'
 								name='Aname'
 								onChange={handleChange}
 								onBlur={handleBlur}
 								value={values.Aname}
-								className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+								className='border p-1 rounded w-[58%] ml-1 hover:border-pink-500 duration-200'
 							/>
 							{errors.Aname && touched.Aname ? (
 								<p className='text-red-500 text-xs '>{errors.Aname}</p>
 							) : null}
 						</div>
-						<div className='flex flex-col py-1'>
-							<label>Phone no</label>
+						<div className='flex flex-row py-1'>
+							<label className='justify-center items-center mr-20 mt-1'>Phone no: </label>
 							<input
 								type='number'
 								name='Amobile'
 								onChange={handleChange}
 								onBlur={handleBlur}
 								value={values.Amobile}
-								className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+								className='border p-1 rounded w-[58%] ml-3 hover:border-pink-500 duration-200'
 							/>
 							{errors.Amobile && touched.Amobile ? (
 								<p className='text-red-500 text-xs '>{errors.Amobile}</p>
 							) : null}
 						</div>
-						<div className='flex flex-col py-1'>
-							<label>Gender</label>
+						<div className='flex flex-row py-1'>
+							<label className='justify-center items-center mr-24 mt-1'>Gender: </label>
 							<select
-								className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+								className='border p-1 rounded w-[58%] ml-3 hover:border-pink-500 duration-200'
 								onChange={setAgenderData}
 							>
 								<option>Select Type</option>
@@ -168,37 +168,37 @@ const AdmiCreate = () => {
 								<option value='Others'>Others</option>
 							</select>
 						</div>
-						<div className='flex flex-col py-1'>
-							<label>Date of birth</label>
+						<div className='flex flex-row py-1'>
+							<label className='justify-center items-center mr-16 mt-1'>Date of birth: </label>
 							<input
 								type='date'
 								onChange={setADoBData}
-								className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+								className='border p-1 rounded w-[58%] ml-1 hover:border-pink-500 duration-200'
 							/>
 						</div>
-						<div className='flex flex-col py-1'>
-							<label>Email</label>
+						<div className='flex flex-row py-1'>
+							<label className='justify-center items-center mr-28 mt-1'>Email: </label>
 							<input
 								type='email'
 								name='Aemail'
 								onChange={handleChange}
 								onBlur={handleBlur}
 								value={values.Aemail}
-								className='border rounded w-full hover:border-pink-500 duration-200 p-1'
+								className='border rounded w-[58%] ml-2 hover:border-pink-500 duration-200 p-1'
 							/>
 							{errors.Aemail && touched.Aemail ? (
 								<p className='text-red-500 text-xs '>{errors.Aemail}</p>
 							) : null}
 						</div>
-						<div className='flex flex-col py-1'>
-							<label>Password</label>
+						<div className='flex flex-row py-1'>
+							<label className='justify-center items-center mr-20 mt-1'>Password: </label>
 							<input
 								type='password'
 								name='Apassword'
 								onChange={handleChange}
 								onBlur={handleBlur}
 								value={values.Apassword}
-								className='border rounded w-full hover:border-pink-500 duration-200 p-1'
+								className='border rounded w-[58%] ml-3 hover:border-pink-500 duration-200 p-1'
 							/>
 							{errors.Apassword && touched.Apassword ? (
 								<p className='text-red-500 text-xs '>{errors.Apassword}</p>

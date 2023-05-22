@@ -85,7 +85,7 @@ const Transaction = () => {
 		// Redirect to sign-in page if the user is idle
 		if (isIdle) {
 			window.localStorage.removeItem('Lekpay');
-			history('/');
+			history('/signin');
 		}
 	}, [isIdle, history]);
 

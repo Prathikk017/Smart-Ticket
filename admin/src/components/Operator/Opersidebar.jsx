@@ -22,7 +22,7 @@ const Opersidebar = () => {
 	const history = useNavigate();
 
 	const handlesub = () => {
-		history('/');
+		history('/signin');
 	};
 	const handleAssetDropdown = () => {
 		setShowAssetDropdown(!showAssetDropdown);

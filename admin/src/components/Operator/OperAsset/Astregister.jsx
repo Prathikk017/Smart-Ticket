@@ -22,6 +22,7 @@ const Astregister = () => {
   const [recordsAdded, setRecordsAdded] = useState(0);
   const [recordsNotAdded, setRecordsNotAdded] = useState(0);
   const [skippedRecords, setSkippedRecords] = useState([]);
+  const [fileSelected, setFileSelected] = useState(false); 
 
   const [qrcode, setQrcode] = useState('');
   const history = useNavigate();
@@ -81,6 +82,7 @@ const Astregister = () => {
   const readExcel = (file) => {
     const promise = new Promise((resolve, reject) => {
       const fileReader = new FileReader();
+      setFileSelected(true);
       fileReader.readAsArrayBuffer(file);
 
       fileReader.onload = (e) => {
@@ -556,7 +558,7 @@ const Astregister = () => {
               className='border w-full my-2 py-2 mb-20 text-white bg-pink-500 rounded text-lg hover:bg-pink-400 duration-200'
               onClick={handleSubmit}
             >
-              Register
+             {fileSelected ? 'Submit' : 'Register'}
             </button>
           </form>
         </div>

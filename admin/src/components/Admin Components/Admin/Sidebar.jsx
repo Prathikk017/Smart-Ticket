@@ -23,7 +23,7 @@ const Sidebar = () => {
 	const history = useNavigate();
 
 	const handlesub = () => {
-		history('/');
+		history('/signin');
 	};
 
 	const handleOperatorDropdown = () => {
@@ -40,7 +40,7 @@ const Sidebar = () => {
 		const token = window.localStorage.getItem('Lekpay');
 		const Token = JSON.parse(token);
 		if (!Token) {
-			history('/');
+			history('/signin');
 		}
 	}, []);
 
