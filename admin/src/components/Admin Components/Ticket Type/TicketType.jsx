@@ -5,7 +5,7 @@ import { useFormik } from 'formik';
 
 import Sidebar from '../Admin/Sidebar';
 import { adminRegisterSchema } from '../../../schemas/index';
-import Footer from '../../Footer';
+
 import useIdleTimeout from '../../../useIdleTimeout';
 
 const initialValues = {
@@ -220,7 +220,6 @@ const TicketType = () => {
 					</form>
 				</div>
 			</div>
-			<Footer />
 		</div>
 	);
 };
