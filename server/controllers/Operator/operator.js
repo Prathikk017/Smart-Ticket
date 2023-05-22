@@ -1096,3 +1096,107 @@ const routeFare = (totalRoute, AstId) => {
       });
   });
 };
+
+//verify user
+exports.verifyUser = (req,res) =>{
+  const phoneNumber = req.body.mobile;
+
+
+  let query = `SELECT OperId,Flag FROM tblOperator WHERE OperPhone = '${phoneNumber}'`;
+  db.query(query,(err, result)=>{
+    if(!err){
+      if(result.length > 0){
+        const ID = result[0].OperId;
+        const Flag = result[0].Flag;
+        const otp = sendOTP(result[0].OperId);
+        res.status(200).json({ status: 201, data: {ID, otp, Flag} });
+        return;
+      }else{
+        let query1 = `SELECT AdminId,Flag FROM tblLPadm WHERE Amobile = '${phoneNumber}'`;
+        db.query(query1,(err,results)=>{
+          if(!err){
+            if(results.length > 0){
+              const ID = results[0].AdminId;
+              const Flag = results[0].Flag;
+              const otp = sendOTP(results[0].AdminId);
+              res.status(200).json({ status: 201, data: {ID, otp, Flag} });
+            }else{
+             res.status(200).json({status:400, data: "user not found"});
+            }
+          }
+        })
+      }
+    }else{
+      console.log(err);
+    }
+  })
+}
+
+const sendOTP = (ID) =>{
+  let otp = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
+  return otp;
+}
+
+//change password
+exports.changePassword = (req, res) =>{
+  let modifiedDate = moment().format('YYYY-MM-DD');
+  let Id = req.body.ID;
+  let password = req.body.passowrd;
+  let flag = req.body.Flag;
+  if(flag === 'O'){
+    bcrypt.hash(password, saltRounds, (err, hash) => {
+			if (!err) {
+				query =
+					'UPDATE tblOperator SET OperPassword = ?, OperModifyDate = ? WHERE OperId = ?';
+				db.query(query, [hash, modifiedDate, Id], (err, results) => {
+					if (!err) {
+						if (results.affectedRows == 0) {
+							return res.status(404).json({ message: 'User ID not Found' });
+						}
+						updtPassInAuth(hash, Id);
+						return res.status(200).json({status:201, data: 'User Password Changed' });
+					} else {
+						return res.status(500).json(err);
+					}
+				});
+			} else {
+				console.log(err);
+			}
+		});
+  }
+  if(flag === 'A'){
+    bcrypt.hash(password, saltRounds, (err, hash) => {
+			if (!err) {
+				query =
+					'UPDATE tblLPadm SET Apassword = ?, AModifyDate = ? WHERE AdminId = ?';
+				db.query(query, [hash, modifiedDate, Id], (err, results) => {
+					if (!err) {
+						if (results.affectedRows == 0) {
+							return res.status(404).json({ message: 'User ID not Found' });
+						}
+						updtPassInAuth(hash, Id);
+						return res.status(200).json({status:201, data: 'User Password Changed' });
+					} else {
+						return res.status(500).json(err);
+					}
+				});
+			} else {
+				console.log(err);
+			}
+		});
+  }
+}
+
+//UPDATE PASSWORD IN AUTHTABLE
+const updtPassInAuth = (password, id) => {
+	var query = 'UPDATE tblAuth SET Password = ? WHERE AuthId = ?';
+	db.query(query, [password, id], (err, results) => {
+		if (!err) {
+			if (results.affectedRows == 0) {
+				console.log('User not found');
+			} else {
+				console.log('Password changed in auth');
+			}
+		}
+	});
+};

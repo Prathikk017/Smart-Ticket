@@ -265,7 +265,7 @@ const RouteStageMap = () => {
 		// Redirect to sign-in page if the user is idle
 		if (isIdle) {
 			window.localStorage.removeItem('Lekpay');
-			history('/');
+			history('/signin');
 		}
 	}, [isIdle, history]);
 
@@ -277,7 +277,7 @@ const RouteStageMap = () => {
 		const token = window.localStorage.getItem('Lekpay');
 		const Token = JSON.parse(token);
 		if (!Token) {
-			history('/');
+			history('/signin');
 		} else {
 			getRoute();
 			getStage();
@@ -293,10 +293,12 @@ const RouteStageMap = () => {
 						<h2 className='text-4xl text-pink-500 text-center py-1'>
 							Route Map
 						</h2>
-						<div className='flex flex-col py-2'>
-							<label>Route Name:</label>
+						<div className='flex flex-row py-2'>
+							<label className='justify-center items-center mr-14 mt-1'>
+								Route Name:{' '}
+							</label>
 							<select
-								className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+								className='border p-1 rounded w-[58%] ml-3 hover:border-pink-500 duration-200'
 								onChange={setData1}
 								onClick={(e) => {
 									if (e.target.value !== 'Select') {
@@ -316,20 +318,24 @@ const RouteStageMap = () => {
 									: ' '}
 							</select>
 						</div>
-						<div className='flex flex-col py-2'>
-							<label>Route Effective date:</label>
+						<div className='flex flex-row py-2'>
+							<label className='justify-center items-center mr-4 mt-1'>
+								Route Effective date:{' '}
+							</label>
 							<input
 								type='date'
 								onChange={setData5}
 								value={effDate}
-								className='border rounded w-full hover:border-pink-500 duration-200 p-1'
+								className='border rounded w-[58%] hover:border-pink-500 duration-200 p-1'
 								min={new Date().toISOString().split('T')[0]}
 							/>
 						</div>
-						<div className='flex flex-col py-1'>
-							<label>Route Start Stage:</label>
+						<div className='flex flex-row py-1'>
+							<label className='justify-center items-center mr-9 mt-1'>
+								Route Start Stage:{' '}
+							</label>
 							<select
-								className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+								className='border p-1 rounded w-[58%] hover:border-pink-500 duration-200'
 								onChange={startStage}
 							>
 								<option>Select</option>
@@ -375,11 +381,13 @@ const RouteStageMap = () => {
 						</div>
 						{intermediateStages.map((stage, stageIndex) => {
 							return (
-								<div className=' flex-col py-2 ' key={stageIndex}>
-									<label>Intermediate Stage:</label>
-									<div>
+								<div className='flex flex-col py-2 ' key={stageIndex}>
+									<label className='justify-center items-center mr-4 mt-1'>
+										Intermediate Stage:{' '}
+									</label>
+									<div className='flex flex-row'>
 										<select
-											className='border p-1 rounded w-[70%] hover:border-pink-500 duration-200'
+											className='border p-1 rounded w-[60%] hover:border-pink-500 duration-200'
 											value={intermediateStageValues[stageIndex]}
 											onChange={(event) =>
 												updateIntermediateStageValue(event, stageIndex)
@@ -404,6 +412,7 @@ const RouteStageMap = () => {
 											<AiOutlineClose />
 										</button>
 									</div>
+
 									<div className='flex flex-col'>
 										<label className='pt-2'>Fare:</label>
 
@@ -438,10 +447,12 @@ const RouteStageMap = () => {
 							);
 						})}
 
-						<div className='flex flex-col py-1'>
-							<label>Route End Stage:</label>
+						<div className='flex flex-row py-1'>
+							<label className='justify-center items-center mr-10 mt-1'>
+								Route End Stage:{' '}
+							</label>
 							<select
-								className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+								className='border p-1 rounded w-[59%] hover:border-pink-500 duration-200'
 								onChange={endStage}
 							>
 								<option>Select</option>
@@ -455,29 +466,29 @@ const RouteStageMap = () => {
 									  })
 									: ' '}
 							</select>
-							<label className='pt-2'>Fare:</label>
-							<div className='grid grid-cols-3 gap-2'>
-								{TicketShortData.map((key, index) => {
-									return (
-										<div className='flex flex-col' key={index}>
-											<label className='mr-2 justify-center items-center'>
-												{TicketData[index]}:
-											</label>
-											<input
-												type='number'
-												className='w-[70%] px-3 py-1 border rounded hover:border-pink-500 duration-200'
-												min={0}
-												onChange={(event) => setData4(event, key)}
-												value={endFareData[key]}
-											/>
-										</div>
-									);
-								})}
-							</div>
+						</div>
+						<label className='pt-2'>Fare:</label>
+						<div className='grid grid-cols-3 gap-2'>
+							{TicketShortData.map((key, index) => {
+								return (
+									<div className='flex flex-col' key={index}>
+										<label className='mr-2 justify-center items-center'>
+											{TicketData[index]}:
+										</label>
+										<input
+											type='number'
+											className='w-[70%] px-3 py-1 border rounded hover:border-pink-500 duration-200'
+											min={0}
+											onChange={(event) => setData4(event, key)}
+											value={endFareData[key]}
+										/>
+									</div>
+								);
+							})}
 						</div>
 						<button
 							type='submit'
-							className='border w-full my-3 py-2 text-white bg-pink-500 rounded text-lg hover:bg-pink-400 duration-200'
+							className='border w-full my-3 py-2 mb-20 text-white bg-pink-500 rounded text-lg hover:bg-pink-400 duration-200'
 							onClick={handleSubmit}
 						>
 							Register

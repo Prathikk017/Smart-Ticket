@@ -92,7 +92,7 @@ const Stageregister = () => {
 		// Redirect to sign-in page if the user is idle
 		if (isIdle) {
 			window.localStorage.removeItem('Lekpay');
-			history('/');
+			history('/signin');
 		}
 	}, [isIdle, history]);
 
@@ -100,7 +100,7 @@ const Stageregister = () => {
 		const token = window.localStorage.getItem('Lekpay');
 		const Token = JSON.parse(token);
 		if (!Token) {
-			history('/');
+			history('/signin');
 		}
 	}, []);
 
@@ -113,12 +113,14 @@ const Stageregister = () => {
 						<h2 className='text-4xl text-pink-500 text-center py-4'>
 							Stage Register
 						</h2>
-						<div className='flex flex-col py-1'>
-							<label>Stage Name</label>
+						<div className='flex flex-row py-8'>
+							<label className=' text-md justify-center items-center mr-4 mt-1'>
+								Stage Name:{' '}
+							</label>
 							<input
 								type='text'
 								onChange={setData}
-								className='border rounded w-full hover:border-pink-500 duration-200 p-1'
+								className='border rounded w-[73%] hover:border-pink-500 duration-200 p-1'
 							/>
 						</div>
 

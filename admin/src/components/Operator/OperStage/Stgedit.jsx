@@ -97,7 +97,7 @@ const Stgedit = () => {
 		// Redirect to sign-in page if the user is idle
 		if (isIdle) {
 			window.localStorage.removeItem('Lekpay');
-			history('/');
+			history('/signin');
 		}
 	}, [isIdle, history]);
 
@@ -105,7 +105,7 @@ const Stgedit = () => {
 		const token = window.localStorage.getItem('Lekpay');
 		const Token = JSON.parse(token);
 		if (!Token) {
-			history('/');
+			history('/signin');
 		} else {
 			getData();
 		}
@@ -119,20 +119,24 @@ const Stgedit = () => {
 						<h2 className='text-3xl text-pink-500 text-center py-2'>
 							Update Stage
 						</h2>
-						<div className='flex flex-col py-1'>
-							<label>Stage Name</label>
+						<div className='flex flex-row py-4'>
+							<label className='justify-center items-center mr-6 mt-2'>
+								Stage Name:{' '}
+							</label>
 							<input
 								type='text'
 								name='StageName'
 								value={StageName}
-								className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+								className='border p-2 rounded w-[73%] hover:border-pink-500 duration-200'
 								onChange={setData1}
 							/>
 						</div>
-						<div className='flex flex-col py-1'>
-							<label>Status</label>
+						<div className='flex flex-row py-4'>
+							<label className='justify-center items-center mr-14 mt-2'>
+								Status:{' '}
+							</label>
 							<select
-								className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+								className='border p-2 rounded w-[73%] ml-1 hover:border-pink-500 duration-200'
 								name='stgstatus'
 								value={stgstatus}
 								onChange={setData2}

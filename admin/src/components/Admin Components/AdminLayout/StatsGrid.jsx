@@ -81,7 +81,7 @@ const StatsGrid = () => {
 		const token = window.localStorage.getItem('Lekpay');
 		const Token = JSON.parse(token);
 		if (!Token) {
-			history('/');
+			history('/signin');
 		} else {
 			getOperatorsData();
 			getEmployeesData();

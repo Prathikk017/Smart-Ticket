@@ -148,7 +148,7 @@ const Rutedit = () => {
 		// Redirect to sign-in page if the user is idle
 		if (isIdle) {
 			window.localStorage.removeItem('Lekpay');
-			history('/');
+			history('/signin');
 		}
 	}, [isIdle, history]);
 
@@ -156,7 +156,7 @@ const Rutedit = () => {
 		const token = window.localStorage.getItem('Lekpay');
 		const Token = JSON.parse(token);
 		if (!Token) {
-			history('/');
+			history('/signin');
 		} else {
 			getData();
 			getStage();
@@ -171,30 +171,36 @@ const Rutedit = () => {
 						<h2 className='text-4xl text-pink-500 text-center py-1'>
 							Update Route
 						</h2>
-						<div className='flex flex-col py-2'>
-							<label>Route Name</label>
+						<div className='flex flex-row py-2'>
+							<label className='justify-center items-center mr-16 mt-1'>
+								Route Name:{' '}
+							</label>
 							<input
 								type='text'
 								name='RouteName'
 								value={RouteName}
 								onChange={setData}
-								className='border rounded w-full hover:border-pink-500 duration-200 p-1'
+								className='border rounded w-[58%] hover:border-pink-500 duration-200 p-1'
 							/>
 						</div>
-						<div className='flex flex-col py-2'>
-							<label>Route Effective date</label>
+						<div className='flex flex-row py-2'>
+							<label className='justify-center items-center mr-3 mt-1'>
+								Route Effective date:{' '}
+							</label>
 							<input
 								type='date'
 								name='RouteEffDate'
 								value={RouteEffDate}
 								onChange={setData1}
-								className='border rounded w-full hover:border-pink-500 duration-200 p-1'
+								className='border rounded w-[58%] hover:border-pink-500 duration-200 p-1'
 							/>
 						</div>
-						<div className='flex flex-col py-2'>
-							<label>Route Start Stage</label>
+						<div className='flex flex-row py-2'>
+							<label className='justify-center items-center mr-8 mt-1'>
+								Route Start Stage:{' '}
+							</label>
 							<select
-								className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+								className='border p-1 rounded w-[58%] hover:border-pink-500 duration-200'
 								onChange={startStage}
 								name='RouteSStage'
 								value={RouteSStage}
@@ -209,10 +215,12 @@ const Rutedit = () => {
 								})}
 							</select>
 						</div>
-						<div className='flex flex-col py-2'>
-							<label>Route End Stage</label>
+						<div className='flex flex-row py-2'>
+							<label className='justify-center items-center mr-10 mt-1'>
+								Route End Stage:{' '}
+							</label>
 							<select
-								className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+								className='border p-1 rounded w-[58%] hover:border-pink-500 duration-200'
 								onChange={endStage}
 								name='RouteEStage'
 								value={RouteEStage}
@@ -227,10 +235,12 @@ const Rutedit = () => {
 								})}
 							</select>
 						</div>
-						<div className='flex flex-col py-1'>
-							<label>Status</label>
+						<div className='flex flex-row py-1'>
+							<label className='justify-center items-center mr-28 mt-1'>
+								Status:{' '}
+							</label>
 							<select
-								className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+								className='border p-1 rounded w-[58%] hover:border-pink-500 duration-200'
 								name='RouteStatus'
 								value={RouteStatus}
 								onChange={setData2}

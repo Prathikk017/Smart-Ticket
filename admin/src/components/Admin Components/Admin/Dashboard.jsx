@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 // import Opertable from './Opertable';
 import axios from 'axios';
 import useIdleTimeout from '../../../useIdleTimeout';
-// import Dheader from './Dheader';
+
 import Sidebar from './Sidebar';
 import { useNavigate } from 'react-router-dom';
 import Header from '../AdminLayout/Header';
@@ -49,14 +49,14 @@ const Dashboard = () => {
 		// Redirect to sign-in page if the user is idle
 		if (isIdle) {
 			window.localStorage.removeItem('Lekpay');
-			history('/');
+			history('/signin');
 		}
 	}, [isIdle, history]);
 	useEffect(() => {
 		const token = window.localStorage.getItem('Lekpay');
 		const Token = JSON.parse(token);
 		if (!Token) {
-			history('/');
+			history('/signin');
 		}
 	}, []);
 

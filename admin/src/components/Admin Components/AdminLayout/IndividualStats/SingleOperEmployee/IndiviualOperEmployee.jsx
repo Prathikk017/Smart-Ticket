@@ -6,6 +6,7 @@ import axios from 'axios';
 import Header from '../../Header';
 import Sidebar from '../../../Admin/Sidebar';
 import useIdleTimeout from '../../../../../useIdleTimeout';
+
 const IndiviualOperEmployee = () => {
 	const { OperId } = useParams();
 
@@ -68,7 +69,7 @@ const IndiviualOperEmployee = () => {
 		// Redirect to sign-in page if the user is idle
 		if (isIdle) {
 			window.localStorage.removeItem('Lekpay');
-			history('/');
+			history('/signin');
 		}
 	}, [isIdle, history]);
 
@@ -76,7 +77,7 @@ const IndiviualOperEmployee = () => {
 		const token = window.localStorage.getItem('Lekpay');
 		const Token = JSON.parse(token);
 		if (!Token) {
-			history('/');
+			history('/signin');
 		} else {
 			getAssetByOperatorId();
 		}

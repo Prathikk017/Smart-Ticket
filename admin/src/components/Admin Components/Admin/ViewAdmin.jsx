@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import moment from 'moment';
 import Sidebar from './Sidebar';
 import useIdleTimeout from '../../../useIdleTimeout';
+
 const ViewAdmin = () => {
 	const [data, setData] = useState([]);
 	const { AdminId } = useParams();
@@ -57,7 +58,7 @@ const ViewAdmin = () => {
 		// Redirect to sign-in page if the user is idle
 		if (isIdle) {
 			window.localStorage.removeItem('Lekpay');
-			history('/');
+			history('/signin');
 		}
 	}, [isIdle, history]);
 
@@ -65,7 +66,7 @@ const ViewAdmin = () => {
 		const token = window.localStorage.getItem('Lekpay');
 		const Token = JSON.parse(token);
 		if (!Token) {
-			history('/');
+			history('/signin');
 		} else {
 			getSingleAdminData();
 		}

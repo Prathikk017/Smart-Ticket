@@ -219,7 +219,7 @@ const Routeregister = () => {
 		// Redirect to sign-in page if the user is idle
 		if (isIdle) {
 			window.localStorage.removeItem('Lekpay');
-			history('/');
+			history('/signin');
 		}
 	}, [isIdle, history]);
 
@@ -227,7 +227,7 @@ const Routeregister = () => {
 		const token = window.localStorage.getItem('Lekpay');
 		const Token = JSON.parse(token);
 		if (!Token) {
-			history('/');
+			history('/signin');
 		} else {
 			getTicketData();
 			getStage();
@@ -243,28 +243,34 @@ const Routeregister = () => {
 						<h2 className='text-4xl text-pink-500 text-center py-1'>
 							Route Register
 						</h2>
-						<div className='flex flex-col py-2'>
-							<label>Route Name</label>
+						<div className='flex flex-row py-2'>
+							<label className='justify-center items-center mr-16 mt-1'>
+								Route Name:{' '}
+							</label>
 							<input
 								type='text'
 								onChange={setData}
-								className='border rounded w-full hover:border-pink-500 duration-200 p-1'
+								className='border rounded w-[58%] ml-1 hover:border-pink-500 duration-200 p-1'
 							/>
 						</div>
-						<div className='flex flex-col py-2'>
-							<label>Route Effective date</label>
+						<div className='flex flex-row py-2'>
+							<label className='justify-center items-center mr-4 mt-1'>
+								Route Effective date:{' '}
+							</label>
 							<input
 								type='date'
 								onChange={setData1}
 								value={RouteEffDate}
-								className='border rounded w-full hover:border-pink-500 duration-200 p-1'
+								className='border rounded w-[58%] hover:border-pink-500 duration-200 p-1'
 								min={new Date().toISOString().split('T')[0]}
 							/>
 						</div>
-						<div className='flex flex-col py-2'>
-							<label>Route Start Stage</label>
+						<div className='flex flex-row py-2'>
+							<label className='justify-center items-center mr-9 mt-1'>
+								Route Start Stage:{' '}
+							</label>
 							<select
-								className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+								className='border p-1 rounded w-[58%] hover:border-pink-500 duration-200'
 								onChange={startStage}
 							>
 								<option>Select</option>
@@ -279,10 +285,12 @@ const Routeregister = () => {
 									: ' '}
 							</select>
 						</div>
-						<div className='flex flex-col py-2'>
-							<label>Route End Stage</label>
+						<div className='flex flex-row py-2'>
+							<label className='justify-center items-center mr-10 mt-1'>
+								Route End Stage:{' '}
+							</label>
 							<select
-								className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+								className='border p-1 rounded w-[58%] hover:border-pink-500 duration-200'
 								onChange={endStage}
 							>
 								<option>Select</option>

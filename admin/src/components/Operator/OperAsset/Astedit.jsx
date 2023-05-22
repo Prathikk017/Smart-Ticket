@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import Opersidebar from '../Opersidebar';
 import useIdleTimeout from '../../../useIdleTimeout';
+
 const Astedit = () => {
 	const [astName, setAstName] = useState('');
 	const [astModel, setAstModel] = useState('');
@@ -140,7 +141,7 @@ const Astedit = () => {
 		// Redirect to sign-in page if the user is idle
 		if (isIdle) {
 			window.localStorage.removeItem('Lekpay');
-			history('/');
+			history('/signin');
 		}
 	}, [isIdle, history]);
 
@@ -148,7 +149,7 @@ const Astedit = () => {
 		const token = window.localStorage.getItem('Lekpay');
 		const Token = JSON.parse(token);
 		if (!Token) {
-			history('/');
+			history('/signin');
 		} else {
 			getData();
 		}
@@ -158,85 +159,101 @@ const Astedit = () => {
 			<Opersidebar />
 			<div className='grid grid-cols-1 sm:grid-cols-2 h-screen w-full'>
 				<div className='py-4 flex flex-col justify-center items-center'>
-					<form className='max-w-[400px] w-full mx-auto'>
+					<form className='max-w-[500px] w-full mx-auto'>
 						<h2 className='text-4xl text-pink-500 text-center py-1'>
 							Update Asset
 						</h2>
 
-						<div className='flex flex-col py-1'>
-							<label>Asset Model</label>
+						<div className='flex flex-row py-2'>
+							<label className='justify-center items-center mr-24 mt-1'>
+								Asset Model:{' '}
+							</label>
 							<input
 								name='astName'
 								type='text'
 								onChange={setData2}
 								value={astName}
-								className='border rounded w-full hover:border-pink-500 duration-200 p-1'
+								className='border rounded w-[58%] hover:border-pink-500 duration-200 p-1'
 							/>
 						</div>
-						<div className='flex flex-col py-1'>
-							<label>Manufacture Year</label>
+						<div className='flex flex-row py-2'>
+							<label className='justify-center items-center mr-14 mt-1'>
+								Manufacture Year:{' '}
+							</label>
 							<input
 								name='astModel'
 								type='number'
 								onChange={setData3}
 								value={astModel}
-								className='border rounded w-full hover:border-pink-500 duration-200 p-1'
+								className='border rounded w-[58%] ml-1 hover:border-pink-500 duration-200 p-1'
 							/>
 						</div>
-						<div className='flex flex-col py-1'>
-							<label>Chasis Number</label>
+						<div className='flex flex-row py-2'>
+							<label className='justify-center items-center mr-16 mt-1'>
+								Chasis Number:{' '}
+							</label>
 							<input
 								name='astChasNo'
 								type='text'
 								onChange={setData4}
 								value={astChasNo}
-								className='border rounded w-full hover:border-pink-500 duration-200 p-1'
+								className='border rounded w-[58%] ml-3 hover:border-pink-500 duration-200 p-1'
 							/>
 						</div>
-						<div className='flex flex-col py-1'>
-							<label>Engine Number</label>
+						<div className='flex flex-row py-2'>
+							<label className='justify-center items-center mr-16 mt-1'>
+								Engine Number:{' '}
+							</label>
 							<input
 								name='astEngNo'
 								type='text'
 								onChange={setData5}
 								value={astEngNo}
-								className='border rounded w-full hover:border-pink-500 duration-200 p-1'
+								className='border rounded w-[58%] ml-2 hover:border-pink-500 duration-200 p-1'
 							/>
 						</div>
-						<div className='flex flex-col py-1'>
-							<label>Permit Number</label>
+						<div className='flex flex-row py-2'>
+							<label className='justify-center items-center mr-16 mt-1'>
+								Permit Number:{' '}
+							</label>
 							<input
 								name='astPermitNo'
 								type='text'
 								onChange={setData6}
 								value={astPermitNo}
-								className='border rounded w-full hover:border-pink-500 duration-200 p-1'
+								className='border rounded w-[58%] ml-3 hover:border-pink-500 duration-200 p-1'
 							/>
 						</div>
-						<div className='flex flex-col py-1'>
-							<label>Insurance Exp</label>
+						<div className='flex flex-row py-2'>
+							<label className='justify-center items-center mr-20 mt-1'>
+								Insurance Exp:{' '}
+							</label>
 							<input
 								name='astInsurExp'
 								type='date'
 								onChange={setData7}
 								value={astInsurExp}
-								className='border rounded w-full hover:border-pink-500 duration-200 p-1'
+								className='border rounded w-[58%] ml-2 hover:border-pink-500 duration-200 p-1'
 							/>
 						</div>
-						<div className='flex flex-col py-1'>
-							<label>Permit Exp</label>
+						<div className='flex flex-row py-2'>
+							<label className='justify-center items-center mr-28 mt-1'>
+								Permit Exp:{' '}
+							</label>
 							<input
 								name='astPermitExp'
 								type='date'
 								onChange={setData8}
 								value={astPermitExp}
-								className='border rounded w-full hover:border-pink-500 duration-200 p-1'
+								className='border rounded w-[58%] hover:border-pink-500 duration-200 p-1'
 							/>
 						</div>
-						<div className='flex flex-col py-1'>
-							<label>Status</label>
+						<div className='flex flex-row py-2'>
+							<label className='justify-center items-center mr-28 mt-1'>
+								Status:{' '}
+							</label>
 							<select
-								className='border p-1 rounded w-full hover:border-pink-500 duration-200'
+								className='border p-1 rounded w-[58%] ml-8 hover:border-pink-500 duration-200'
 								name='astatus'
 								value={astatus}
 								onChange={setData9}

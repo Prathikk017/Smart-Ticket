@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { HiOutlineViewGrid } from 'react-icons/hi';
+import { HiOutlineLogout, HiOutlineViewGrid } from 'react-icons/hi';
 import { Link } from 'react-router-dom';
 import logo from '../../../assets/logo.jpg';
-import { AiFillSetting } from 'react-icons/ai';
+
 import { MdApproval } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,7 +11,7 @@ import { GrBus, GrGroup } from 'react-icons/gr';
 import { BsFillPersonPlusFill, BsPersonBadge } from 'react-icons/bs';
 import { GiPoliceOfficerHead } from 'react-icons/gi';
 import { BiShowAlt } from 'react-icons/bi';
-import { FaUser } from 'react-icons/fa';
+
 import { ImUser } from 'react-icons/im';
 import { IoTicketOutline } from 'react-icons/io5';
 
@@ -23,7 +23,7 @@ const Sidebar = () => {
 	const history = useNavigate();
 
 	const handlesub = () => {
-		history('/');
+		history('/signin');
 	};
 
 	const handleOperatorDropdown = () => {
@@ -40,20 +40,22 @@ const Sidebar = () => {
 		const token = window.localStorage.getItem('Lekpay');
 		const Token = JSON.parse(token);
 		if (!Token) {
-			history('/');
+			history('/signin');
 		}
 	}, []);
 
 	return (
 		<div className='bg-neutral-100 flex flex-col py-3 px-1 w-50 h-screen'>
-			<div className='flex items-center justify-start hover:cursor-pointer'>
-				<img
-					className='w-[50px] ml-2 rounded-r-full rounded-l-full'
-					src={logo}
-					alt='LOGO'
-				/>
-				<h1 className='text-2xl ml-2'>LEKPAY</h1>
-			</div>
+			<Link to='/signin'>
+				<div className='flex items-center justify-start hover:cursor-pointer'>
+					<img
+						className='w-[50px] ml-2 rounded-r-full rounded-l-full'
+						src={logo}
+						alt='LOGO'
+					/>
+					<h1 className='text-2xl ml-2'>LEKPAY</h1>
+				</div>
+			</Link>
 			<div className='flex-1'>
 				<ul className='p-2'>
 					<Link to='/admin/dashboard'>
@@ -197,18 +199,14 @@ const Sidebar = () => {
 					</div>
 				</ul>
 			</div>
-			<div className='opacity-70'>
+			<div className='fixed bottom-0'>
 				<hr />
 				<ul className='p-1'>
-					<li className='flex justify-start items-center p-2 m-2 rounded-lg text-center hover:bg-pink-300 hover:cursor-pointer'>
-						<AiFillSetting />
-						<span className='ml-1'>Settings</span>
-					</li>
 					<li
 						className='flex justify-start items-center p-2 m-2 rounded-lg text-center hover:bg-pink-300 hover:cursor-pointer'
 						onClick={handlesub}
 					>
-						<FaUser />
+						<HiOutlineLogout />
 						<span className='ml-1'>Logout</span>
 					</li>
 				</ul>
