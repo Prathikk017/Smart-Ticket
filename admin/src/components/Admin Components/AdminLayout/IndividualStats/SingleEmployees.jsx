@@ -7,7 +7,6 @@ import Sidebar from '../../Admin/Sidebar';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../AdminLayout/Header';
 import EmployeeCard from './SingleOperEmployee/EmployeeCard';
-import Footer from '../../../Footer';
 
 const SingleEmployeeDashboard = () => {
 	const history = useNavigate();
@@ -70,7 +69,6 @@ const SingleEmployeeDashboard = () => {
 					{/* <TransactionChart /> */}
 				</div>
 			</div>
-			<Footer />
 		</div>
 	);
 };

@@ -6,7 +6,6 @@ import moment from 'moment';
 import Opersidebar from '../Opersidebar';
 import '../../pagination.css';
 import useIdleTimeout from '../../../useIdleTimeout';
-import Footer from '../../Footer';
 
 const Stgtable = () => {
 	const [data, setData] = useState('');
@@ -203,7 +202,6 @@ const Stgtable = () => {
 						</div>
 					</div>
 				</div>
-				<Footer />
 			</div>
 		</>
 	);

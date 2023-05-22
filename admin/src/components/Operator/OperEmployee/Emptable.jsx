@@ -6,7 +6,6 @@ import moment from 'moment';
 import Opersidebar from '../Opersidebar';
 import '../../pagination.css';
 import useIdleTimeout from '../../../useIdleTimeout';
-import Footer from '../../Footer';
 
 const Emptable = () => {
 	const [data, setData] = useState('');
@@ -213,7 +212,6 @@ const Emptable = () => {
 						</div>
 					</div>
 				</div>
-				<Footer />
 			</div>
 		</>
 	);

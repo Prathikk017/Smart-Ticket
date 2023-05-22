@@ -6,7 +6,6 @@ import OperHeader from '../Operator/OperLayout/OperHeader';
 import OperStatsGrid from '../Operator/OperLayout/OperStatsGrid';
 // import OperTransactionChart from '../Operator/OperLayout/OperTransactionChart';
 import useIdleTimeout from '../../useIdleTimeout';
-import Footer from '../Footer';
 
 const Operdashboard = () => {
 	const history = useNavigate();
@@ -70,7 +69,6 @@ const Operdashboard = () => {
 					{/* <OperTransactionChart/> */}
 				</div>
 			</div>
-			<Footer />
 		</div>
 	);
 };

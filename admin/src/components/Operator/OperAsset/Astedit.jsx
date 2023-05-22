@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import Opersidebar from '../Opersidebar';
 import useIdleTimeout from '../../../useIdleTimeout';
-import Footer from '../../Footer';
+
 const Astedit = () => {
 	const [astName, setAstName] = useState('');
 	const [astModel, setAstModel] = useState('');
@@ -159,13 +159,15 @@ const Astedit = () => {
 			<Opersidebar />
 			<div className='grid grid-cols-1 sm:grid-cols-2 h-screen w-full'>
 				<div className='py-4 flex flex-col justify-center items-center'>
-				<form className='max-w-[500px] w-full mx-auto'>
+					<form className='max-w-[500px] w-full mx-auto'>
 						<h2 className='text-4xl text-pink-500 text-center py-1'>
 							Update Asset
 						</h2>
 
 						<div className='flex flex-row py-2'>
-							<label className='justify-center items-center mr-24 mt-1'>Asset Model: </label>
+							<label className='justify-center items-center mr-24 mt-1'>
+								Asset Model:{' '}
+							</label>
 							<input
 								name='astName'
 								type='text'
@@ -175,7 +177,9 @@ const Astedit = () => {
 							/>
 						</div>
 						<div className='flex flex-row py-2'>
-							<label className='justify-center items-center mr-14 mt-1'>Manufacture Year: </label>
+							<label className='justify-center items-center mr-14 mt-1'>
+								Manufacture Year:{' '}
+							</label>
 							<input
 								name='astModel'
 								type='number'
@@ -185,7 +189,9 @@ const Astedit = () => {
 							/>
 						</div>
 						<div className='flex flex-row py-2'>
-							<label className='justify-center items-center mr-16 mt-1'>Chasis Number: </label>
+							<label className='justify-center items-center mr-16 mt-1'>
+								Chasis Number:{' '}
+							</label>
 							<input
 								name='astChasNo'
 								type='text'
@@ -195,7 +201,9 @@ const Astedit = () => {
 							/>
 						</div>
 						<div className='flex flex-row py-2'>
-							<label className='justify-center items-center mr-16 mt-1'>Engine Number: </label>
+							<label className='justify-center items-center mr-16 mt-1'>
+								Engine Number:{' '}
+							</label>
 							<input
 								name='astEngNo'
 								type='text'
@@ -205,7 +213,9 @@ const Astedit = () => {
 							/>
 						</div>
 						<div className='flex flex-row py-2'>
-							<label className='justify-center items-center mr-16 mt-1'>Permit Number: </label>
+							<label className='justify-center items-center mr-16 mt-1'>
+								Permit Number:{' '}
+							</label>
 							<input
 								name='astPermitNo'
 								type='text'
@@ -215,7 +225,9 @@ const Astedit = () => {
 							/>
 						</div>
 						<div className='flex flex-row py-2'>
-							<label className='justify-center items-center mr-20 mt-1'>Insurance Exp: </label>
+							<label className='justify-center items-center mr-20 mt-1'>
+								Insurance Exp:{' '}
+							</label>
 							<input
 								name='astInsurExp'
 								type='date'
@@ -225,7 +237,9 @@ const Astedit = () => {
 							/>
 						</div>
 						<div className='flex flex-row py-2'>
-							<label className='justify-center items-center mr-28 mt-1'>Permit Exp: </label>
+							<label className='justify-center items-center mr-28 mt-1'>
+								Permit Exp:{' '}
+							</label>
 							<input
 								name='astPermitExp'
 								type='date'
@@ -235,7 +249,9 @@ const Astedit = () => {
 							/>
 						</div>
 						<div className='flex flex-row py-2'>
-							<label className='justify-center items-center mr-28 mt-1'>Status: </label>
+							<label className='justify-center items-center mr-28 mt-1'>
+								Status:{' '}
+							</label>
 							<select
 								className='border p-1 rounded w-[58%] ml-8 hover:border-pink-500 duration-200'
 								name='astatus'
@@ -255,7 +271,6 @@ const Astedit = () => {
 					</form>
 				</div>
 			</div>
-			<Footer />
 		</div>
 	);
 };

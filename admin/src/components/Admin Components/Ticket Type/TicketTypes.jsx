@@ -6,7 +6,6 @@ import moment from 'moment';
 import Sidebar from '../Admin/Sidebar';
 import '../../pagination.css';
 import useIdleTimeout from '../../../useIdleTimeout';
-import Footer from '../../Footer';
 
 const TicketTypes = () => {
 	const [data, setData] = useState('');
@@ -200,7 +199,6 @@ const TicketTypes = () => {
 						</div>
 					</div>
 				</div>
-				<Footer />
 			</div>
 		</>
 	);

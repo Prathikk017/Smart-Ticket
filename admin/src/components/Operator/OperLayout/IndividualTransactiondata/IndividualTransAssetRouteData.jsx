@@ -6,7 +6,6 @@ import OperHeader from '../OperHeader';
 import Opersidebar from '../../Opersidebar';
 import { TbRoute } from 'react-icons/tb';
 import useIdleTimeout from '../../../../useIdleTimeout';
-import Footer from '../../../Footer';
 
 const IndividualTransAssetRouteData = () => {
 	const { AstId } = useParams();
@@ -125,7 +124,6 @@ const IndividualTransAssetRouteData = () => {
 					</div>
 				</div>
 			</div>
-			<Footer />
 		</div>
 	);
 };

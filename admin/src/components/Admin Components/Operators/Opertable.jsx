@@ -6,7 +6,6 @@ import moment from 'moment';
 import Sidebar from '../Admin/Sidebar';
 import '../../pagination.css';
 import useIdleTimeout from '../../../useIdleTimeout';
-import Footer from '../../Footer';
 
 const Opertable = () => {
 	const [data, setData] = useState('');
@@ -209,7 +208,6 @@ const Opertable = () => {
 						</div>
 					</div>
 				</div>
-				<Footer />
 			</div>
 		</>
 	);

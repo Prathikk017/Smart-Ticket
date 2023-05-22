@@ -4,7 +4,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import moment from 'moment';
 import Sidebar from '../Admin/Sidebar';
 import useIdleTimeout from '../../../useIdleTimeout';
-import Footer from '../../Footer';
 
 const ViewEmployee = () => {
 	const [data, setData] = useState([]);
@@ -178,7 +177,6 @@ const ViewEmployee = () => {
 						  })
 						: ' '}
 				</div>
-				<Footer />
 			</div>
 		</>
 	);

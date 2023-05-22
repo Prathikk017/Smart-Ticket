@@ -4,7 +4,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import moment from 'moment';
 import Sidebar from '../Admin/Sidebar';
 import useIdleTimeout from '../../../useIdleTimeout';
-import Footer from '../../Footer';
 
 const ViewUser = () => {
 	const [data, setData] = useState([]);
@@ -188,7 +187,6 @@ const ViewUser = () => {
 						  })
 						: ' '}
 				</div>
-				<Footer />
 			</div>
 		</>
 	);

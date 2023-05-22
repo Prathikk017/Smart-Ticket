@@ -51,14 +51,16 @@ const Opersidebar = () => {
 
 	return (
 		<div className='bg-neutral-100 flex flex-col p-3 w-60 h-screen'>
-			<div className='flex items-center justify-start hover:cursor-pointer'>
-				<img
-					className='w-[50px] ml-2 rounded-r-full rounded-l-full'
-					src={logo}
-					alt='LOGO'
-				/>
-				<h1 className='text-2xl ml-2'>LEKPAY</h1>
-			</div>
+			<Link to='/signin'>
+				<div className='flex items-center justify-start hover:cursor-pointer'>
+					<img
+						className='w-[50px] ml-2 rounded-r-full rounded-l-full'
+						src={logo}
+						alt='LOGO'
+					/>
+					<h1 className='text-2xl ml-2'>LEKPAY</h1>
+				</div>
+			</Link>
 			<div className='flex-1'>
 				<ul className='p-2'>
 					<div>
@@ -223,7 +225,7 @@ const Opersidebar = () => {
 					</Link>
 				</ul>
 			</div>
-			<div className='fixed bottom-16'>
+			<div className='fixed bottom-0'>
 				<hr />
 				<ul className='p-1'>
 					<li

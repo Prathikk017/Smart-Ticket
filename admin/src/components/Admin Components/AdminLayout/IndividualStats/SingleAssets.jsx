@@ -7,7 +7,6 @@ import Sidebar from '../../Admin/Sidebar';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../AdminLayout/Header';
 import AssetCard from './SingleOperAsset/AssetCard';
-import Footer from '../../../Footer';
 
 const SingleAssetDashboard = () => {
 	const history = useNavigate();
@@ -70,7 +69,6 @@ const SingleAssetDashboard = () => {
 					{/* <TransactionChart /> */}
 				</div>
 			</div>
-			<Footer />
 		</div>
 	);
 };

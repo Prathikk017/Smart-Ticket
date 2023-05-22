@@ -5,7 +5,6 @@ import { useFormik } from 'formik';
 
 import Sidebar from '../Admin/Sidebar';
 import { adminRegisterSchema } from '../../../schemas/index';
-import Footer from '../../Footer';
 
 const initialValues = {
 	TTname: '',
@@ -76,7 +75,9 @@ const TicketType = () => {
 							Ticket Type
 						</h2>
 						<div className='flex flex-row py-2'>
-							<label className='justify-center items-center mr-16 mt-2'>Name: </label>
+							<label className='justify-center items-center mr-16 mt-2'>
+								Name:{' '}
+							</label>
 							<input
 								type='text'
 								name='TTname'
@@ -90,7 +91,9 @@ const TicketType = () => {
 							) : null}
 						</div>
 						<div className='flex flex-row py-2'>
-							<label className='justify-center items-center mr-7 mt-2'>Short Name: </label>
+							<label className='justify-center items-center mr-7 mt-2'>
+								Short Name:{' '}
+							</label>
 							<input
 								type='text'
 								name='TTshortname'
@@ -171,7 +174,6 @@ const TicketType = () => {
 					</form>
 				</div>
 			</div>
-			<Footer />
 		</div>
 	);
 };

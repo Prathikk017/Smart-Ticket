@@ -3,7 +3,6 @@ import axios from 'axios';
 import Opersidebar from '../Opersidebar';
 import { useNavigate } from 'react-router-dom';
 import useIdleTimeout from '../../../useIdleTimeout';
-import Footer from '../../Footer';
 
 const Stageregister = () => {
 	const [StageName, setStageName] = useState('');
@@ -115,7 +114,9 @@ const Stageregister = () => {
 							Stage Register
 						</h2>
 						<div className='flex flex-row py-8'>
-							<label className=' text-md justify-center items-center mr-4 mt-1'>Stage Name: </label>
+							<label className=' text-md justify-center items-center mr-4 mt-1'>
+								Stage Name:{' '}
+							</label>
 							<input
 								type='text'
 								onChange={setData}
@@ -132,7 +133,6 @@ const Stageregister = () => {
 					</form>
 				</div>
 			</div>
-			<Footer />
 		</div>
 	);
 };

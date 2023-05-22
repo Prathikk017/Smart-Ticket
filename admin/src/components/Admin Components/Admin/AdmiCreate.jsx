@@ -5,7 +5,6 @@ import { useFormik } from 'formik';
 import useIdleTimeout from '../../../useIdleTimeout';
 import Sidebar from './Sidebar';
 import { adminRegisterSchema } from '../../../schemas';
-import Footer from '../../Footer';
 
 const initialValues = {
 	Aname: '',
@@ -129,7 +128,9 @@ const AdmiCreate = () => {
 							Admin Register
 						</h2>
 						<div className='flex flex-row py-1'>
-							<label className='justify-center items-center mr-16 mt-1'>Admin Name: </label>
+							<label className='justify-center items-center mr-16 mt-1'>
+								Admin Name:{' '}
+							</label>
 							<input
 								type='text'
 								name='Aname'
@@ -143,7 +144,9 @@ const AdmiCreate = () => {
 							) : null}
 						</div>
 						<div className='flex flex-row py-1'>
-							<label className='justify-center items-center mr-20 mt-1'>Phone no: </label>
+							<label className='justify-center items-center mr-20 mt-1'>
+								Phone no:{' '}
+							</label>
 							<input
 								type='number'
 								name='Amobile'
@@ -157,7 +160,9 @@ const AdmiCreate = () => {
 							) : null}
 						</div>
 						<div className='flex flex-row py-1'>
-							<label className='justify-center items-center mr-24 mt-1'>Gender: </label>
+							<label className='justify-center items-center mr-24 mt-1'>
+								Gender:{' '}
+							</label>
 							<select
 								className='border p-1 rounded w-[58%] ml-3 hover:border-pink-500 duration-200'
 								onChange={setAgenderData}
@@ -169,7 +174,9 @@ const AdmiCreate = () => {
 							</select>
 						</div>
 						<div className='flex flex-row py-1'>
-							<label className='justify-center items-center mr-16 mt-1'>Date of birth: </label>
+							<label className='justify-center items-center mr-16 mt-1'>
+								Date of birth:{' '}
+							</label>
 							<input
 								type='date'
 								onChange={setADoBData}
@@ -177,7 +184,9 @@ const AdmiCreate = () => {
 							/>
 						</div>
 						<div className='flex flex-row py-1'>
-							<label className='justify-center items-center mr-28 mt-1'>Email: </label>
+							<label className='justify-center items-center mr-28 mt-1'>
+								Email:{' '}
+							</label>
 							<input
 								type='email'
 								name='Aemail'
@@ -191,7 +200,9 @@ const AdmiCreate = () => {
 							) : null}
 						</div>
 						<div className='flex flex-row py-1'>
-							<label className='justify-center items-center mr-20 mt-1'>Password: </label>
+							<label className='justify-center items-center mr-20 mt-1'>
+								Password:{' '}
+							</label>
 							<input
 								type='password'
 								name='Apassword'
@@ -213,7 +224,6 @@ const AdmiCreate = () => {
 					</form>
 				</div>
 			</div>
-			<Footer />
 		</div>
 	);
 };

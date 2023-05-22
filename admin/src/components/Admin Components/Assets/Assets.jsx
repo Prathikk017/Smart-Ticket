@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaAngleDoubleLeft, FaAngleDoubleRight } from 'react-icons/fa';
 import moment from 'moment';
 import Sidebar from '../Admin/Sidebar';
-import Footer from '../../Footer';
+
 import '../../pagination.css';
 import useIdleTimeout from '../../../useIdleTimeout';
 
@@ -216,7 +216,6 @@ const Assets = () => {
 						</div>
 					</div>
 				</div>
-				<Footer />
 			</div>
 		</>
 	);

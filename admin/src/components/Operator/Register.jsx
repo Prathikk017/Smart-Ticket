@@ -6,7 +6,6 @@ import login from '../../assets/login.jpg';
 import { useFormik } from 'formik';
 import axios from 'axios';
 import { operRegisterSchema } from '../../schemas';
-import Footer from '../Footer';
 
 const initialValues = {
 	OperName: '',
@@ -144,7 +143,9 @@ const Register = () => {
 							Register
 						</h2>
 						<div className='flex flex-row py-1'>
-							<label className='justify-center items-center mr-4 mt-1'>Company Name: </label>
+							<label className='justify-center items-center mr-4 mt-1'>
+								Company Name:{' '}
+							</label>
 							<input
 								type='text'
 								name='OperName'
@@ -158,7 +159,9 @@ const Register = () => {
 							) : null}
 						</div>
 						<div className='flex flex-row py-1'>
-							<label className='justify-center items-center mr-11 mt-1'>Short Name: </label>
+							<label className='justify-center items-center mr-11 mt-1'>
+								Short Name:{' '}
+							</label>
 							<input
 								type='text'
 								name='OperShortName'
@@ -172,7 +175,9 @@ const Register = () => {
 							) : null}
 						</div>
 						<div className='flex flex-row py-1'>
-							<label className='justify-center items-center mr-5 mt-1'>Company Email: </label>
+							<label className='justify-center items-center mr-5 mt-1'>
+								Company Email:{' '}
+							</label>
 							<input
 								type='email'
 								name='OperEmail'
@@ -186,7 +191,9 @@ const Register = () => {
 							) : null}
 						</div>
 						<div className='flex flex-row py-1'>
-							<label className='justify-center items-center mr-14 mt-1'>Phone no: </label>
+							<label className='justify-center items-center mr-14 mt-1'>
+								Phone no:{' '}
+							</label>
 							<input
 								type='number'
 								name='OperPhone'
@@ -200,7 +207,9 @@ const Register = () => {
 							) : null}
 						</div>
 						<div className='flex flex-row py-1'>
-							<label className=' justify-center items-center mr-7 mt-1'>Contact Name: </label>
+							<label className=' justify-center items-center mr-7 mt-1'>
+								Contact Name:{' '}
+							</label>
 							<input
 								type='text'
 								name='OperContactName'
@@ -216,7 +225,9 @@ const Register = () => {
 							) : null}
 						</div>
 						<div className='flex flex-row py-1'>
-							<label className='justify-center items-center mr-8 mt-1'>Contact Email: </label>
+							<label className='justify-center items-center mr-8 mt-1'>
+								Contact Email:{' '}
+							</label>
 							<input
 								type='email'
 								name='OperContactEmail'
@@ -232,7 +243,9 @@ const Register = () => {
 							) : null}
 						</div>
 						<div className='flex flex-row py-1'>
-							<label className='justify-center items-center mr-20 mt-1'>GSTIN: </label>
+							<label className='justify-center items-center mr-20 mt-1'>
+								GSTIN:{' '}
+							</label>
 							<input
 								type='text'
 								name='OperGSTIN'
@@ -246,7 +259,9 @@ const Register = () => {
 							) : null}
 						</div>
 						<div className='flex flex-row py-1'>
-							<label className='justify-center items-center mr-16 mt-1'>Address1: </label>
+							<label className='justify-center items-center mr-16 mt-1'>
+								Address1:{' '}
+							</label>
 							<input
 								type='text'
 								name='OperAddr1'
@@ -260,7 +275,9 @@ const Register = () => {
 							) : null}
 						</div>
 						<div className='flex flex-row py-1'>
-							<label className='justify-center items-center mr-16 mt-1'>Address2: </label>
+							<label className='justify-center items-center mr-16 mt-1'>
+								Address2:{' '}
+							</label>
 							<input
 								type='text'
 								name='OperAddr2'
@@ -274,7 +291,9 @@ const Register = () => {
 							) : null}
 						</div>
 						<div className='flex flex-row py-1'>
-							<label className='justify-center items-center mr-16 mt-1'>Password: </label>
+							<label className='justify-center items-center mr-16 mt-1'>
+								Password:{' '}
+							</label>
 							<input
 								type='password'
 								name='OperPassword'
@@ -288,7 +307,9 @@ const Register = () => {
 							) : null}
 						</div>
 						<div className='flex flex-row py-1'>
-							<label className='justify-center items-center mr-24 mt-1'>City: </label>
+							<label className='justify-center items-center mr-24 mt-1'>
+								City:{' '}
+							</label>
 							<input
 								type='text'
 								name='OperCity'
@@ -302,7 +323,9 @@ const Register = () => {
 							) : null}
 						</div>
 						<div className='flex flex-row py-1'>
-							<label className='justify-center items-center mr-16 mt-1'>Pincode: </label>
+							<label className='justify-center items-center mr-16 mt-1'>
+								Pincode:{' '}
+							</label>
 							<input
 								type='number'
 								name='OperPincode'
@@ -335,7 +358,6 @@ const Register = () => {
 					<img src={login} alt='logo' className='w-[500px] h-[600px]' />
 				</div>
 			</div>
-			<Footer />
 		</div>
 	);
 };

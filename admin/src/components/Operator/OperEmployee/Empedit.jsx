@@ -4,7 +4,6 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import Opersidebar from '../Opersidebar';
 import useIdleTimeout from '../../../useIdleTimeout';
-import Footer from '../../Footer';
 
 const Empedit = () => {
 	const [EmpName, setEmpName] = useState('');
@@ -186,7 +185,9 @@ const Empedit = () => {
 							Update Employee
 						</h2>
 						<div className='flex flex-row py-2'>
-							<label className='justify-center items-center mr-4 mt-1'>Employee Name: </label>
+							<label className='justify-center items-center mr-4 mt-1'>
+								Employee Name:{' '}
+							</label>
 							<input
 								type='text'
 								name='EmpName'
@@ -196,7 +197,9 @@ const Empedit = () => {
 							/>
 						</div>
 						<div className='flex flex-row py-2'>
-							<label className='justify-center items-center mr-10 mt-1'>Employee Id: </label>
+							<label className='justify-center items-center mr-10 mt-1'>
+								Employee Id:{' '}
+							</label>
 							<input
 								type='text'
 								name='EmpIntId'
@@ -206,7 +209,9 @@ const Empedit = () => {
 							/>
 						</div>
 						<div className='flex flex-row py-2'>
-							<label className='justify-center items-center mr-9 mt-1'>Date of birth: </label>
+							<label className='justify-center items-center mr-9 mt-1'>
+								Date of birth:{' '}
+							</label>
 							<input
 								type='date'
 								name='EmpDOB'
@@ -216,7 +221,9 @@ const Empedit = () => {
 							/>
 						</div>
 						<div className='flex flex-row py-2'>
-							<label className='justify-center items-center mr-6 mt-1'>Employee Type: </label>
+							<label className='justify-center items-center mr-6 mt-1'>
+								Employee Type:{' '}
+							</label>
 							<select
 								className='border p-1 rounded w-[69%] hover:border-pink-500 duration-200'
 								value={EmpType}
@@ -229,7 +236,9 @@ const Empedit = () => {
 							</select>
 						</div>
 						<div className='flex flex-row py-2'>
-							<label className='justify-center items-center mr-14 mt-1'>Phone no: </label>
+							<label className='justify-center items-center mr-14 mt-1'>
+								Phone no:{' '}
+							</label>
 							<input
 								type='number'
 								name='EmpMobile'
@@ -239,7 +248,9 @@ const Empedit = () => {
 							/>
 						</div>
 						<div className='flex flex-row py-2'>
-							<label className='justify-center items-center mr-4 mt-1'>Aadhar Number: </label>
+							<label className='justify-center items-center mr-4 mt-1'>
+								Aadhar Number:{' '}
+							</label>
 							<input
 								type='number'
 								name='EmpAadhar'
@@ -250,7 +261,9 @@ const Empedit = () => {
 						</div>
 
 						<div className='flex flex-row py-2'>
-							<label className='justify-center items-center mr-14 mt-1'>Address 1: </label>
+							<label className='justify-center items-center mr-14 mt-1'>
+								Address 1:{' '}
+							</label>
 							<input
 								type='text'
 								name='EmpAddr1'
@@ -260,7 +273,9 @@ const Empedit = () => {
 							/>
 						</div>
 						<div className='flex flex-row py-2'>
-							<label className='justify-center items-center mr-14 mt-1'>Address 2: </label>
+							<label className='justify-center items-center mr-14 mt-1'>
+								Address 2:{' '}
+							</label>
 							<input
 								type='text'
 								name='EmpAddr2'
@@ -270,7 +285,9 @@ const Empedit = () => {
 							/>
 						</div>
 						<div className='flex flex-row py-2'>
-							<label className='justify-center items-center mr-20 mt-1'>City: </label>
+							<label className='justify-center items-center mr-20 mt-1'>
+								City:{' '}
+							</label>
 							<input
 								type='text'
 								name='EmpCity'
@@ -280,7 +297,9 @@ const Empedit = () => {
 							/>
 						</div>
 						<div className='flex flex-row py-2'>
-							<label className='justify-center items-center mr-16 mt-1'>Pincode: </label>
+							<label className='justify-center items-center mr-16 mt-1'>
+								Pincode:{' '}
+							</label>
 							<input
 								type='number'
 								name='EmpPincode'
@@ -290,7 +309,9 @@ const Empedit = () => {
 							/>
 						</div>
 						<div className='flex flex-row py-2'>
-							<label className='justify-center items-center mr-16 mt-1'>Status: </label>
+							<label className='justify-center items-center mr-16 mt-1'>
+								Status:{' '}
+							</label>
 							<select
 								className='border p-1 rounded w-[69%] ml-3 hover:border-pink-500 duration-200'
 								name='estatus'
@@ -310,7 +331,6 @@ const Empedit = () => {
 					</form>
 				</div>
 			</div>
-			<Footer />
 		</div>
 	);
 };
