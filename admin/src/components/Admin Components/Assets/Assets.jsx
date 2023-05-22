@@ -5,6 +5,7 @@ import { FaAngleDoubleLeft, FaAngleDoubleRight } from 'react-icons/fa';
 import moment from 'moment';
 import Sidebar from '../Admin/Sidebar';
 import '../../pagination.css';
+import useIdleTimeout from '../../../useIdleTimeout';
 
 const Assets = () => {
 	const [data, setData] = useState('');

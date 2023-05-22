@@ -556,6 +556,7 @@ const Astregister = () => {
                 type='date'
                 onChange={setData6}
                 value={astInsurExp}
+                min={new Date().toISOString().split('T')[0]}
                 className='border rounded w-[58%] ml-3 hover:border-pink-500 duration-200 p-1'
               />
             </div>
@@ -565,6 +566,7 @@ const Astregister = () => {
                 type='date'
                 onChange={setData7}
                 value={astPermitExp}
+                min={new Date().toISOString().split('T')[0]}
                 className='border rounded w-[58%] ml-8 hover:border-pink-500 duration-200 p-1'
               />
             </div>
