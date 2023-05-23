@@ -615,7 +615,7 @@ exports.createRoute = (req, res) => {
 exports.readRoute = (req, res) => {
   let tblRouteMaster = req.body;
   const OperId = tblRouteMaster.operId;
-  var query1 = `SELECT RouteID,RouteName,RouteSStage,RouteEStage, RouteStatus FROM tblRouteMaster WHERE RouteID LIKE '%${OperId}%'`;
+  var query1 = `SELECT Num, RouteID,RouteName,RouteSStage,RouteEStage, RouteStatus FROM tblRouteMaster WHERE RouteID LIKE '%${OperId}%' ORDER BY Num`;
   db.query(query1, (err, result) => {
     if (!err) {
       if (result.length > 0) {
@@ -758,6 +758,25 @@ exports.createRoutemap = (req, res) => {
       res.status(500).send('Error inserting values');
     });
 };
+
+//check route already present in tblRouteStageMap
+exports.checkRouteMap = (req, res)=>{
+  let tblRouteStageMap = req.body;
+  let RouteID = tblRouteStageMap.RouteID;
+  let query = 'SELECT RouteID FROM tblRouteStageMap WHERE RouteID = ?';
+  db.query(query,[RouteID],(err, result)=>{
+    if(!err){
+      if(result.length > 0){
+        res.status(200).json({status: 201, data: result.length});
+      }else{
+        res.status(200).json({status: 201, data: result.length});
+      }
+    }else{
+      console.log(err);
+    }
+  })
+}
+
 
 //get data from tblTicketType
 exports.readTicket = (req, res) => {

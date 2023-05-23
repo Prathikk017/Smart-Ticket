@@ -185,10 +185,18 @@ const RouteStageMap = () => {
 			setEndFareData([]);
 		}
 
+		let RouteID = route;
+
 		if (arr === [] || arr1 === [] || route === ' ') {
 			alert('Fill the details');
-		} else {
-			const res1 = await axios.post(
+		} 
+             
+        const res3 = await axios.post('https://lekpay.com/operator/routemap/check', {
+			RouteID,
+		});
+		
+		if(res3.data.data === 0){
+			const res2 = await axios.post(
 				'https://lekpay.com/operator/createroutemap',
 				{
 					route,
@@ -198,7 +206,7 @@ const RouteStageMap = () => {
 				}
 			);
 
-			if (res1.data.status === 201) {
+			if (res2.data.status === 201) {
 				alert('Route successfully mapped');
 				const form = document.getElementsByName('contact-form')[0];
 				form.reset();
@@ -209,8 +217,22 @@ const RouteStageMap = () => {
 				alert('Route unable to Map');
 				const form = document.getElementsByName('contact-form')[0];
 				form.reset();
+				setTicketData([]);
+				setTicketShortData([]);
+				window.location.reload();
+				
 			}
-		}
+			
+		}else{
+			alert(`Route already mapped so create a new route.`);
+			const form = document.getElementsByName('contact-form')[0];
+				form.reset();
+				setTicketData([]);
+				setTicketShortData([]);
+			window.location.reload();
+			return;
+		}		
+		
 	};
 
 	const getTicketType = async () => {
