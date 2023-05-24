@@ -378,6 +378,25 @@ exports.updateAsset = (req,res)=>{
   })
 }
 
+//update in tblAsset by id
+exports.updateAssetInsNPermit = (req,res)=>{
+  const { AstId } = req.params;
+  let tblAsset = req.body;
+  let AstModifyDate = moment().format('YYYY-MM-DD');
+  let query = `UPDATE tblAsset SET   AstInsurExp=?, AstPermitExp=?, AstModifyDate=?  WHERE AstId  = '${AstId}'`
+  db.query(query,[ tblAsset.astInsurExp, tblAsset.astPermitExp, AstModifyDate],(err, result)=>{
+    if (!err) {
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ message: 'Asset does not found' });
+      }
+     res.status(201).json({status: 201, data: "Asset update successfully"});
+     return ;
+    } else {
+      return res.status(500).json(err);
+    }
+  })
+}
+
 //Create Stage
 exports.createStage = (req, res) => {
   var tblStageMaster = req.body;
@@ -825,7 +844,7 @@ const RouteMapName = (RouteArray) =>{
     let Route = [];
     const queries = RouteArray.map((route) => {
       return new Promise((resolve, reject) => {
-        let query = 'SELECT RouteID,RouteName,RouteSStage,RouteEStage, CreatedDate, RouteEffDate FROM tblRouteMaster WHERE RouteID = ?';
+        let query = 'SELECT RouteID,RouteName,RouteSStage,RouteEStage, Status, CreatedDate, RouteEffDate FROM tblRouteMaster WHERE RouteID = ?';
         db.query(query, [route], (err, result) => {
           if (!err) {
             console.log(result)

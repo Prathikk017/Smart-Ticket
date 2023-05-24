@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { getOperator, createOperator, getAllOperators, getOperators, validateOperator, createAsset, createQrcodeAsset, readAsset, readAssetActive, deleteAsset, updateAsset, createStage,  validateStage, readRoute, readStage, readStageTbl, getStageById, deleteStage, updateStage, createRoute, createRoutemap, getAssetById, readTicket , createRouteTicType, readRouteTicType, getOperatorShortName, getRouteById, deleteRoute, updateRoute, readTransactionData, readRouteActive, readPassengersData, readTransactionDataByAsset, readRouteByAssetID, readTicketDuration, readAssetByRegNo, changePassword, verifyUser, checkRouteMap, getRouteByOperID, checkAssetExpiries} = require('../../controllers/Operator/operator');
+const { getOperator, createOperator, getAllOperators, getOperators, validateOperator, createAsset, createQrcodeAsset, readAsset, readAssetActive, deleteAsset, updateAsset, createStage,  validateStage, readRoute, readStage, readStageTbl, getStageById, deleteStage, updateStage, createRoute, createRoutemap, getAssetById, readTicket , createRouteTicType, readRouteTicType, getOperatorShortName, getRouteById, deleteRoute, updateRoute, readTransactionData, readRouteActive, readPassengersData, readTransactionDataByAsset, readRouteByAssetID, readTicketDuration, readAssetByRegNo, changePassword, verifyUser, checkRouteMap, getRouteByOperID, checkAssetExpiries, updateAssetInsNPermit} = require('../../controllers/Operator/operator');
 
 router.route('/verifyuser').post(verifyUser);
 router.route('/changepassword').patch(changePassword);
@@ -19,6 +19,7 @@ router.route('/asset/:AstId').get(getAssetById);
 router.route('/astread/:AstId').get(getAssetById);
 router.route('/asset/delete/:AstId').patch(deleteAsset);
 router.route('/asset/update/:AstId').patch(updateAsset);
+router.route('/asset/updatemap/:AstId').patch(updateAssetInsNPermit);
 router.route('/stagecreate').post(createStage);
 router.route('/stagevalidate').post(validateStage);
 router.route('/readstage').post(readStage);
