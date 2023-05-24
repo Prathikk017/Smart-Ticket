@@ -777,7 +777,78 @@ exports.checkRouteMap = (req, res)=>{
   })
 }
 
+//get routes from tblRouteStageMap
+exports.getRouteByOperID = (req,res) =>{
+  let tblRouteStageMap = req.body;
+  let operID = tblRouteStageMap.operId;
+  let query = `SELECT RouteID FROM tblRouteStageMap WHERE  RouteID LIKE '%${operID}%' AND RSStatus = 'A' ORDER BY RouteID`;
+  db.query(query,(err, result) =>{
+    if(!err){
+      if(result.length> 0){
+        let initialRoute = result[0].RouteID;
+        let currentRoute = '';
+        let previousRoute = '';
+        let RouteSet = new Set();
+        RouteSet.add(initialRoute); // Add the initial asset directly to the set
 
+        for (let i = 1; i < result.length; i++) {
+          previousRoute = result[i - 1].RouteID;
+          currentRoute = result[i].RouteID;
+
+          if (previousRoute !== currentRoute) {
+            RouteSet.add(currentRoute); // Add the current asset if it is different from the previous one
+          }
+        }
+
+        // Convert the set to an array
+        let RouteArray = Array.from(RouteSet);
+        Promise.all([
+          RouteMapName(RouteArray)
+        ])
+          .then(([Route]) => {
+            res.status(200).json({ status: 201, data:  Route });
+          })
+          .catch((err) => {
+            console.log(err);
+            res.status(500).json({ status: 500, message: 'Internal Server Error' });
+          });
+      }
+    } else {
+      console.log(err);
+      res.status(500).json({ status: 500, message: 'Internal Server Error' });
+    }
+  });
+}
+
+const RouteMapName = (RouteArray) =>{
+  return new Promise((resolve, reject) => {
+    let Route = [];
+    const queries = RouteArray.map((route) => {
+      return new Promise((resolve, reject) => {
+        let query = 'SELECT RouteID,RouteName,RouteSStage,RouteEStage, CreatedDate, RouteEffDate FROM tblRouteMaster WHERE RouteID = ?';
+        db.query(query, [route], (err, result) => {
+          if (!err) {
+            console.log(result)
+            if (result.length > 0) {
+              Route.push(result[0]);
+            }
+            resolve();
+          } else {
+            reject(err);
+          }
+        });
+      });
+    });
+
+    Promise.all(queries)
+      .then(() => {
+        resolve(Route);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+}
 //get data from tblTicketType
 exports.readTicket = (req, res) => {
   let tblTicketType = req.body;
@@ -1218,4 +1289,45 @@ const updtPassInAuth = (password, id) => {
 			}
 		}
 	});
+};
+
+//checks expiries of asset daily 
+exports.checkAssetExpiries = async (req, res) => {
+  try {
+    const query = 'SELECT AstId, AstRegNo, AstInsurExp, AstPermitExp FROM tblAsset';
+    db.query(query, (err, result) => {
+      if (err) {
+        console.error('Error retrieving assets:', err);
+        return res.status(500).json({ error: 'Internal server error' });
+      }
+      
+      const today = new Date();
+      const notificationDate = new Date();
+      notificationDate.setDate(notificationDate.getDate() + 15);
+
+      const expiringAssets = result.filter(asset => {
+        const insuranceExpiry = new Date(
+          asset.AstInsurExp.substr(0, 4),
+          parseInt(asset.AstInsurExp.substr(5, 2)) - 1,
+          asset.AstInsurExp.substr(8, 2)
+        );
+        const permitExpiry = new Date(
+          asset.AstPermitExp.substr(0, 4),
+          parseInt(asset.AstPermitExp.substr(5, 2)) - 1,
+          asset.AstPermitExp.substr(8, 2)
+        );
+      
+        return (
+          (insuranceExpiry <= notificationDate && insuranceExpiry >= today) ||
+          (permitExpiry <= notificationDate && permitExpiry >= today)
+        );
+      });
+
+      console.log(expiringAssets);
+      res.status(200).json({status:201, data:expiringAssets, Notification:notificationDate});
+    });
+  } catch (error) {
+    console.error('Error retrieving assets:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 };
