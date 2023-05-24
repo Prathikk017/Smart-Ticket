@@ -268,7 +268,7 @@ const Opersidebar = () => {
 						onClick={handlesub}
 					>
 						<HiOutlineLogout />
-						<span className='ml-2' onClick={handleLogOut}>
+						<span className='ml-2 pr-4' onClick={handleLogOut}>
 							Logout
 						</span>
 					</li>

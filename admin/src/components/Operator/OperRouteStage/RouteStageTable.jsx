@@ -144,6 +144,7 @@ const RouteStageTable = () => {
 									<tbody className='justify-between  text-center'>
 										{currentItems.length > 0
 											? currentItems.map((el, i) => {
+												console.log(el.RouteStatus);
 													return (
 														<>
 															<tr>

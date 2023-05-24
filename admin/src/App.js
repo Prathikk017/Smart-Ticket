@@ -55,6 +55,7 @@ import TermsAndConditions from './components/TermsAndConditions';
 import ForgotPassword from './components/ForgotPassword';
 import RouteStageTable from './components/Operator/OperRouteStage/RouteStageTable';
 import RouteStageView from './components/Operator/OperRouteStage/RouteStageView';
+import AstMapedit from './components/Operator/OperAsset/AstMapedit';
 
 function App() {
 	return (
@@ -80,6 +81,7 @@ function App() {
 				<Route path='/employee/:EmpId' element={<Empview />} />
 				<Route path='/astregister' element={<Astregister />} />
 				<Route path='/astupdate/:AstId' element={<Astedit />} />
+				<Route path='/astupdatemap/:AstId' element={<AstMapedit />} />
 				<Route path='/astview' element={<Asttable />} />
 				<Route path='/operator/asset/:AstId' element={<Astview />} />
 				<Route path='/stageregister' element={<Stageregister />} />

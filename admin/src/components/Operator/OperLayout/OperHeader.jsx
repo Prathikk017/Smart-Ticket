@@ -4,14 +4,17 @@ import {
   HiOutlineChatAlt,
   HiOutlineSearch,
 } from 'react-icons/hi';
+// import {MdOutlineCancel} from 'react-icons/md';
 import axios from 'axios';
 import moment from 'moment';
 import { Popover, Transition } from '@headlessui/react';
 import classNames from 'classnames';
+import { Link } from 'react-router-dom';
 const OperHeader = () => {
   const [operFullName, setOperFullName] = useState('');
   const [expiredAssets, setExpiredAssets] = useState([]);
   const [notificationDate, setNotificationDate] = useState('');
+  const [notificationCount, setNotificationCount] = useState(0); // New state to hold the count of notifications
   const ID = window.localStorage.getItem('OperID');
   var operId = JSON.parse(ID);
 
@@ -38,12 +41,16 @@ const OperHeader = () => {
 		const assetsArray = Object.values(res.data.data); // Convert the response object into an array
 		const filteredAssets = assetsArray.filter(asset => asset.AstId.startsWith(operId));
 		setExpiredAssets(filteredAssets);
+    setNotificationCount(filteredAssets.length); // Update the notification count
       }
     } catch (error) {
       console.error('Error retrieving expired assets:', error);
     }
   };
 
+  // const handleClick = () =>{
+
+  // }
   useEffect(() => {
     getOperator();
     getExpiredAssets();
@@ -108,6 +115,9 @@ const OperHeader = () => {
                 )}
               >
                 <HiOutlineBell fontSize={24} />
+                {notificationCount > 0 && ( // Display the notification count only if it is greater than 0
+                  <span className='absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs'>{notificationCount}</span>
+                )}
               </Popover.Button>
               <Transition
                 as={Fragment}
@@ -118,11 +128,15 @@ const OperHeader = () => {
                 leaveFrom='opacity-100 translate-y-0'
                 leaveTo='opacity-0 translate-y-1'
               >
-                <Popover.Panel className='absolute right-0 z-10 mt-2.5 w-80'>
+                <Popover.Panel className='absolute right-0 z-20 mt-2 w-80'>
                   <div className='bg-white rounded-md shadow-md ring-1 ring-black ring-opacity-5 px-2 py-2.5'>
+                    <div className='flex flex-row justify-between items-center'>
                     <strong className='text-gray-600 font-medium'>
                       Notification
                     </strong>
+                    {/* <MdOutlineCancel className='cursor-pointer text-gray-600' size={22} onClick={handleClick}/> */}
+                    </div>
+                   
                     {expiredAssets.length === 0 ? (
                       <div className='mt-1 py-1 text-sm'>
                         No notifications!!
@@ -131,8 +145,18 @@ const OperHeader = () => {
                       <ul className='mt-1 py-1 text-sm'>
 						
                         {expiredAssets.map((asset) => (
-                          <li key={asset.AstId}>{asset.AstRegNo} will expiry on {notificationDate}.</li>
+                          <div className='mb-1'>
+                            <div className='flex flex-row'>
+                            <Link to={`/astupdatemap/${asset.AstId}`}>
+                          <li className='p-1 mt-1 text-gray-700' key={asset.AstId}><span className='text-gray-500 font-medium'>{asset.AstRegNo}</span> will expiry on <span className='text-gray-500 font-medium'>{notificationDate}</span>.</li>
+                          </Link>
+                          {/* <button className='px-2 py-[2.5px] ml-1 mb-2 bg-gray-100 rounded-md shadow-sm shadow-slate-50 my-1'>Edit</button> */}
+                         
+                          </div>
+                          <hr/>
+                          </div>
                         ))}
+                        
                       </ul>
                     )}
                   </div>

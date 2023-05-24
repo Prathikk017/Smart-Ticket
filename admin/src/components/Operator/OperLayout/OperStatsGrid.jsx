@@ -205,7 +205,7 @@ const OperStatsGrid = () => {
 					type='date'
 					value={date}
 					onChange={setdata}
-					className='border-gray-200 shadow-md shadow-gray-200 rounded-md p-1 outline-none'
+					className='border-gray-200 shadow-md shadow-gray-200 rounded-sm p-1 outline-none border '
 					max={new Date().toISOString().split('T')[0]}
 				/>
 			</div>

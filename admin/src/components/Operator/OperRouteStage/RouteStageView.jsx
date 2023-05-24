@@ -148,12 +148,12 @@ const RouteStageView = () => {
 												</table>
 											</div>
 											<div className='flex flex-row justify-evenly items-center mt-8'>
-												<Link to={'/rutview'}>
+												<Link to={'/rutmapview'}>
 													<button className='bg-gray-200 hover:bg-pink-300  px-4 py-1 rounded-lg w-max'>
 														Cancel
 													</button>
 												</Link>
-												<Link to={`/rutupdate/${el.RouteID}`}>
+												{/* <Link to={`/rutupdate/${el.RouteID}`}>
 													<button className='bg-gray-200 hover:bg-pink-300  px-4 py-1 rounded-lg w-max'>
 														Edit
 													</button>
@@ -163,7 +163,7 @@ const RouteStageView = () => {
 													onClick={handleSub}
 												>
 													Delete
-												</button>
+												</button> */}
 											</div>
 										</div>
 									</>

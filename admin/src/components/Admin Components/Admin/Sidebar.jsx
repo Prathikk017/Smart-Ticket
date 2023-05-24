@@ -207,7 +207,7 @@ const Sidebar = () => {
 						onClick={handlesub}
 					>
 						<HiOutlineLogout />
-						<span className='ml-1'>Logout</span>
+						<span className='ml-1 pr-4'>Logout</span>
 					</li>
 				</ul>
 			</div>
