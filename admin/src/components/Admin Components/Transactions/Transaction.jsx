@@ -108,7 +108,7 @@ const Transaction = () => {
 					<div className='flex-col mr-8'>
 						<div className='bg-white pl-10 pt-1 mt-10 mr-10 ml-8 items-center rounded-md w-[160%] flex-1'>
 							<h1 className='text-pink-500 text-3xl text-center font-semibold pb-1'>
-								Admins Table
+								Transcations Table
 							</h1>
 							<div className=' rounded-sm mt-2'>
 								<table className='w-full text-gray-700 justify-between mx-1 border border-gray-800 h-auto'>
