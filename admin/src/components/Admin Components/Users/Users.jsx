@@ -107,7 +107,7 @@ const Users = () => {
 					<div className='flex-col  mr-10'>
 						<div className='bg-white pt-1 mt-4 pl-4 max-h-96 items-center sm:w-[90%] lg:w-[130%] xl:w-[140%] 2xl:w-[170%] rounded-md flex-1'>
 							<h1 className='text-pink-500 text-3xl text-center font-semibold pb-1'>
-								Admins Table
+								Users Table
 							</h1>
 							<div className=' rounded-sm mt-6'>
 								<table className='w-full text-gray-700 justify-between mx-1 border border-gray-800 '>
