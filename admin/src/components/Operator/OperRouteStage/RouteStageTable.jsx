@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
@@ -7,7 +8,8 @@ import Opersidebar from '../Opersidebar';
 import '../../pagination.css';
 import useIdleTimeout from '../../../useIdleTimeout';
 
-const Ruttable = () => {
+const RouteStageTable = () => {
+  
 	const [data, setData] = useState('');
 	const [currentPage, setCurrentPage] = useState(1);
 	const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -16,7 +18,7 @@ const Ruttable = () => {
 	var operId = JSON.parse(ID);
 
 	const getRutData = async () => {
-		const res = await axios.post('https://lekpay.com/operator/readrut', {
+		const res = await axios.post('https://lekpay.com/operator/routemapbyid', {
 			operId,
 		});
 		if (res.data.status === 201) {
@@ -92,15 +94,17 @@ const Ruttable = () => {
 			history('/signin');
 		}
 	}, [isIdle, history]);
-
+    
+    useEffect(()=>{
+        getRutData();
+    },[]);
+    
 	useEffect(() => {
 		const token = window.localStorage.getItem('Lekpay');
 		const Token = JSON.parse(token);
 		if (!Token) {
 			history('/signin');
-		} else {
-			getRutData();
-		}
+		} 
 	});
 
 	return (
@@ -111,7 +115,7 @@ const Ruttable = () => {
 					<div className='flex-col  mr-5'>
 						<div className='bg-white p-4 mt-4 max-h-96 items-center rounded-md sm:w-[60%] lg:w-[80%] xl:w-[100%] 2xl:w-[120%] flex-1'>
 							<h1 className='text-gray-700 text-3xl text-center font-semibold pb-1'>
-								Route Table
+								Route Map Table
 							</h1>
 							<div className=' rounded-sm mt-2'>
 								<table className='w-full text-gray-700 justify-between mx-1 border border-gray-800'>
@@ -165,7 +169,7 @@ const Ruttable = () => {
 																	{el.RouteStatus}
 																</td>
 																<td className='p-2 ml-1 w-[10%]'>
-																	<Link to={`/operator/route/${el.RouteID}`}>
+																	<Link to={`/operator/routemap/${el.RouteID}`}>
 																		<button className='bg-gray-200 hover:bg-pink-300 px-3 py-1 rounded-lg w-max'>
 																			View
 																		</button>
@@ -227,4 +231,4 @@ const Ruttable = () => {
 	);
 };
 
-export default Ruttable;
+export default RouteStageTable

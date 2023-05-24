@@ -53,6 +53,8 @@ import PrivacyPolicy from './components/PivacyPolicy';
 import RefundsAndCancels from './components/RefundsAndCancels';
 import TermsAndConditions from './components/TermsAndConditions';
 import ForgotPassword from './components/ForgotPassword';
+import RouteStageTable from './components/Operator/OperRouteStage/RouteStageTable';
+import RouteStageView from './components/Operator/OperRouteStage/RouteStageView';
 
 function App() {
 	return (
@@ -89,6 +91,8 @@ function App() {
 				<Route path='/operator/route/:RouteID' element={<Rutview />} />
 				<Route path='/rutupdate/:RouteID' element={<Rutedit />} />
 				<Route path='/routemap' element={<RouteStageMap />} />
+				<Route path='/rutmapview' element={<RouteStageTable />} />
+				<Route path='/operator/routemap/:RouteID' element={<RouteStageView />} />
 				<Route
 					path='/transactionasset'
 					element={<IndividualTransAssetData />}

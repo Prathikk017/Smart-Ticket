@@ -1,6 +1,8 @@
 const express = require('express');
 const db = require('./db/db');
 const app = express();
+const cron = require('node-cron');
+const axios = require('axios');
 const cors = require('cors');
 const port = 8004;
 
@@ -46,8 +48,31 @@ app.use('/getStage', getStage);
 app.use('/getFare', getFare);
 app.use('/transaction', getTransactionId);
 
+
+
+
 app.listen(port, () => {
-	console.log(`server listening on ${port}`);
-});
+	console.log(`Server listening on port ${port}`);
+  
+	// Start the cron job after the server is up and running
+	startCronJob();
+  });
+  
+  function startCronJob() {
+	const CRON_EXPRESSION = '29 10 * * *'; // Run the cron job once per day at midnight
+  
+	cron.schedule(CRON_EXPRESSION, async () => {
+	  console.log('Cron job is running...');
+	  try {
+		const res = await axios.post('http://localhost:8004/operator/asset/checkexpiries');
+
+		if(res.data.status === 201){
+			console.log(res.data.data);
+		}
+	  } catch (error) {
+		console.error('Error running cron job:', error);
+	  }
+	});
+  }
 
 module.exports = app;

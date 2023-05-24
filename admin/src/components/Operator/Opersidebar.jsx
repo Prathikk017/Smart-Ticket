@@ -19,6 +19,7 @@ const Opersidebar = () => {
 	const [showEmployeeDropdown, setShowEmployeeDropdown] = useState(false);
 	const [showStageDropdown, setShowStageDropdown] = useState(false);
 	const [showRouteDropdown, setShowRouteDropdown] = useState(false);
+	const [showRouteMapDropdown, setShowRouteMapDropdown] = useState(false);
 	const history = useNavigate();
 
 	const handlesub = () => {
@@ -35,6 +36,9 @@ const Opersidebar = () => {
 	};
 	const handleRouteDropdown = () => {
 		setShowRouteDropdown(!showRouteDropdown);
+	};
+	const handleRouteMapDropdown = () => {
+		setShowRouteMapDropdown(!showRouteMapDropdown);
 	};
 
 	const handleLogOut = (logout) => {
@@ -94,7 +98,7 @@ const Opersidebar = () => {
 									<button className='flex justify-start items-center p-2 m-2 rounded-lg text-center hover:bg-pink-300 hover:cursor-pointer'>
 										<li className='flex justify-start items-center mr-1 text-center'>
 											<IoIosCreate />
-											<span className='ml-2'>Register Employee</span>
+											<span className='ml-[2.5px]'>Register Employee</span>
 										</li>
 									</button>
 								</Link>
@@ -102,7 +106,7 @@ const Opersidebar = () => {
 									<button className='flex justify-start items-center p-2 m-2 rounded-lg text-center hover:bg-pink-300 hover:cursor-pointer'>
 										<li className='flex justify-start items-center mr-4 text-center'>
 											<GrView />
-											<span className='ml-2'>View Employee</span>
+											<span className='ml-[2.5px]'>View Employee</span>
 										</li>
 									</button>
 								</Link>
@@ -131,7 +135,7 @@ const Opersidebar = () => {
 									<button className='flex justify-start items-center p-2 m-2 rounded-lg text-center hover:bg-pink-300 hover:cursor-pointer'>
 										<li className='flex justify-start items-center pr-1 mr-4 text-center'>
 											<IoIosCreate />
-											<span className='ml-2'>Register Asset</span>
+											<span className='ml-[2.5px]'>Register Asset</span>
 										</li>
 									</button>
 								</Link>
@@ -139,7 +143,7 @@ const Opersidebar = () => {
 									<button className='flex justify-start items-center p-2 m-2 rounded-lg text-center hover:bg-pink-300 hover:cursor-pointer'>
 										<li className='flex justify-start items-center pr-1 mr-4 text-center'>
 											<GrView />
-											<span className='ml-2'>View Asset</span>
+											<span className='ml-[2.5px]'>View Asset</span>
 										</li>
 									</button>
 								</Link>
@@ -167,14 +171,14 @@ const Opersidebar = () => {
 								<Link to='/stageregister'>
 									<li className=' flex justify-start items-center p-2 m-2 rounded-lg text-center hover:bg-pink-300 hover:cursor-pointer'>
 										<IoIosCreate />
-										<span className='ml-2'>Stage Register</span>
+										<span className='ml-[2.5px]'>Stage Register</span>
 									</li>
 								</Link>
 								<Link to='/stgview'>
 									<button className='flex justify-start items-center p-2 m-2 rounded-lg text-center hover:bg-pink-300 hover:cursor-pointer'>
 										<li className='flex justify-start items-center pr-1 mr-4 text-center'>
 											<GrView />
-											<span className='ml-2'>View Stage</span>
+											<span className='ml-[2.5px]'>View Stage</span>
 										</li>
 									</button>
 								</Link>
@@ -203,26 +207,57 @@ const Opersidebar = () => {
 								<Link to='/routeregister'>
 									<li className=' flex justify-start items-center p-2 m-2 rounded-lg text-center hover:bg-pink-300 hover:cursor-pointer'>
 										<IoIosCreate />
-										<span className='ml-2'>Route Register</span>
+										<span className='ml-[2.5px]'>Route Register</span>
 									</li>
 								</Link>
 								<Link to='/rutview'>
 									<button className='flex justify-start items-center p-2 m-2 rounded-lg text-center hover:bg-pink-300 hover:cursor-pointer'>
 										<li className='flex justify-start items-center pr-1 mr-4 text-center'>
 											<GrView />
-											<span className='ml-2'>View Route</span>
+											<span className='ml-[2.5px]'>View Route</span>
 										</li>
 									</button>
 								</Link>
 							</div>
 						)}
 					</div>
-					<Link to='/routemap'>
-						<li className=' flex justify-start items-center p-2 m-2 rounded-lg text-center hover:bg-pink-300 hover:cursor-pointer'>
+
+					
+					<div>
+						<button
+							className='flex justify-start items-center p-2 ml-2 mr-0 mt-2 rounded-lg text-center hover:bg-pink-300 hover:cursor-pointer w-max'
+							onClick={handleRouteMapDropdown}
+						>
+							<li className='flex justify-start items-center pr-1 mr-5 text-center'>
 							<FaMapMarkedAlt />
-							<span className='ml-2'>Route Map</span>
-						</li>
-					</Link>
+								<span className='ml-2'>Route Map</span>
+								<FontAwesomeIcon
+									icon={faChevronRight}
+									className={`transition-transform duration-300 ml-[20px] ${
+										showRouteMapDropdown ? 'transform rotate-90' : ''
+									}`}
+								/>
+							</li>
+						</button>
+						{showRouteMapDropdown && (
+							<div className=' mt-2'>
+								<Link to='/routemap'>
+									<li className=' flex justify-start items-center p-2 m-2 rounded-lg text-center hover:bg-pink-300 hover:cursor-pointer'>
+										<IoIosCreate />
+										<span className='ml-[2.5px]'>RouteMap Register</span>
+									</li>
+								</Link>
+								<Link to='/rutmapview'>
+									<button className='flex justify-start items-center p-2 m-2 rounded-lg text-center hover:bg-pink-300 hover:cursor-pointer'>
+										<li className='flex justify-start items-center pr-1 mr-3 text-center'>
+											<GrView />
+											<span className='ml-[2.5px]'>View Route Map</span>
+										</li>
+									</button>
+								</Link>
+							</div>
+						)}
+					</div>
 				</ul>
 			</div>
 			<div className='fixed bottom-0'>
