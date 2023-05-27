@@ -144,11 +144,10 @@ const RouteStageTable = () => {
 									<tbody className='justify-between  text-center'>
 										{currentItems.length > 0
 											? currentItems.map((el, i) => {
-												console.log(el.RouteStatus);
 													return (
 														<>
 															<tr>
-																<td className='p-1 ml-1 w-[10%]'>
+																<td className='p-1 ml-1 w-[10%]' key={i}>
 																	{indexOfFirstItem + i + 1}
 																</td>
 																<td className='p-1 ml-1 w-[15%] text-start'>

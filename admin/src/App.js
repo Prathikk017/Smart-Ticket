@@ -56,6 +56,8 @@ import ForgotPassword from './components/ForgotPassword';
 import RouteStageTable from './components/Operator/OperRouteStage/RouteStageTable';
 import RouteStageView from './components/Operator/OperRouteStage/RouteStageView';
 import AstMapedit from './components/Operator/OperAsset/AstMapedit';
+import OperProfilePage from './components/Operator/OperProfilePage';
+import OperAddInfo from './components/Operator/OperAddInfo';
 
 function App() {
 	return (
@@ -73,6 +75,8 @@ function App() {
 				<Route path='admin/approveopersview' element={<Opertable />} />
 				<Route path='/admin/approveoper/:OperId' element={<Operview />} />
 				<Route path='/operdashboard' element={<Operdashboard />} />
+				<Route path='/operator/profileview' element={<OperProfilePage/>}/>
+				<Route path='/operator/addinfo' element={<OperAddInfo/>}/>
 				<Route path='/approve/:OperId' element={<Opertable />} />
 				<Route path='/empregister' element={<Empregister />} />
 				<Route path='/empupdate/:EmpId' element={<Empedit />} />

@@ -68,6 +68,35 @@ exports.createOperator = (req, res) => {
   });
 };
 
+
+//create account detail using OperId
+exports.createAccountDetailByOperId = (req, res) =>{
+  const tblOperAccount = req.body;
+  let OperId = tblOperAccount.OperId;
+  let CreatedDate = moment(new Date()).format('YYYY-MM-DD');
+  let query = 'INSERT INTO tblOperAccount (OperId, BankName, Branch, AccountNo, AccountType, IsfcNo, MicrNo, UpiNo, CreatedDate, CreatedBy) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+  db.query(query,[OperId, tblOperAccount.bankName, tblOperAccount.branch, tblOperAccount.accountNo, tblOperAccount.accountType, tblOperAccount.isfcNo, tblOperAccount.micrNo, tblOperAccount.upiNo, CreatedDate, OperId],(err,result)=>{
+    if(!err){
+      return res.status(200).json({ status: 201, data: result });
+    } else {
+      return res.status(500).json({ data: err });
+    }
+  })
+}
+
+//get account detail by OperId
+exports.getAccountDetailByOperId = (req,res)=>{
+  const { OperId } = req.params;
+  let query = `SELECT * FROM tblOperAccount WHERE OperId = '${OperId}'`;
+  db.query(query, (err, results) => {
+    if (!err) {
+      return res.status(200).json({ status: 201, data: results });
+    } else {
+      return res.status(500).json({ status: 500, data: err });
+    }
+  });
+}
+
 //get all operators
 exports.getAllOperators = (req, res) => {
   let query = "SELECT * FROM tblOperator WHERE OperStatus = 'I'";
@@ -868,6 +897,72 @@ const RouteMapName = (RouteArray) =>{
       });
   });
 }
+
+//get stages using RouteID from tblRouteStageMap
+exports.getStagesByRouteID = (req, res) =>{
+  const tblRouteStageMap = req.body;
+  let RouteID = tblRouteStageMap.RouteID;
+  let query = `SELECT StageID, Fare FROM tblRouteStageMap WHERE RouteID = '${RouteID}'`;
+  db.query(query,(err, result)=>{
+    if(!err){
+     if(result.length > 0){
+      let StageID = [];
+      let fare = [];
+      let results = [];
+      for(let i =0; i < result.length; i++){
+        StageID.push(result[i].StageID);
+        fare.push(JSON.parse(result[i].Fare));
+      }
+      Promise.all([
+        getStageName(StageID)
+      ])
+        .then(([Stage]) => {
+          // for(let i = 0; i < result.length; i++){
+          //   results.push(result[i].StageID);
+          //   results.push(JSON.parse(result[i].Fare));
+          // }
+
+          res.status(200).json({ status: 201, data: { Stage, StageID, fare} });
+        })
+        .catch((err) => {
+          console.log(err);
+          res.status(500).json({ status: 500, message: 'Internal Server Error' });
+        });
+     }
+    }else{
+      console.log(err);
+    }
+  })
+}
+
+const getStageName = (StageID) => {
+  return new Promise((resolve, reject) => {
+    let Stage = [];
+    const queries = StageID.map((stage) => {
+      return new Promise((resolve, reject) => {
+        let query = 'SELECT StageName FROM tblStageMaster WHERE StageID = ?';
+        db.query(query, [stage], (err, result) => {
+          if (!err) {
+            if (result.length > 0) {
+              Stage.push(result[0].StageName);
+            }
+            resolve();
+          } else {
+            reject(err);
+          }
+        });
+      });
+    });
+
+    Promise.all(queries)
+      .then(() => {
+        resolve(Stage);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+};
 //get data from tblTicketType
 exports.readTicket = (req, res) => {
   let tblTicketType = req.body;
@@ -1313,8 +1408,9 @@ const updtPassInAuth = (password, id) => {
 //checks expiries of asset daily 
 exports.checkAssetExpiries = async (req, res) => {
   try {
-    const query = 'SELECT AstId, AstRegNo, AstInsurExp, AstPermitExp FROM tblAsset';
+    const query = 'SELECT AstId, AstRegNo, AstInsurExp, AstPermitExp FROM tblAsset ORDER BY AstId';
     db.query(query, (err, result) => {
+      console.log(result)
       if (err) {
         console.error('Error retrieving assets:', err);
         return res.status(500).json({ error: 'Internal server error' });
@@ -1324,7 +1420,7 @@ exports.checkAssetExpiries = async (req, res) => {
       const notificationDate = new Date();
       notificationDate.setDate(notificationDate.getDate() + 15);
 
-      const expiringAssets = result.filter(asset => {
+      const expiringAssets = result.map(asset => {
         const insuranceExpiry = new Date(
           asset.AstInsurExp.substr(0, 4),
           parseInt(asset.AstInsurExp.substr(5, 2)) - 1,
@@ -1336,14 +1432,39 @@ exports.checkAssetExpiries = async (req, res) => {
           asset.AstPermitExp.substr(8, 2)
         );
       
-        return (
-          (insuranceExpiry <= notificationDate && insuranceExpiry >= today) ||
-          (permitExpiry <= notificationDate && permitExpiry >= today)
-        );
-      });
+        const assetItem = { asset: { ...asset, AstRegNo: asset.AstRegNo } };
+        if (insuranceExpiry <= notificationDate && insuranceExpiry >= today && permitExpiry <= notificationDate && permitExpiry >= today) {
+          return {
+            ...assetItem,
+            expiryType: 'Both',
+            expiryInfo: {
+              insuranceExpiry: asset.AstInsurExp,
+              permitExpiry: asset.AstPermitExp
+            }
+          };
+        } else if (insuranceExpiry <= notificationDate && insuranceExpiry >= today) {
+          return {
+            ...assetItem,
+            expiryType: 'Insurance',
+            expiryInfo: {
+              insuranceExpiry: asset.AstInsurExp,
+              permitExpiry: null
+            }
+          };
+        } else if (permitExpiry <= notificationDate && permitExpiry >= today) {
+          return {
+            ...assetItem,
+            expiryType: 'Permit',
+            expiryInfo: {
+              insuranceExpiry: null,
+              permitExpiry: asset.AstPermitExp
+            }
+          };
+        }
+        return null;
+      }).filter(asset => asset !== null);
 
-      console.log(expiringAssets);
-      res.status(200).json({status:201, data:expiringAssets, Notification:notificationDate});
+      res.status(200).json({ status: 201, data: expiringAssets, Notification: notificationDate });
     });
   } catch (error) {
     console.error('Error retrieving assets:', error);

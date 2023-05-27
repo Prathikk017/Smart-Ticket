@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { getOperator, createOperator, getAllOperators, getOperators, validateOperator, createAsset, createQrcodeAsset, readAsset, readAssetActive, deleteAsset, updateAsset, createStage,  validateStage, readRoute, readStage, readStageTbl, getStageById, deleteStage, updateStage, createRoute, createRoutemap, getAssetById, readTicket , createRouteTicType, readRouteTicType, getOperatorShortName, getRouteById, deleteRoute, updateRoute, readTransactionData, readRouteActive, readPassengersData, readTransactionDataByAsset, readRouteByAssetID, readTicketDuration, readAssetByRegNo, changePassword, verifyUser, checkRouteMap, getRouteByOperID, checkAssetExpiries, updateAssetInsNPermit} = require('../../controllers/Operator/operator');
+const { getOperator, createOperator, createAccountDetailByOperId, getAllOperators, getOperators, validateOperator, createAsset, createQrcodeAsset, readAsset, readAssetActive, deleteAsset, updateAsset, createStage,  validateStage, readRoute, readStage, readStageTbl, getStageById, deleteStage, updateStage, createRoute, createRoutemap, getAssetById, readTicket , createRouteTicType, readRouteTicType, getOperatorShortName, getRouteById, deleteRoute, updateRoute, readTransactionData, readRouteActive, readPassengersData, readTransactionDataByAsset, readRouteByAssetID, readTicketDuration, readAssetByRegNo, changePassword, verifyUser, checkRouteMap, getRouteByOperID, checkAssetExpiries, updateAssetInsNPermit, getStagesByRouteID, getAccountDetailByOperId} = require('../../controllers/Operator/operator');
 
 router.route('/verifyuser').post(verifyUser);
 router.route('/changepassword').patch(changePassword);
@@ -11,6 +11,8 @@ router.route('/read').get(getAllOperators);
 router.route('/:OperId').get(getOperators);
 router.route('/operatorvalidate').post(validateOperator);
 router.route('/readoperatorshortname').post(getOperatorShortName);
+router.route('/addaccount').post(createAccountDetailByOperId);
+router.route('/getaccount/:OperId').get(getAccountDetailByOperId);
 router.route('/astcreate').post(createAsset);
 router.route('/createqrcode').post(createQrcodeAsset);
 router.route('/readast').post(readAsset);
@@ -38,6 +40,7 @@ router.route('/route/update/:RouteID').patch(updateRoute);
 router.route('/createroutemap').post(createRoutemap);
 router.route('/routemap/check').post(checkRouteMap);
 router.route('/routemapbyid').post(getRouteByOperID);
+router.route('/getstagerouteid').post(getStagesByRouteID);
 router.route('/readticket').post(readTicket);
 router.route('/readticketduration').post(readTicketDuration);
 router.route('/routettypecreate').post(createRouteTicType);

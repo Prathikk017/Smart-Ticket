@@ -2,20 +2,24 @@ import React, { Fragment, useEffect, useState } from 'react';
 import {
   HiOutlineBell,
   HiOutlineChatAlt,
+  HiOutlineLogout,
   HiOutlineSearch,
 } from 'react-icons/hi';
-// import {MdOutlineCancel} from 'react-icons/md';
+import {MdOutlineAccountCircle} from 'react-icons/md';
+import {RiAccountCircleFill} from 'react-icons/ri';
 import axios from 'axios';
 import moment from 'moment';
 import { Popover, Transition } from '@headlessui/react';
 import classNames from 'classnames';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { AuthProvider } from '../../../Contexts/authContext';
 const OperHeader = () => {
   const [operFullName, setOperFullName] = useState('');
   const [expiredAssets, setExpiredAssets] = useState([]);
   const [notificationDate, setNotificationDate] = useState('');
   const [notificationCount, setNotificationCount] = useState(0); // New state to hold the count of notifications
   const ID = window.localStorage.getItem('OperID');
+  const history = useNavigate();
   var operId = JSON.parse(ID);
 
   const getOperator = async () => {
@@ -37,9 +41,11 @@ const OperHeader = () => {
         'https://lekpay.com/operator/asset/checkexpiries'
       );
       if (res.data.status === 201) {
+        console.log(res.data.data);
 		setNotificationDate(moment(res.data.Notification).format('DD-MM-YYYY'));
 		const assetsArray = Object.values(res.data.data); // Convert the response object into an array
-		const filteredAssets = assetsArray.filter(asset => asset.AstId.startsWith(operId));
+		console.log(assetsArray)
+    const filteredAssets = assetsArray.filter(asset => asset.asset.AstId.startsWith(operId));
 		setExpiredAssets(filteredAssets);
     setNotificationCount(filteredAssets.length); // Update the notification count
       }
@@ -48,9 +54,12 @@ const OperHeader = () => {
     }
   };
 
-  // const handleClick = () =>{
+  const handleLogOut = (logout) => {
+		<AuthProvider children={logout} />;
+    history('/signin');
+	};
 
-  // }
+  console.log(expiredAssets)
   useEffect(() => {
     getOperator();
     getExpiredAssets();
@@ -70,41 +79,11 @@ const OperHeader = () => {
         />
       </div>
       <div className='flex items-center gap-2 mr-2'>
-        {/* <Popover className='relative'>
-          {({ open }) => (
-            <>
-              <Popover.Button
-                className={classNames(
-                  open && 'bg-gray-100',
-                  'p-1.5 rounded-md inline-flex items-center text-gray-700 hover:text-opacity-100 focus:outline-none active:bg-gray-100 '
-                )}
-              >
-                <HiOutlineChatAlt fontSize={24} />
-              </Popover.Button>
-              <Transition
-                as={Fragment}
-                enter='transition ease-out duration-200'
-                enterFrom='opacity-0 translate-y-1'
-                enterTo='opacity-100 translate-y-0'
-                leave='transition ease-in duration-150'
-                leaveFrom='opacity-100 translate-y-0'
-                leaveTo='opacity-0 translate-y-1'
-              >
-                <Popover.Panel className='absolute right-0 z-10 mt-2.5 w-80'>
-                  <div className='bg-white rounded-md shadow-md ring-1 ring-black ring-opacity-5 px-2 py-2.5'>
-                    <strong className='text-gray-600 font-medium'>
-                      Messages
-                    </strong>
-                    <div className='mt-1 py-1 text-sm'>No messages!!</div>
-                  </div>
-                </Popover.Panel>
-              </Transition>
-            </>
-          )}
-        </Popover> */}
+        
         <strong className='md:text-lg text-xs md:ml-0 ml-2 cursor-pointer'>
           {operFullName}
         </strong>
+        {/* notification bell */}
         <Popover className='relative'>
           {({ open }) => (
             <>
@@ -143,22 +122,75 @@ const OperHeader = () => {
                       </div>
                     ) : (
                       <ul className='mt-1 py-1 text-sm'>
-						
                         {expiredAssets.map((asset) => (
                           <div className='mb-1'>
                             <div className='flex flex-row'>
-                            <Link to={`/astupdatemap/${asset.AstId}`}>
-                          <li className='p-1 mt-1 text-gray-700' key={asset.AstId}><span className='text-gray-500 font-medium'>{asset.AstRegNo}</span> will expiry on <span className='text-gray-500 font-medium'>{notificationDate}</span>.</li>
-                          </Link>
-                          {/* <button className='px-2 py-[2.5px] ml-1 mb-2 bg-gray-100 rounded-md shadow-sm shadow-slate-50 my-1'>Edit</button> */}
-                         
-                          </div>
-                          <hr/>
+                              <Link to={`/astupdatemap/${asset.asset.AstId}`}>
+                                <li className='p-1 mt-1 text-gray-700' key={asset.asset.AstId}>
+                                  <span className='text-gray-500 font-medium'>{asset.asset.AstRegNo}</span> 
+                                  {asset.expiryInfo.insuranceExpiry && asset.expiryInfo.permitExpiry ? (
+                                    <>
+                                      <span className='text-gray-500 font-medium'><span className='font-normal mx-1'>insurance expiry on</span>{asset.expiryInfo.insuranceExpiry}</span> and
+                                      <span className='text-gray-500 font-medium'><span className='font-normal mx-1'>permit expiry on</span>{asset.expiryInfo.permitExpiry}</span>
+                                    </>
+                                  ) : asset.expiryInfo.insuranceExpiry ? (
+                                    <span className='text-gray-500 font-medium'><span className='font-normal mx-1'>insurance expiry on</span>{asset.expiryInfo.insuranceExpiry}</span>
+                                  ) : (
+                                    <span className='text-gray-500 font-medium'><span className='font-normal mx-1'>permit expiry on</span>{asset.expiryInfo.permitExpiry}</span>
+                                  )}
+                                </li>
+                              </Link>
+                            </div>
+                            <hr/>
                           </div>
                         ))}
                         
                       </ul>
                     )}
+                  </div>
+                </Popover.Panel>
+              </Transition>
+            </>
+          )}
+        </Popover>
+        {/* profile  */}
+        <Popover className='relative'>
+          {({ open }) => (
+            <>
+              <Popover.Button
+                className={classNames(
+                  open && 'bg-gray-100',
+                  'p-1.5 rounded-md inline-flex items-center text-gray-700 hover:text-opacity-100 focus:outline-none active:bg-gray-100 '
+                )}
+              >
+                <RiAccountCircleFill fontSize={24} />
+              </Popover.Button>
+              <Transition
+                as={Fragment}
+                enter='transition ease-out duration-200'
+                enterFrom='opacity-0 translate-y-1'
+                enterTo='opacity-100 translate-y-0'
+                leave='transition ease-in duration-150'
+                leaveFrom='opacity-100 translate-y-0'
+                leaveTo='opacity-0 translate-y-1'
+              >
+                <Popover.Panel className='absolute right-0 z-10 mt-2.5 w-40'>
+                  <div className='bg-white rounded-md shadow-md ring-1 ring-black ring-opacity-5 px-2 py-2.5'>
+                    <ul>
+                      <h6 className='font-normal text-gray-700 ml-2'>WELCOME!</h6>
+                    <Link to={'/operator/profileview'}>
+                    <strong className='text-gray-800 font-normal flex flex-row my-2 '>
+                    <MdOutlineAccountCircle className='text-gray-600 mr-2' size={24}/> View Profile
+                    </strong>
+                    </Link>
+                    <li onClick={handleLogOut}>
+                    <strong className='text-gray-800 font-normal flex flex-row my-2 cursor-pointer' >
+                    <HiOutlineLogout  className='text-gray-600 mr-1 ml-1' size={24}/> Logout
+                    </strong>
+                    </li>
+                    
+                    </ul>
+                    
                   </div>
                 </Popover.Panel>
               </Transition>

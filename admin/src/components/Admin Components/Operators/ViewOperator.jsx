@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import moment from 'moment';
 import Sidebar from '../Admin/Sidebar';
 import useIdleTimeout from '../../../useIdleTimeout';
@@ -20,6 +20,16 @@ const ViewOperator = () => {
 		}
 	};
 
+	const handleSub = async() =>{
+		const res1 = await axios.patch(`https://lekpay.com/admin/approve/${OperId}`);
+
+		if(res1.data.status === 201){
+			alert("Operator Approved.")
+			history('/admin/dashboard')
+		}else{
+			console.log("error")
+		}
+	}
 	// Call useIdleTimeout and pass in the time to consider the user as idle
 	const isIdle = useIdleTimeout(600000); // set to 10 minute
 
@@ -155,6 +165,19 @@ const ViewOperator = () => {
 												</tbody>
 											</table>
 										</div>
+										<div className='flex flex-row justify-evenly mt-8'>
+												<Link to={'/admin/approveopersview'}>
+													<button className='bg-gray-200 hover:bg-pink-300  px-4 py-1 rounded-lg w-max'>
+														Cancel
+													</button>
+												</Link>
+												<button
+													className='bg-gray-200 hover:bg-pink-300  px-4 py-1 rounded-lg w-max'
+													onClick={handleSub}
+												>
+													Approve
+												</button>
+											</div>
 									</>
 								);
 						  })
