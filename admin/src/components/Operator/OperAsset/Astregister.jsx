@@ -328,87 +328,87 @@ const Astregister = () => {
     }
   };
 
-  const handleDownload = (e) => {
-    const qrImage = document.getElementById('qr-img');
-    const printWindow = window.open(
-      '',
-      '_blank',
-      'left=0,top=0,width=800,height=600,toolbar=0,scrollbars=0,status=0'
-    );
-    printWindow.document.write(`
-        <html>
-          <head>
-            <title>${OperShortName}-${e}</title>
-            <style>
-              @media print {
-                /* Set page size to A4 */
-                @page {
-                  size: A4;
-                  margin: 0;
-                }
-                /* Center the QR code and label */
-                body {
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
+  // const handleDownload = (e) => {
+  //   const qrImage = document.getElementById('qr-img');
+  //   const printWindow = window.open(
+  //     '',
+  //     '_blank',
+  //     'left=0,top=0,width=800,height=600,toolbar=0,scrollbars=0,status=0'
+  //   );
+  //   printWindow.document.write(`
+  //       <html>
+  //         <head>
+  //           <title>${OperShortName}-${e}</title>
+  //           <style>
+  //             @media print {
+  //               /* Set page size to A4 */
+  //               @page {
+  //                 size: A4;
+  //                 margin: 0;
+  //               }
+  //               /* Center the QR code and label */
+  //               body {
+  //                 display: flex;
+  //                 justify-content: center;
+  //                 align-items: center;
                 
-                }
-                #qr-img-container {
-                  display: flex;
-                  flex-direction: column;
-                  justify-content: center;
-                  align-items: center;
-                  margin-top: 0;
-                  padding-top:0;
-                  margin-bottom: 0;
-                  padding-bottom: 0;
-                }
-                 #assetReg{
-                  text-align: center;
-                  font-size: 100px;
-                  font-weight: bold;
-                  margin-top:0;
-                  padding-top:0;
-                  margin-bottom: 0;
-                  padding-bottom: 0;
-                }
-                #opershortname{
-                  text-align: center;
-                  font-size: 100px;
-                  font-weight: bold;
-                  margin-top:20;
-                  padding-top:0;
-                  margin-bottom: 0;
-                  padding-bottom: 0;
-                }
-                #qr-img {
-                  display: block;
-                  margin: 0 auto;
-                  margin-top: 0;
-                  padding-top:0;
-                  margin-bottom: 0;
-                  padding-bottom: 0;
-                  width:850px;
-                  heigth:750px;
-                }
-              }
-            </style>
-          </head>
-          <body>
+  //               }
+  //               #qr-img-container {
+  //                 display: flex;
+  //                 flex-direction: column;
+  //                 justify-content: center;
+  //                 align-items: center;
+  //                 margin-top: 0;
+  //                 padding-top:0;
+  //                 margin-bottom: 0;
+  //                 padding-bottom: 0;
+  //               }
+  //                #assetReg{
+  //                 text-align: center;
+  //                 font-size: 100px;
+  //                 font-weight: bold;
+  //                 margin-top:0;
+  //                 padding-top:0;
+  //                 margin-bottom: 0;
+  //                 padding-bottom: 0;
+  //               }
+  //               #opershortname{
+  //                 text-align: center;
+  //                 font-size: 100px;
+  //                 font-weight: bold;
+  //                 margin-top:20;
+  //                 padding-top:0;
+  //                 margin-bottom: 0;
+  //                 padding-bottom: 0;
+  //               }
+  //               #qr-img {
+  //                 display: block;
+  //                 margin: 0 auto;
+  //                 margin-top: 0;
+  //                 padding-top:0;
+  //                 margin-bottom: 0;
+  //                 padding-bottom: 0;
+  //                 width:850px;
+  //                 heigth:750px;
+  //               }
+  //             }
+  //           </style>
+  //         </head>
+  //         <body>
           
-            <div id="qr-img-container">
-              <h1 id="opershortname">${OperShortName}</h1>
-              <img src="${qrImage.src}" alt="QR Code" id="qr-img" />
-              <h4 id="assetReg">${e}<h4>
-            </div>
-          </body>
-        </html>
-      `);
-    printWindow.document.close();
-    printWindow.focus();
-    printWindow.print();
-    printWindow.close();
-  };
+  //           <div id="qr-img-container">
+  //             <h1 id="opershortname">${OperShortName}</h1>
+  //             <img src="${qrImage.src}" alt="QR Code" id="qr-img" />
+  //             <h4 id="assetReg">${e}<h4>
+  //           </div>
+  //         </body>
+  //       </html>
+  //     `);
+  //   printWindow.document.close();
+  //   printWindow.focus();
+  //   printWindow.print();
+  //   printWindow.close();
+  // };
 
   // Call useIdleTimeout and pass in the time to consider the user as idle
   const isIdle = useIdleTimeout(600000); // set to 10 minute
@@ -597,15 +597,15 @@ const Astregister = () => {
           </form>
         </div>
         <div className='m-auto grid grid-flow-row gap-4'>
-          {qrcode && (
-            <div className='flex flex-col justify-center items-center m-auto'>
+          {/* {qrcode && (
+            <div className=' hidden justify-center items-center m-auto'>
               <img
                 src={qrcode}
-                className='w-[200px] border'
+                className='w-[200px] border hidden'
                 alt='QR Code'
                 id='qr-img'
               />
-              <span className='text-md justify-center items-center ml-6'>
+              <span className='text-md justify-center hidden items-center ml-6'>
                 Reg No: {astRegNo}
               </span>
               <button
@@ -615,7 +615,7 @@ const Astregister = () => {
                 Print QR
               </button>
             </div>
-          )}
+          )} */}
           <button
             className='bg-gray-200 hover:bg-pink-300  px-2 py-2 rounded-lg w-max'
             onClick={handleDownloadTemplate}
