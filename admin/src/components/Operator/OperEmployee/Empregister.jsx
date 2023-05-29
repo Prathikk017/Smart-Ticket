@@ -7,6 +7,7 @@ import Opersidebar from '../Opersidebar';
 import { empRegisterSchema } from '../../../schemas/index';
 import useIdleTimeout from '../../../useIdleTimeout';
 import * as XLSX from 'xlsx';
+import moment from 'moment';
 
 const initialValues = {
   EmpName: '',
@@ -61,6 +62,7 @@ const Empregister = () => {
 
   // function
   const setData = (e) => {
+  
     const dob = e.target.value;
     setEmpDOB(dob);
   };
@@ -166,7 +168,8 @@ const Empregister = () => {
           skippedRecords.push(` ${EmpIntId}`);
           continue;
         }
-
+        
+        
         // Register the item
         await axios.post('https://lekpay.com/employee/create', {
           EmpName,

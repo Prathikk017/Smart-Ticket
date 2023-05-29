@@ -24,6 +24,7 @@ const getRoute = require('./routes/GetRoute/getRoute');
 const getStage = require('./routes/GetStage/getStage');
 const getFare = require('./routes/CalculateFare/fare');
 const getTransactionId = require('./routes/Transaction/transaction');
+const getBusPass = require('./routes/BusPass/busPass');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -47,6 +48,7 @@ app.use('/getRoute', getRoute);
 app.use('/getStage', getStage);
 app.use('/getFare', getFare);
 app.use('/transaction', getTransactionId);
+app.use('/buspass', getBusPass);
 
 
 

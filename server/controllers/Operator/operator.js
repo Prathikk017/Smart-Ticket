@@ -68,7 +68,6 @@ exports.createOperator = (req, res) => {
   });
 };
 
-
 //create account detail using OperId
 exports.createAccountDetailByOperId = (req, res) =>{
   const tblOperAccount = req.body;
@@ -179,6 +178,8 @@ exports.readAssetByRegNo = (req, res) =>{
 exports.createAsset = (req, res) => {
   let tblAsset = req.body;
   const OperID = tblAsset.operId;
+  const dateFormats = ['DD-MMMM-YYYY', 'DD-MM-YYYY', 'DD/MM/YYYY', 'YYYY-MM-DD', 'YYYY/MM/DD'];
+
   var query1 = `SELECT Num,AstId FROM tblAsset WHERE AstId LIKE '%${OperID}%' ORDER BY Num DESC LIMIT 1`;
   db.query(query1, (err, result) => {
     if (!err) {
@@ -186,6 +187,8 @@ exports.createAsset = (req, res) => {
         var ast = parseInt(result[0].Num);
         let astid = ast + 1;
         let AstId = `${OperID}A${astid}`;
+         let astInsurExp = moment(tblAsset.astInsurExp, dateFormats).format('YYYY-MM-DD');
+          let  astPermitExp = moment(tblAsset.astPermitExp, dateFormats).format('YYYY-MM-DD');
         let CreatedDate = moment(new Date()).format('YYYY-MM-DD hh:mm:ss');
         var query =
           'INSERT INTO tblAsset (Num, AstId, AstRegNo, AstName, AstModel, AstChasNo, AstEngNo, AstPermitNo, AstInsurExp, AstPermitExp, AstCreatedDate) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
@@ -200,8 +203,8 @@ exports.createAsset = (req, res) => {
             tblAsset.astChasNo,
             tblAsset.astEngNo,
             tblAsset.astPermitNo,
-            tblAsset.astInsurExp,
-            tblAsset.astPermitExp,
+            astInsurExp,
+            astPermitExp,
             CreatedDate,
           ],
           (err, results) => {
@@ -218,6 +221,8 @@ exports.createAsset = (req, res) => {
         let astid = result.length;
         astid = astid + 1;
         let AstId = `${OperID}A${astid}`;
+        let astInsurExp = moment(tblAsset.astInsurExp, dateFormats).format('YYYY-MM-DD');
+        let  astPermitExp = moment(tblAsset.astPermitExp, dateFormats).format('YYYY-MM-DD');
         let CreatedDate = moment(new Date()).format('YYYY-MM-DD hh:mm:ss');
         var query =
           'INSERT INTO tblAsset (Num, AstId, AstRegNo, AstName, AstModel, AstChasNo, AstEngNo, AstPermitNo, AstInsurExp, AstPermitExp, AstCreatedDate) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
@@ -232,8 +237,8 @@ exports.createAsset = (req, res) => {
             tblAsset.astChasNo,
             tblAsset.astEngNo,
             tblAsset.astPermitNo,
-            tblAsset.astInsurExp,
-            tblAsset.astPermitExp,
+            astInsurExp,
+            astPermitExp,
             CreatedDate,
           ],
           (err, results) => {
@@ -426,6 +431,7 @@ exports.updateAssetInsNPermit = (req,res)=>{
   })
 }
 
+
 //Create Stage
 exports.createStage = (req, res) => {
   var tblStageMaster = req.body;
@@ -506,7 +512,7 @@ exports.validateStage = (req, res) => {
 exports.readStage = (req, res) => {
   var tblStageMaster = req.body;
   var operID = tblStageMaster.operId;
-  var query1 = `SELECT StageID,StageName FROM tblStageMaster WHERE StageID LIKE '%${operID}%'`;
+  var query1 = `SELECT StageID,StageName FROM tblStageMaster WHERE StageID LIKE '%${operID}%' AND StageStatus = 'A' ORDER BY StageName`;
   db.query(query1, (err, result) => {
     if (!err) {
       if (result.length > 0) {
@@ -524,7 +530,7 @@ exports.readStage = (req, res) => {
 exports.readStageTbl = (req, res) => {
   var tblStageMaster = req.body;
   var operID = tblStageMaster.operId;
-  var query1 = `SELECT * FROM tblStageMaster WHERE StageID LIKE '%${operID}%'`;
+  var query1 = `SELECT Num, StageID, StageName, StageStatus, CreatedDate, CreatedBy, ModifyDate, ModifyBy FROM tblStageMaster WHERE StageID LIKE '%${operID}%' ORDER BY StageName`;
   db.query(query1, (err, result) => {
     if (!err) {
       if (result.length > 0) {
@@ -663,7 +669,26 @@ exports.createRoute = (req, res) => {
 exports.readRoute = (req, res) => {
   let tblRouteMaster = req.body;
   const OperId = tblRouteMaster.operId;
-  var query1 = `SELECT Num, RouteID,RouteName,RouteSStage,RouteEStage, RouteStatus FROM tblRouteMaster WHERE RouteID LIKE '%${OperId}%' ORDER BY Num`;
+  var query1 = `SELECT Num, RouteID,RouteName,RouteSStage,RouteEStage, RouteStatus FROM tblRouteMaster WHERE RouteID LIKE '%${OperId}%' AND RouteStatus = 'A' ORDER BY RouteName`;
+  db.query(query1, (err, result) => {
+    if (!err) {
+      if (result.length > 0) {
+        res.status(200).json({ status: 201, data: result });
+        return;
+      } else {
+        res.status(200).json({ status: 201, data:result});
+      }
+    } else {
+      console.log(err);
+    }
+  });
+};
+
+//read Route for table
+exports.readRoutetbl = (req, res) => {
+  let tblRouteMaster = req.body;
+  const OperId = tblRouteMaster.operId;
+  var query1 = `SELECT Num, RouteID,RouteName,RouteSStage,RouteEStage, RouteStatus FROM tblRouteMaster WHERE RouteID LIKE '%${OperId}%' ORDER BY RouteName`;
   db.query(query1, (err, result) => {
     if (!err) {
       if (result.length > 0) {
@@ -873,7 +898,7 @@ const RouteMapName = (RouteArray) =>{
     let Route = [];
     const queries = RouteArray.map((route) => {
       return new Promise((resolve, reject) => {
-        let query = 'SELECT RouteID,RouteName,RouteSStage,RouteEStage, Status, CreatedDate, RouteEffDate FROM tblRouteMaster WHERE RouteID = ?';
+        let query = 'SELECT RouteID,RouteName,RouteSStage,RouteEStage, RouteStatus, CreatedDate, RouteEffDate FROM tblRouteMaster WHERE RouteID = ?';
         db.query(query, [route], (err, result) => {
           if (!err) {
             console.log(result)
@@ -897,6 +922,7 @@ const RouteMapName = (RouteArray) =>{
       });
   });
 }
+
 
 //get stages using RouteID from tblRouteStageMap
 exports.getStagesByRouteID = (req, res) =>{
@@ -963,6 +989,7 @@ const getStageName = (StageID) => {
       });
   });
 };
+
 //get data from tblTicketType
 exports.readTicket = (req, res) => {
   let tblTicketType = req.body;
@@ -1404,7 +1431,6 @@ const updtPassInAuth = (password, id) => {
 		}
 	});
 };
-
 //checks expiries of asset daily 
 exports.checkAssetExpiries = async (req, res) => {
   try {
