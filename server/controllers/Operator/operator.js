@@ -261,6 +261,7 @@ exports.createAsset = (req, res) => {
 //create asset qrcode
 exports.createQrcodeAsset = async (req, res) => {
   const data = req.body.data;
+  let appUrl = "https://play.google.com/store/apps/details?id=com.lekpay.lekpay ";
   //Qrcode using Qr-image
   const qrCode = qr.image(data, { type: 'png' });
   const qrCodeData = qr.imageSync(data, { type: 'png' }); // Get the QR code image data as a buffer

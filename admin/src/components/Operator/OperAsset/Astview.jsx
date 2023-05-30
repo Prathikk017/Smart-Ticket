@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Link, useParams } from 'react-router-dom';
 import moment from 'moment';
 import Opersidebar from '../Opersidebar';
+import { FaGooglePlay } from 'react-icons/fa';
 import useIdleTimeout from '../../../useIdleTimeout';
 
 const Astview = () => {
@@ -57,79 +58,104 @@ const Astview = () => {
 			'left=0,top=0,width=800,height=600,toolbar=0,scrollbars=0,status=0'
 		);
 		printWindow.document.write(`
-        <html>
-          <head>
-            <title>${OperShortName}-${e}</title>
-            <style>
-              @media print {
-                /* Set page size to A4 */
-                @page {
-                  size: A4;
-                  margin: 0;
-                }
-                /* Center the QR code and label */
-                body {
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-                
-                }
-                #qr-img-container {
-                  display: flex;
-                  flex-direction: column;
-                  justify-content: center;
-                  align-items: center;
-                  margin-top: 0;
-                  padding-top:0;
-                  margin-bottom: 0;
-                  padding-bottom: 0;
-                }
-                 #assetReg{
-                  text-align: center;
-                  font-size: 100px;
-                  font-weight: bold;
-                  margin-top:0;
-                  padding-top:0;
-                  margin-bottom: 0;
-                  padding-bottom: 0;
-                }
-                #opershortname{
-                  text-align: center;
-                  font-size: 100px;
-                  font-weight: bold;
-                  margin-top:20;
-                  padding-top:0;
-                  margin-bottom: 0;
-                  padding-bottom: 0;
-                }
-                #qr-img {
-                  display: block;
-                  margin: 0 auto;
-                  margin-top: 0;
-                  padding-top:0;
-                  margin-bottom: 0;
-                  padding-bottom: 0;
-                  width:850px;
-                  heigth:750px;
-                }
-              }
-            </style>
-          </head>
-          <body>
-          
-            <div id="qr-img-container">
-              <h1 id="opershortname">${OperShortName}</h1>
-              <img src="${qrImage.src}" alt="QR Code" id="qr-img" />
-              <h4 id="assetReg">${e}<h4>
-            </div>
-          </body>
-        </html>
-      `);
+			<html>
+				<head>
+					<title>${OperShortName}-${e}</title>
+					<style>
+						@media print {
+							/* Set page size to A4 */
+							@page {
+								size: A4;
+								margin: 0;
+							}
+							/* Center the QR code and label */
+							body {
+								display: flex;
+								justify-content: center;
+								align-items: center;
+							}
+							#qr-img-container {
+								display: flex;
+								flex-direction: column;
+								justify-content: center;
+								align-items: center;
+								margin-top: 0;
+								padding-top: 0;
+								margin-bottom: 0;
+								padding-bottom: 0;
+							}
+							#assetReg {
+								text-align: center;
+								font-size: 100px;
+								font-weight: bold;
+								margin-top: 0;
+								padding-top: 0;
+								margin-bottom: 0;
+								padding-bottom: 0;
+							}
+							#opershortname {
+								text-align: center;
+								font-size: 100px;
+								font-weight: bold;
+								margin-top: 0;
+								padding-top: 0;
+								margin-bottom: 0;
+								padding-bottom: 0;
+							}
+							#qr-img {
+							
+								display: block;
+								margin: 0 auto;
+								margin-top: 10px;
+								padding-top: 0;
+								margin-bottom: 0;
+								padding-bottom: 0;
+								width: 750px;
+								height: 650px;
+							}
+							#download-link {
+								margin-top: 20px;
+								font-size: 40px;
+								text-align: center;
+								padding-left: 30px;
+							}
+							#download {
+								margin-top: 5px;
+								font-size: 40px;
+								text-align: center;
+								padding-left: 30px;
+							}
+							#google {
+								display: flex;
+								flex-direction: row;
+							}
+						}
+					</style>
+				</head>
+				<body>
+					<div id="qr-img-container">
+						<h1 id="opershortname">${OperShortName}</h1>
+						<img src="${qrImage.src}" alt="QR Code" id="qr-img" />
+						<h4 id="assetReg">${e}</h4>
+						<p id="download-link">
+							Download Lekpay App from
+						</p>
+						<div id="google">
+							<p id="download">
+								Google Play
+							</p>
+							<p id="download">Apple Store</p>
+						</div>
+					</div>
+				</body>
+			</html>
+		`);
 		printWindow.document.close();
 		printWindow.focus();
 		printWindow.print();
 		printWindow.close();
 	};
+	
 
 	// Call useIdleTimeout and pass in the time to consider the user as idle
 	const isIdle = useIdleTimeout(600000); // set to 10 minute
