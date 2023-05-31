@@ -7,6 +7,7 @@ import useIdleTimeout from '../../../useIdleTimeout';
 
 const Astedit = () => {
 	const [astName, setAstName] = useState('');
+	const [astRegNo, setAstRegNo] = useState('');
 	const [astModel, setAstModel] = useState('');
 	const [astChasNo, setAstChasNo] = useState('');
 	const [astEngNo, setAstEngNo] = useState('');
@@ -50,6 +51,7 @@ const Astedit = () => {
 		);
 
 		if (res1.data.status === 201) {
+			setAstRegNo(res1.data.data[0].AstRegNo);
 			setAstName(res1.data.data[0].AstName);
 			setAstModel(res1.data.data[0].AstModel);
 			setAstChasNo(res1.data.data[0].AstChasNo);
@@ -158,12 +160,12 @@ const Astedit = () => {
 		<div className='flex flex-row gap-4'>
 			<Opersidebar />
 			<div className='grid grid-cols-1 sm:grid-cols-2 h-screen w-full'>
-				<div className='py-4 flex flex-col justify-center items-center'>
+				<div className='py-2 flex flex-col justify-center items-center'>
 					<form className='max-w-[500px] w-full mx-auto'>
 						<h2 className='text-4xl text-pink-500 text-center py-1'>
 							Update Asset
 						</h2>
-
+                        <h3 className='text-center  text-xl items-center py-2'>Asset Reg No: {astRegNo}</h3>
 						<div className='flex flex-row py-2'>
 							<label className='justify-center items-center mr-24 mt-1'>
 								Asset Model:{' '}

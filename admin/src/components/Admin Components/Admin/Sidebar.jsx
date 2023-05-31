@@ -14,16 +14,26 @@ import { BiShowAlt } from 'react-icons/bi';
 
 import { ImUser } from 'react-icons/im';
 import { IoTicketOutline } from 'react-icons/io5';
+import axios from 'axios';
 
 const Sidebar = () => {
 	const [showOperatorDropdown, setShowOperatorDropdown] = useState(false);
 	const [showTeamDropdown, setShowTeamDropdown] = useState(false);
 	const [showTTDropdown, setShowTTDropdown] = useState(false);
-
+    const ID = window.localStorage.getItem('AdminID');
+    let OperId = JSON.parse(ID);
 	const history = useNavigate();
 
-	const handlesub = () => {
+	const handlesub = async() => {
 		history('/signin');
+		const res = await axios.patch('https://lekpay.com/admin/logout',{
+      OperId,
+    });
+    if(res.data.status === 201){
+      console.log("logout")
+    }else{
+      console.log("error")
+    }
 	};
 
 	const handleOperatorDropdown = () => {

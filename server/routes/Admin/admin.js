@@ -25,9 +25,11 @@ const {
 	readTransactionDataByAsset,
 	readRouteByAssetID,
 	readTransactionData,
+	Logout,
 } = require('../../controllers/Admin/admin');
 
 router.route('/login').post(login);
+router.route('/logout').patch(Logout);
 router.route('/verify').post(verify);
 router.route('/create').post(createAdmin);
 router.route('/read').get(getAllAdmins);

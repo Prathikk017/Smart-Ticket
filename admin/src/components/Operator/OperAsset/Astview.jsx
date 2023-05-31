@@ -287,6 +287,13 @@ const Astview = () => {
 															</td>
 														</tr>
 														<tr>
+															<td className='p-1 my-1 text-start'>Permit Exprie Date</td>
+															<td className='p-1 my-1 text-start'>:</td>
+															<td className='p-1 my-1 text-start'>
+																{moment(el.AstPermitExp).format('DD-MM-YYYY')}
+															</td>
+														</tr>
+														<tr>
 															<td className='p-1 my-1 text-start'>Status</td>
 															<td className='p-1 my-1 text-start'>:</td>
 															<td className='p-1 my-1 text-start'>

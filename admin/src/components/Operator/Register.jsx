@@ -139,7 +139,7 @@ const Register = () => {
 	<Header />
 	<div className='relative flex items-center justify-start ml-[60px] h-full overflow-hidden'>
   <form
-    className='max-w-[550px] w-full my-auto rounded-md mt-[75px] px-4 py-1 bg-white '
+    className='max-w-[550px] w-full my-auto rounded-md mt-[70px] px-4 py-1 bg-white '
     id='contact-form'
     onSubmit={handleSubmit}
   >
@@ -342,10 +342,11 @@ const Register = () => {
                 <p className='text-red-500 text-xs '>{errors.OperPincode}</p>
               ) : null}
             </div>
-            <div className='my-1 mx-auto'>
+            <div className=' mx-auto' style={{ transform: 'scale(0.9)' }}>
               <ReCAPTCHA
                 sitekey='6Lfk3RsmAAAAABDeJtGUOUruyAp0o76ZI3IP8CrV'
                 onChange={onChanges}
+                
               />
             </div>
             <button

@@ -116,50 +116,100 @@ const RouteStageView = () => {
                     <table className='w-full'>
                       <tbody>
                         <div className='pb-1'>
-                        <tr>
-                          <td className='p-1 my-1 text-start pr-4'>Route Name</td>
-                          <td className='p-1 my-1 text-start pl-24'>:</td>
-                          <td className='p-1 my-1 text-start'>
-                            {el.RouteName}
-                          </td>
-                        </tr>
-                        <hr/>
+                          <tr>
+                            <td className='p-1 my-1 text-start pr-4'>
+                              Route Name
+                            </td>
+                            <td className='p-1 my-1 text-start pl-24'>:</td>
+                            <td className='p-1 my-1 text-start'>
+                              {el.RouteName}
+                            </td>
+                          </tr>
+                          <hr />
                         </div>
-                        
+
                         <div className='pb-1'>
-                        <tr>
-                          <td className='p-1 my-1 text-start pr-1'>
-                            Route Effective Date
-                          </td>
-                          <td className='p-1 my-1 text-start pl-14 '>:</td>
-                          <td className='p-1 my-1 text-start pl-0'>
-                            {moment(el.RouteEffDate).format('DD-MM-YYYY')}
-                          </td>
-                        </tr>
-                        <hr/>
+                          <tr>
+                            <td className='p-1 my-1 text-start pr-1'>
+                              Route Effective Date
+                            </td>
+                            <td className='p-1 my-1 text-start pl-14 '>:</td>
+                            <td className='p-1 my-1 text-start pl-0'>
+                              {moment(el.RouteEffDate).format('DD-MM-YYYY')}
+                            </td>
+                          </tr>
+                          <hr />
                         </div>
-                       
+
                         <div className='py-1'>
-                        <tr>
-                          <td className='p-1 my-1 text-start pr-4'>
-                            Route Start Stage
-                          </td>
-                          <td className='p-1 my-1 text-start pl-16'>:</td>
-                          <td className='p-1 my-1 text-start'>
-                            {data1.Stage[0]}
-                          </td>
-                        </tr>
-                        {data1.fare.map((fare, index) => (
-                          
-                          <div
-                            className='grid grid-flow-col gap-4'
-                            key={index}
-                          >
-                            {index === 0 && (
-                              
-                              <>
+                          <tr>
+                            <td className='p-1 my-1 text-start pr-4'>
+                              Route Start Stage
+                            </td>
+                            <td className='p-1 my-1 text-start pl-16'>:</td>
+                            <td className='p-1 my-1 text-start'>
+                              {data1.Stage[0]}
+                            </td>
+                          </tr>
+                          {data1.fare.map((fare, index) => (
+                            <div
+                              className='grid grid-flow-col gap-4'
+                              key={index}
+                            >
+                              {index === 0 && (
+                                <>
+                                  <tr>
+                                    <td className='p-1 my-1 text-start'>
+                                      Simple Ticket
+                                    </td>
+                                    <td className='p-1 my-1 text-start'>:</td>
+                                    <td className='p-1 my-1 text-start'>
+                                      {fare.ST}
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td className='p-1 my-1 text-start'>
+                                      Return Ticket
+                                    </td>
+                                    <td className='p-1 my-1 text-start'>:</td>
+                                    <td className='p-1 my-1 text-start'>
+                                      {fare.RT}
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td className='p-1 my-1 text-start'>
+                                      Daily Pass
+                                    </td>
+                                    <td className='p-1 my-1 text-start'>:</td>
+                                    <td className='p-1 my-1 text-start'>
+                                      {fare.DP}
+                                    </td>
+                                  </tr>
+                                </>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                        <hr />
+
+                        {data1.Stage.slice(1, -1).map((stage, index) => {
+                          const fare = data1.fare.slice(1, -1)[index];
+                          return (
+                            <div className='py-1' key={index}>
+                              <tr>
+                                <td className='p-1 my-1 text-start'>
+                                  Route Intermediate Stage
+                                </td>
+                                <td className='p-1 my-1 text-start pl-5'>:</td>
+                                <td className='p-1 my-1 text-start '>
+                                  {stage}
+                                </td>
+                              </tr>
+                              <div
+                                className='grid grid-flow-col gap-4'
+                                key={index}
+                              >
                                 <tr>
-                                  
                                   <td className='p-1 my-1 text-start'>
                                     Simple Ticket
                                   </td>
@@ -186,113 +236,75 @@ const RouteStageView = () => {
                                     {fare.DP}
                                   </td>
                                 </tr>
-                              </>
-                            )}
-                          </div>
-                        ))}
-                        </div>
-                        <hr/>
-
-                        {data1.Stage.slice(1, -1).map((stage, index) => (
-                          <div className='py-1' key={index}>
-                            <tr>
-                              <td className='p-1 my-1 text-start'>
-                                Route Intermediate Stage
-                              </td>
-                              <td className='p-1 my-1 text-start pl-5'>:</td>
-                              <td className='p-1 my-1 text-start '>{stage}</td>
-                            </tr>
-                            {data1.fare[index] && (
-                              <div className='grid grid-flow-col gap-4'>
-                              <tr>
-                                <td className='p-1 my-1 text-start'>Simple Ticket</td>
-                                <td className='p-1 my-1 text-start'>:</td>
-                                <td className='p-1 my-1 text-start'>
-                                  {data1.fare[index].ST}
-                                </td>
-                              </tr>
-                              <tr>
-                                <td className='p-1 my-1 text-start'>Return Ticket</td>
-                                <td className='p-1 my-1 text-start'>:</td>
-                                <td className='p-1 my-1 text-start'>
-                                  {data1.fare[index].RT}
-                                </td>
-                              </tr>
-                              <tr>
-                                <td className='p-1 my-1 text-start'>Daily Pass</td>
-                                <td className='p-1 my-1 text-start'>:</td>
-                                <td className='p-1 my-1 text-start'>
-                                  {data1.fare[index].DP}
-                                </td>
-                              </tr>
                               </div>
-                         )}
-                         <hr/>
-                          </div>
-                          
-                        ))}
-                        <div className='py-1'>
-                        <tr>
-                          <td className='p-1 my-1 text-start pr-2'>
-                            Route End Stage
-                          </td>
-                          <td className='p-1 my-1 text-start pl-20'>:</td>
-                          <td className='p-1 my-1 text-start'>
-                            {data1.Stage[data1.Stage.length - 1]}
-                          </td>
-                        </tr>
+                              <hr />
+                            </div>
+                          );
+                        })}
 
-                        {data1.fare.map((fare, index) => (
-                          <div
-                            className='grid grid-flow-col gap-4'
-                            key={index === data1.fare.length - 1}
-                          >
-                            {index === data1.fare.length - 1 && (
-                              <>
-                                <tr>
-                                  <td className='p-1 my-1 text-start'>
-                                  Simple Ticket
-                                  </td>
-                                  <td className='p-1 my-1 text-start'>:</td>
-                                  <td className='p-1 my-1 text-start'>
-                                    {fare.ST}
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td className='p-1 my-1 text-start'>
-                                    Return Ticket
-                                  </td>
-                                  <td className='p-1 my-1 text-start'>:</td>
-                                  <td className='p-1 my-1 text-start'>
-                                    {fare.RT}
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td className='p-1 my-1 text-start'>
-                                  Daily Pass
-                                  </td>
-                                  <td className='p-1 my-1 text-start'>:</td>
-                                  <td className='p-1 my-1 text-start'>
-                                    {fare.DP}
-                                  </td>
-                                </tr>
-                              </>
-                            )}
-                          </div>
-                        ))}
-                        <hr/>
+                        <div className='py-1'>
+                          <tr>
+                            <td className='p-1 my-1 text-start pr-2'>
+                              Route End Stage
+                            </td>
+                            <td className='p-1 my-1 text-start pl-20'>:</td>
+                            <td className='p-1 my-1 text-start'>
+                              {data1.Stage[data1.Stage.length - 1]}
+                            </td>
+                          </tr>
+
+                          {data1.fare.map((fare, index) => (
+                            <div
+                              className='grid grid-flow-col gap-4'
+                              key={index === data1.fare.length - 1}
+                            >
+                              {index === data1.fare.length - 1 && (
+                                <>
+                                  <tr>
+                                    <td className='p-1 my-1 text-start'>
+                                      Simple Ticket
+                                    </td>
+                                    <td className='p-1 my-1 text-start'>:</td>
+                                    <td className='p-1 my-1 text-start'>
+                                      {fare.ST}
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td className='p-1 my-1 text-start'>
+                                      Return Ticket
+                                    </td>
+                                    <td className='p-1 my-1 text-start'>:</td>
+                                    <td className='p-1 my-1 text-start'>
+                                      {fare.RT}
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td className='p-1 my-1 text-start'>
+                                      Daily Pass
+                                    </td>
+                                    <td className='p-1 my-1 text-start'>:</td>
+                                    <td className='p-1 my-1 text-start'>
+                                      {fare.DP}
+                                    </td>
+                                  </tr>
+                                </>
+                              )}
+                            </div>
+                          ))}
+                          <hr />
                         </div>
                         <div className='py-1'>
-                        <tr>
-                          <td className='p-1 my-1 text-start pr-4'>Created Date</td>
-                          <td className='p-1 my-1 text-start pl-24'>:</td>
-                          <td className='p-1 my-1 text-start'>
-                            {moment(el.CreatedDate).format('DD-MM-YYYY')}
-                          </td>
-                        </tr>
-                        <hr/>
+                          <tr>
+                            <td className='p-1 my-1 text-start pr-4'>
+                              Created Date
+                            </td>
+                            <td className='p-1 my-1 text-start pl-24'>:</td>
+                            <td className='p-1 my-1 text-start'>
+                              {moment(el.CreatedDate).format('DD-MM-YYYY')}
+                            </td>
+                          </tr>
+                          <hr />
                         </div>
-                        
                       </tbody>
                     </table>
                   </div>

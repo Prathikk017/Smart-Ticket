@@ -114,7 +114,7 @@ const Rutview = () => {
 															</td>
 															<td className='p-1 my-1 text-start'>:</td>
 															<td className='p-1 my-1 text-start'>
-																{el.RouteEffDate}
+																{moment(el.RouteEffDate).format('DD-MM-YYYY')}
 															</td>
 														</tr>
 														<tr>

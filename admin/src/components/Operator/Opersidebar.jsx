@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AuthProvider } from '../../Contexts/authContext';
+import axios from 'axios';
 
 const Opersidebar = () => {
 	const [showAssetDropdown, setShowAssetDropdown] = useState(false);
@@ -21,7 +22,8 @@ const Opersidebar = () => {
 	const [showRouteDropdown, setShowRouteDropdown] = useState(false);
 	const [showRouteMapDropdown, setShowRouteMapDropdown] = useState(false);
 	const history = useNavigate();
-
+	const ID = window.localStorage.getItem('OperID');
+    let OperId = JSON.parse(ID);
 	const handlesub = () => {
 		history('/signin');
 	};
@@ -41,8 +43,17 @@ const Opersidebar = () => {
 		setShowRouteMapDropdown(!showRouteMapDropdown);
 	};
 
-	const handleLogOut = (logout) => {
+	const handleLogOut = async(logout) => {
 		<AuthProvider children={logout} />;
+	
+    const res = await axios.patch('https://lekpay.com/admin/logout',{
+      OperId,
+    });
+    if(res.data.status === 201){
+      console.log("logout")
+    }else{
+      console.log("error")
+    }
 	};
 
 	useEffect(() => {

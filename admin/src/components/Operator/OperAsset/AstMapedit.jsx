@@ -138,8 +138,8 @@ const AstMapedit = () => {
               Update Asset
             </h2>
 
-            <h2 className='pb-4 text-2xl'>
-              Asset Register No: <span>{astRegNo}</span>
+            <h2 className='pb-4 text-xl text-center'>
+              Asset Reg No: <span>{astRegNo}</span>
             </h2>
             <div className='flex flex-row py-2'>
               <label className='justify-center items-center mr-20 mt-1'>

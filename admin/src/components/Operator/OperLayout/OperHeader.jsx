@@ -21,6 +21,7 @@ const OperHeader = () => {
   const ID = window.localStorage.getItem('OperID');
   const history = useNavigate();
   var operId = JSON.parse(ID);
+  let OperId = JSON.parse(ID);
 
   const getOperator = async () => {
     const res = await axios.post(
@@ -41,10 +42,8 @@ const OperHeader = () => {
         'https://lekpay.com/operator/asset/checkexpiries'
       );
       if (res.data.status === 201) {
-        console.log(res.data.data);
 		setNotificationDate(moment(res.data.Notification).format('DD-MM-YYYY'));
 		const assetsArray = Object.values(res.data.data); // Convert the response object into an array
-		console.log(assetsArray)
     const filteredAssets = assetsArray.filter(asset => asset.asset.AstId.startsWith(operId));
 		setExpiredAssets(filteredAssets);
     setNotificationCount(filteredAssets.length); // Update the notification count
@@ -54,12 +53,20 @@ const OperHeader = () => {
     }
   };
 
-  const handleLogOut = (logout) => {
+  const handleLogOut = async(logout) => {
 		<AuthProvider children={logout} />;
+    const res = await axios.patch('https://lekpay.com/admin/logout',{
+      OperId,
+    });
+    if(res.data.status === 201){
+      console.log("logout")
+    }else{
+      console.log("error")
+    }
     history('/signin');
 	};
 
-  console.log(expiredAssets)
+  
   useEffect(() => {
     getOperator();
     getExpiredAssets();

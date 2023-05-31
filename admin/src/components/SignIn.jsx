@@ -35,6 +35,7 @@ const SignIn = () => {
   const Aname = values.Aname;
   const Apassword = values.Apassword;
   const [operid, setOperid] = useState('');
+  const [adminid, setAdminid] = useState('');
   const [token, setToken] = useState('');
 
   const handleSub = async (e) => {
@@ -54,10 +55,16 @@ const SignIn = () => {
         resetForm();
         return;
       }
+      if(res.data.data === "User is already login"){
+        alert(res.data.data + " need to log out before logging");
+        resetForm();
+        return;
+      }
       if (res.data.status === 201) {
         alert('User Login Successfully');
         setToken(res.data.token);
         if (res.data.data.Flag === 'A') {
+          setAdminid(res.data.data.AuthID);
           setTimeout(() => history('/admin/dashboard'), 500);
           return;
         }
@@ -80,7 +87,8 @@ const SignIn = () => {
   useEffect(() => {
     window.localStorage.setItem('OperID', JSON.stringify(operid));
     window.localStorage.setItem('Lekpay', JSON.stringify(token));
-  }, [operid, token]);
+    window.localStorage.setItem('AdminID', JSON.stringify(adminid));
+  }, [operid, token, adminid]);
 
   return (
     <>

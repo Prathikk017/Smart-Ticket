@@ -34,9 +34,10 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = () => {
+  const logout = async() => {
     setToken(null);
     localStorage.removeItem('Lekpay');
+    
   };
 
   const isAuthenticated = () => {
