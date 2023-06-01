@@ -46,7 +46,7 @@ const RouteStageMap = () => {
     setRouteEStage(stages[1].trim());
   };
   const startStage = (e) => {
-    const selectedStageName = e.target.selectedOptions[0].text;
+    const selectedStageName = e.target.selectedOptions[0].text.toUpperCase();
     if (e.target.value !== 'Select') {
       if (selectedStageName === routeSStage) {
         setStartStage(e.target.value);
@@ -284,21 +284,30 @@ const RouteStageMap = () => {
   //  }, [!isIdle]);
 
   useEffect(() => {
-    // Redirect to sign-in page if the user is idle
-    if (isIdle) {
-      window.localStorage.removeItem('Lekpay');
-      const ID = window.localStorage.getItem('OperID');
-      let OperId = JSON.parse(ID);
-      const res = axios.patch('https://lekpay.com/admin/logout', {
-        OperId,
-      });
-      if (res.data.status === 201) {
-        console.log('logout');
-      } else {
-        console.log('error');
+    const logout = async () => {
+      if (isIdle) {
+        window.localStorage.removeItem('Lekpay');
+        const ID = window.localStorage.getItem('OperID');
+        let OperId = JSON.parse(ID);
+        try {
+          const res = await axios.patch('https://lekpay.com/admin/logout', {
+            OperId,
+          });
+  
+          if (res.data.status === 201) {
+            console.log('logout');
+          } else {
+            console.log('error');
+          }
+  
+          history('/signin');
+        } catch (error) {
+          console.error(error);
+        }
       }
-	  history('/signin');
-    }
+    };
+  
+    logout();
   }, [isIdle, history]);
 
   useEffect(() => {

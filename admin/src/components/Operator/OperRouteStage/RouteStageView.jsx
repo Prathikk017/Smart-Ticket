@@ -83,23 +83,31 @@ const RouteStageView = () => {
   //  }, [!isIdle]);
 
   useEffect(() => {
-    // Redirect to sign-in page if the user is idle
-    if (isIdle) {
-      window.localStorage.removeItem('Lekpay');
-      const ID = window.localStorage.getItem('OperID');
-      let OperId = JSON.parse(ID);
-      const res = axios.patch('https://lekpay.com/admin/logout', {
-        OperId,
-      });
-      if (res.data.status === 201) {
-        console.log('logout');
-      } else {
-        console.log('error');
+    const logout = async () => {
+      if (isIdle) {
+        window.localStorage.removeItem('Lekpay');
+        const ID = window.localStorage.getItem('OperID');
+        let OperId = JSON.parse(ID);
+        try {
+          const res = await axios.patch('https://lekpay.com/admin/logout', {
+            OperId,
+          });
+
+          if (res.data.status === 201) {
+            console.log('logout');
+          } else {
+            console.log('error');
+          }
+
+          history('/signin');
+        } catch (error) {
+          console.error(error);
+        }
       }
-	  history('/signin');
-    }
+    };
+
+    logout();
   }, [isIdle, history]);
-  console.log(data1.fare);
 
   useEffect(() => {
     const token = window.localStorage.getItem('Lekpay');
@@ -168,33 +176,17 @@ const RouteStageView = () => {
                             >
                               {index === 0 && (
                                 <>
-                                  <tr>
-                                    <td className='p-1 my-1 text-start'>
-                                      Simple Ticket
-                                    </td>
-                                    <td className='p-1 my-1 text-start'>:</td>
-                                    <td className='p-1 my-1 text-start'>
-                                      {fare.ST}
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td className='p-1 my-1 text-start'>
-                                      Return Ticket
-                                    </td>
-                                    <td className='p-1 my-1 text-start'>:</td>
-                                    <td className='p-1 my-1 text-start'>
-                                      {fare.RT}
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td className='p-1 my-1 text-start'>
-                                      Daily Pass
-                                    </td>
-                                    <td className='p-1 my-1 text-start'>:</td>
-                                    <td className='p-1 my-1 text-start'>
-                                      {fare.DP}
-                                    </td>
-                                  </tr>
+                                  {Object.keys(fare).map((key) => (
+                                    <tr key={key}>
+                                      <td className='p-1 my-1 text-start'>
+                                        {key}
+                                      </td>
+                                      <td className='p-1 my-1 text-start'>:</td>
+                                      <td className='p-1 my-1 text-start'>
+                                        {fare[key]}
+                                      </td>
+                                    </tr>
+                                  ))}
                                 </>
                               )}
                             </div>
@@ -219,33 +211,17 @@ const RouteStageView = () => {
                                 className='grid grid-flow-col gap-4'
                                 key={index}
                               >
-                                <tr>
-                                  <td className='p-1 my-1 text-start'>
-                                    Simple Ticket
-                                  </td>
-                                  <td className='p-1 my-1 text-start'>:</td>
-                                  <td className='p-1 my-1 text-start'>
-                                    {fare.ST}
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td className='p-1 my-1 text-start'>
-                                    Return Ticket
-                                  </td>
-                                  <td className='p-1 my-1 text-start'>:</td>
-                                  <td className='p-1 my-1 text-start'>
-                                    {fare.RT}
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td className='p-1 my-1 text-start'>
-                                    Daily Pass
-                                  </td>
-                                  <td className='p-1 my-1 text-start'>:</td>
-                                  <td className='p-1 my-1 text-start'>
-                                    {fare.DP}
-                                  </td>
-                                </tr>
+                                {Object.keys(fare).map((key) => (
+                                  <tr key={key}>
+                                    <td className='p-1 my-1 text-start'>
+                                      {key}
+                                    </td>
+                                    <td className='p-1 my-1 text-start'>:</td>
+                                    <td className='p-1 my-1 text-start'>
+                                      {fare[key]}
+                                    </td>
+                                  </tr>
+                                ))}
                               </div>
                               <hr />
                             </div>
@@ -270,33 +246,17 @@ const RouteStageView = () => {
                             >
                               {index === data1.fare.length - 1 && (
                                 <>
-                                  <tr>
-                                    <td className='p-1 my-1 text-start'>
-                                      Simple Ticket
-                                    </td>
-                                    <td className='p-1 my-1 text-start'>:</td>
-                                    <td className='p-1 my-1 text-start'>
-                                      {fare.ST}
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td className='p-1 my-1 text-start'>
-                                      Return Ticket
-                                    </td>
-                                    <td className='p-1 my-1 text-start'>:</td>
-                                    <td className='p-1 my-1 text-start'>
-                                      {fare.RT}
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td className='p-1 my-1 text-start'>
-                                      Daily Pass
-                                    </td>
-                                    <td className='p-1 my-1 text-start'>:</td>
-                                    <td className='p-1 my-1 text-start'>
-                                      {fare.DP}
-                                    </td>
-                                  </tr>
+                                  {Object.keys(fare).map((key) => (
+                                    <tr key={key}>
+                                      <td className='p-1 my-1 text-start'>
+                                        {key}
+                                      </td>
+                                      <td className='p-1 my-1 text-start'>:</td>
+                                      <td className='p-1 my-1 text-start'>
+                                        {fare[key]}
+                                      </td>
+                                    </tr>
+                                  ))}
                                 </>
                               )}
                             </div>

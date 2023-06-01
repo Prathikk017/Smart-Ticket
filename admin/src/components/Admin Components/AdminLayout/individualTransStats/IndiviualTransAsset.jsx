@@ -65,7 +65,32 @@ const IndiviualTransAsset = () => {
   //   // Clear the interval when the component unmounts
   //   return () => clearInterval(intervalId);
   // }, [!isIdle]);
-
+  useEffect(() => {
+    const logout = async () => {
+      if (isIdle) {
+        window.localStorage.removeItem('Lekpay');
+  
+        try {
+          const res = await axios.patch('https://lekpay.com/admin/logout', {
+            OperId:operId,
+          });
+  
+          if (res.data.status === 201) {
+            console.log('logout');
+          } else {
+            console.log('error');
+          }
+  
+          history('/signin');
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    };
+  
+    logout();
+  }, [isIdle, operId, history]);
+  
   useEffect(() => {
     // Redirect to sign-in page if the user is idle
     if (isIdle) {

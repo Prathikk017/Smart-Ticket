@@ -34,7 +34,8 @@ const Routeregister = () => {
 
   //function
   const setData = (e) => {
-    setRouteName(e.target.value);
+    let RutName = e.target.value.toUpperCase();
+    setRouteName(RutName);
   };
 
   const setData1 = (e) => {
@@ -232,21 +233,30 @@ const handleCheckboxChange1 = (e) => {
   //  }, [!isIdle]);
 
   useEffect(() => {
-    // Redirect to sign-in page if the user is idle
-    if (isIdle) {
-      window.localStorage.removeItem('Lekpay');
-      const ID = window.localStorage.getItem('OperID');
-      let OperId = JSON.parse(ID);
-      const res = axios.patch('https://lekpay.com/admin/logout', {
-        OperId,
-      });
-      if (res.data.status === 201) {
-        console.log('logout');
-      } else {
-        console.log('error');
+    const logout = async () => {
+      if (isIdle) {
+        window.localStorage.removeItem('Lekpay');
+        const ID = window.localStorage.getItem('OperID');
+        let OperId = JSON.parse(ID);
+        try {
+          const res = await axios.patch('https://lekpay.com/admin/logout', {
+            OperId,
+          });
+  
+          if (res.data.status === 201) {
+            console.log('logout');
+          } else {
+            console.log('error');
+          }
+  
+          history('/signin');
+        } catch (error) {
+          console.error(error);
+        }
       }
-	  history('/signin');
-    }
+    };
+  
+    logout();
   }, [isIdle, history]);
 
   useEffect(() => {
