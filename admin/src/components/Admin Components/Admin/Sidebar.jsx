@@ -25,7 +25,6 @@ const Sidebar = () => {
 	const history = useNavigate();
 
 	const handlesub = async() => {
-		history('/signin');
 		const res = await axios.patch('https://lekpay.com/admin/logout',{
       OperId,
     });
@@ -34,6 +33,7 @@ const Sidebar = () => {
     }else{
       console.log("error")
     }
+		history('/signin');
 	};
 
 	const handleOperatorDropdown = () => {

@@ -304,7 +304,17 @@ const Empregister = () => {
     // Redirect to sign-in page if the user is idle
     if (isIdle) {
       window.localStorage.removeItem('Lekpay');
-      history('/');
+      const ID = window.localStorage.getItem('OperID');
+      let OperId = JSON.parse(ID);
+      const res = axios.patch('https://lekpay.com/admin/logout', {
+        OperId,
+      });
+      if (res.data.status === 201) {
+        console.log('logout');
+      } else {
+        console.log('error');
+      }
+	  history('/signin');
     }
   }, [isIdle, history]);
 
