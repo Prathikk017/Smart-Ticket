@@ -1,5 +1,6 @@
 import React from 'react';
 import logo from '../assets/logo.jpg';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
 	return (
@@ -18,6 +19,9 @@ const Navbar = () => {
 				<ul className='flex flex-row gap-6'>
 					<li className='text-lg p-2 hover:cursor-pointer hover:underline duration-200'>
 						<a href='/signin'>Login</a>
+					</li>
+					<li className='text-lg p-2 hover:cursor-pointer hover:underline duration-200'>
+						<Link to='/about'>About Us</Link>
 					</li>
 					<li className='text-lg p-2 hover:cursor-pointer hover:underline duration-200'>
 						FAQ's
