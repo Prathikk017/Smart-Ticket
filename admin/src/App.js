@@ -49,6 +49,7 @@ import SingleOperator from './components/Admin Components/AdminLayout/individual
 import IndiviualTransAsset from './components/Admin Components/AdminLayout/individualTransStats/IndiviualTransAsset';
 import IndiviualTransRoute from './components/Admin Components/AdminLayout/individualTransStats/IndiviualTransRoute';
 import Home from './components/Home';
+import About from './components/About';
 import PrivacyPolicy from './components/PivacyPolicy';
 import RefundsAndCancels from './components/RefundsAndCancels';
 import TermsAndConditions from './components/TermsAndConditions';
@@ -64,6 +65,7 @@ function App() {
 		<BrowserRouter>
 			<Routes>
 				<Route path='/' element={<Home />} />
+				<Route path='/about' element={<About />} />
 				<Route path='/privacypolicy' element={<PrivacyPolicy />} />
 				<Route path='/refundandcancellations' element={<RefundsAndCancels />} />
 				<Route path='/termsandconditions' element={<TermsAndConditions />} />
@@ -75,8 +77,8 @@ function App() {
 				<Route path='admin/approveopersview' element={<Opertable />} />
 				<Route path='/admin/approveoper/:OperId' element={<Operview />} />
 				<Route path='/operdashboard' element={<Operdashboard />} />
-				<Route path='/operator/profileview' element={<OperProfilePage/>}/>
-				<Route path='/operator/addinfo' element={<OperAddInfo/>}/>
+				<Route path='/operator/profileview' element={<OperProfilePage />} />
+				<Route path='/operator/addinfo' element={<OperAddInfo />} />
 				<Route path='/approve/:OperId' element={<Opertable />} />
 				<Route path='/empregister' element={<Empregister />} />
 				<Route path='/empupdate/:EmpId' element={<Empedit />} />
@@ -98,7 +100,10 @@ function App() {
 				<Route path='/rutupdate/:RouteID' element={<Rutedit />} />
 				<Route path='/routemap' element={<RouteStageMap />} />
 				<Route path='/rutmapview' element={<RouteStageTable />} />
-				<Route path='/operator/routemap/:RouteID' element={<RouteStageView />} />
+				<Route
+					path='/operator/routemap/:RouteID'
+					element={<RouteStageView />}
+				/>
 				<Route
 					path='/transactionasset'
 					element={<IndividualTransAssetData />}
