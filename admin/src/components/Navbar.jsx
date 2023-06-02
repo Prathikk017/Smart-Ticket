@@ -27,7 +27,7 @@ const Navbar = () => {
 						FAQ's
 					</li>
 					<li className='text-lg p-2 hover:cursor-pointer hover:underline duration-200'>
-						Contact Us
+						<Link to='/contact'>Contact Us</Link>
 					</li>
 				</ul>
 			</div>

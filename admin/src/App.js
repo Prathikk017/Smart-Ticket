@@ -59,6 +59,7 @@ import RouteStageView from './components/Operator/OperRouteStage/RouteStageView'
 import AstMapedit from './components/Operator/OperAsset/AstMapedit';
 import OperProfilePage from './components/Operator/OperProfilePage';
 import OperAddInfo from './components/Operator/OperAddInfo';
+import Contact from './components/Contact';
 
 function App() {
 	return (
@@ -66,6 +67,7 @@ function App() {
 			<Routes>
 				<Route path='/' element={<Home />} />
 				<Route path='/about' element={<About />} />
+				<Route path='/contact' element={<Contact />} />
 				<Route path='/privacypolicy' element={<PrivacyPolicy />} />
 				<Route path='/refundandcancellations' element={<RefundsAndCancels />} />
 				<Route path='/termsandconditions' element={<TermsAndConditions />} />
